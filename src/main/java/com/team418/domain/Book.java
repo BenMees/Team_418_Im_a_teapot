@@ -16,4 +16,8 @@ public class Book {
         this.author = author;
         this.summary = summary;
     }
+
+    public UUID getUniqueId() {
+        return uniqueId;
+    }
 }

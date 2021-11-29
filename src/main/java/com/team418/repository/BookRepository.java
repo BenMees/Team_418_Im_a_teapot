@@ -12,4 +12,12 @@ public class BookRepository {
     public BookRepository() {
         books = new ConcurrentHashMap<>();
     }
+
+    public Map<UUID, Book> getBooks() {
+        return books;
+    }
+
+    public void addBook(Book book) {
+        books.put(book.getUniqueId(),book);
+    }
 }
