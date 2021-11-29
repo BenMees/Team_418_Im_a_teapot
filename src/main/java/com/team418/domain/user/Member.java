@@ -15,4 +15,5 @@ public class Member extends User{
     public boolean isAbleTo(Feature feature) {
         return false;
     }
+
 }
