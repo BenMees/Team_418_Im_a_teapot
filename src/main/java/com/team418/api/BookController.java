@@ -1,5 +1,6 @@
 package com.team418.api;
 
+import com.team418.repository.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,8 @@ public class BookController {
     private final BookMapper bookMapper;
 
     public BookController() {
+        this.bookRepository = new BookRepository();
+        this.bookMapper = new BookMapper();
         TEST_LOGGER.info("BookController Creation");
     }
 
