@@ -17,5 +17,23 @@ public class Book {
         this.summary = summary;
     }
 
+    public String getUniqueId() {
+        return uniqueId;
+    }
 
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
 }
