@@ -13,6 +13,4 @@ public class BookController {
     public BookController() {
         TEST_LOGGER.info("BookController Creation");
     }
-
-
 }

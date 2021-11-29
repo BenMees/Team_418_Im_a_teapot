@@ -14,7 +14,7 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public Map<UUID, Book> getBooks() {
+    public Map<String, Book> getBooks() {
         return bookRepository.getBooks();
     }
 }

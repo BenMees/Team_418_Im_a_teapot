@@ -17,5 +17,7 @@ public class Book {
         this.summary = summary;
     }
 
-
+    public String getUniqueId() {
+        return uniqueId;
+    }
 }

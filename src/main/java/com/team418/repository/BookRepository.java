@@ -3,17 +3,16 @@ package com.team418.repository;
 import com.team418.domain.Book;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BookRepository {
-    private final Map<UUID, Book> books;
+    private final Map<String, Book> books;
 
     public BookRepository() {
         books = new ConcurrentHashMap<>();
     }
 
-    public Map<UUID, Book> getBooks() {
+    public Map<String, Book> getBooks() {
         return books;
     }
 
