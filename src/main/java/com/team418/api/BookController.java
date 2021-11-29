@@ -1,6 +1,5 @@
 package com.team418.api;
 
-import com.team418.domain.Book;
 import com.team418.services.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/books")
+@RequestMapping(path = "books")
 public class BookController {
     private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
@@ -25,8 +24,8 @@ public class BookController {
 
     @GetMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public BookDto getBook(@PathVariable String id){
-        return null;
+    public BookDto getBook(@PathVariable String id) {
+        return BookMapper.bookToDto(bookService.getBook(id));
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
