@@ -7,9 +7,17 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BookRepository {
-    private final Map<UUID, Book> books;
+    private final Map<String, Book> books;
 
     public BookRepository() {
         books = new ConcurrentHashMap<>();
+    }
+
+    public Map<String, Book> getBooks() {
+        return books;
+    }
+
+    public void saveBook(Book book) {
+        books.put(book.getUniqueId(), book);
     }
 }
