@@ -1,6 +1,7 @@
 package com.team418.repository;
 
 import com.team418.domain.user.Admin;
+import com.team418.domain.user.Member;
 import com.team418.domain.user.User;
 import org.springframework.stereotype.Component;
 
@@ -26,5 +27,9 @@ public class UserRepository {
     public void createDefaultAdmin(){
         Admin admin = new Admin("admin","default","default@switchfully.com");
         users.put(admin.getUniqueId(),admin);
+    }
+
+    public void createMember(Member member){
+        users.put(member.getUniqueId(),member);
     }
 }
