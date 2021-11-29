@@ -13,8 +13,8 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public void saveBook(Book book){
-        bookRepository.saveBook(book);
+    public Book saveBook(Book book){
+        return bookRepository.saveBook(book);
     }
 
     public Book getBook(String id){

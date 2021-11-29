@@ -23,8 +23,8 @@ public class BookRepository {
         return books;
     }
 
-    public void saveBook(Book book) {
-        books.put(book.getUniqueId(), book);
+    public Book saveBook(Book book) {
+        return books.put(book.getUniqueId(), book);
     }
 
     public Book getBook(String uniqueId) {

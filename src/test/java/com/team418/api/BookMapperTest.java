@@ -1,12 +1,13 @@
 package com.team418.api;
 
+import com.team418.api.book.dto.BookDto;
 import com.team418.domain.Author;
 import com.team418.domain.Book;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.team418.api.BookMapper.bookToDto;
+import static com.team418.api.book.BookMapper.bookToDto;
 
 public class BookMapperTest {
     private Book book;
