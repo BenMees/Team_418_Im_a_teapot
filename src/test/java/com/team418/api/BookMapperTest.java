@@ -29,7 +29,5 @@ public class BookMapperTest {
         Assertions.assertThat(dto.getTitle()).isEqualTo("test");
         Assertions.assertThat(dto.getAuthor()).isEqualTo(author);
         Assertions.assertThat(dto.getSummary()).isEqualTo("short summary");
-
-
     }
 }

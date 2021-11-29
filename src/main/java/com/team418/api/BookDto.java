@@ -43,4 +43,14 @@ public class BookDto {
         this.summary = summary;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "BookDto{" +
+                "isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", summary='" + summary + '\'' +
+                '}';
+    }
 }

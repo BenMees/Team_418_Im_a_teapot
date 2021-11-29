@@ -1,23 +1,25 @@
 package com.team418.api;
 
-import com.team418.repository.BookRepository;
+import com.team418.domain.Book;
+import com.team418.services.BookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "books")
+@RequestMapping(path = "/books")
 public class BookController {
     private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
-    private final BookRepository bookRepository;
-    private final BookMapper bookMapper;
+    private final BookService bookService;
 
-    public BookController() {
-        this.bookRepository = new BookRepository();
-        this.bookMapper = new BookMapper();
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
         TEST_LOGGER.info("BookController Creation");
     }
 
@@ -27,5 +29,11 @@ public class BookController {
         return null;
     }
 
-
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDto> getAll(){
+        return bookService.getBooks().values().stream()
+                .map(BookMapper::bookToDto)
+                .collect(Collectors.toList());
+    }
 }

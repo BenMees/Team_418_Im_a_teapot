@@ -4,7 +4,7 @@ import com.team418.domain.Book;
 
 public class BookMapper {
 
-    public BookDto bookToDto(Book book) {
+    public static BookDto bookToDto(Book book) {
         return new BookDto()
                 .withIsbn(book.getIsbn())
                 .withTitle(book.getTitle())

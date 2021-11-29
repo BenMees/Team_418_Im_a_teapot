@@ -3,10 +3,11 @@ package com.team418.services;
 
 import com.team418.domain.Book;
 import com.team418.repository.BookRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.UUID;
 
+@Service
 public class BookService {
     BookRepository bookRepository;
 
