@@ -20,4 +20,20 @@ public class Book {
     public String getUniqueId() {
         return uniqueId;
     }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
 }
