@@ -26,4 +26,13 @@ class BookRepositoryTest {
 
         Assertions.assertThat(repository.getBooks().containsValue(book)).isTrue();
     }
+
+    @Test
+    void givenABookRepositoryWithOneBook_whenGettingOneBook_thenBookShouldBeReturned() {
+        repository.saveBook(book);
+
+        Book expectedBook = repository.getBook(book.getUniqueId());
+
+        Assertions.assertThat(expectedBook).isEqualTo(book);
+    }
 }
