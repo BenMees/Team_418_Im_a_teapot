@@ -31,6 +31,7 @@ public class BookController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getAll(){
+       bookService.getBooks().values().forEach(n->TEST_LOGGER.info(n.getUniqueId()));
         return bookService.getBooks().values().stream()
                 .map(BookMapper::bookToDto)
                 .collect(Collectors.toList());

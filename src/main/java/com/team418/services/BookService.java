@@ -20,11 +20,6 @@ public class BookService {
     public Book getBook(String id){
         return bookRepository.getBook(id);
     }
-    BookRepository bookRepository;
-
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
 
     public Map<String, Book> getBooks() {
         return bookRepository.getBooks();

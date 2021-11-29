@@ -9,55 +9,51 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class BookRepositoryTest {
-    private Author author;
-    private Book book;
+    private Book book1;
+    private Book book2;
     private BookRepository repository;
+    private Map<String, Book> books;
 
     @BeforeEach
     void setUp() {
-        author = new Author("tom", "tom");
-        book = new Book("123", "test", author, "short summary");
+        Author author = new Author("tom", "tom");
+        book1 = new Book("123", "test", author, "short summary");
+        book2 = new Book("654", "Title", author, "This is summary for book 2");
         repository = new BookRepository();
-    }
-
-    @Test
-    void givenABookRepository_whenAddingABook_thenBookRepositoryContainsThatBook() {
-        repository.saveBook(book);
-
-        Assertions.assertThat(repository.getBooks().containsValue(book)).isTrue();
-    }
-
-    @Test
-    void givenABookRepositoryWithOneBook_whenGettingOneBook_thenBookShouldBeReturned() {
-        repository.saveBook(book);
-
-        Book expectedBook = repository.getBook(book.getUniqueId());
-
-        Assertions.assertThat(expectedBook).isEqualTo(book);
-    }
-
-    @Test
-    void whenGettingAllBooks_WeGetTheTwoBooks() {
-        repository = new BookRepository();
-        Book book1 = new Book("132165","Title",new Author("name","secondName"),"dsdf");
-        Book book2 = new Book("654","Title",new Author("name","secondName"),"dsdf");
-
-        Map<String, Book> books = new HashMap<>();
-        books.put(book1.getUniqueId(),book1);
-        books.put(book2.getUniqueId(),book2);
-
-        repository.saveBook(book1);
-        repository.saveBook(book2);
-
-        Assertions.assertThat(repository.getBooks()).isEqualTo(books);
+        books = new HashMap<>();
     }
 
     @Test
     void whenRepository_HasNoBooks_weGetEmptyMapBack() {
         repository = new BookRepository();
         Assertions.assertThat(repository.getBooks().size()).isEqualTo(0);
+    }
+
+    @Test
+    void givenABookRepository_whenAddingABook_thenBookRepositoryContainsThatBook() {
+        repository.saveBook(book1);
+
+        Assertions.assertThat(repository.getBooks().containsValue(book1)).isTrue();
+    }
+
+    @Test
+    void givenABookRepositoryWithOneBook_whenGettingOneBook_thenBookShouldBeReturned() {
+        repository.saveBook(book1);
+
+        Book expectedBook = repository.getBook(book1.getUniqueId());
+
+        Assertions.assertThat(expectedBook).isEqualTo(book1);
+    }
+
+    @Test
+    void whenGettingAllBooks_WeGetTheTwoBooks() {
+        books.put(book1.getUniqueId(), book1);
+        books.put(book2.getUniqueId(), book2);
+
+        repository.saveBook(book1);
+        repository.saveBook(book2);
+
+        Assertions.assertThat(repository.getBooks()).isEqualTo(books);
     }
 }
