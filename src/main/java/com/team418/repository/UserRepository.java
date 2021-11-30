@@ -23,7 +23,7 @@ public class UserRepository {
                 .findFirst().orElse(null);
     }
 
-    public void createDefaultAdmin(){
+    private void createDefaultAdmin(){
         Admin admin = new Admin("admin","default","default@switchfully.com");
         users.put(admin.getUniqueId(),admin);
     }
