@@ -31,15 +31,29 @@ public class BookMapperTest {
         Assertions.assertThat(dto.getSummary()).isEqualTo("short summary");
     }
 
-
-    /**
-     * The new book requires a valid ISBN, title, and author
-     * The author requires at least a valid last name
-     * If no summary or author first name are provided; an empty string comes in its place
-     */
+    @Test
+    void givenAllowedEmptyInputString_whenValidating_thenReturnEmptyString() {
+        String allowedEmptyString = "";
+        Assertions.assertThat(BookMapper.replaceEmptyInput(allowedEmptyString)).isEqualTo(allowedEmptyString);
+    }
 
     @Test
-    public void givenAllValidStringInputs_whenCreatingNewBook_thenCreateBook() {
+    void givenAllowedNonEmptyInputString_whenValidating_thenReturnInput() {
+        String allowedString = "Not empty";
+        Assertions.assertThat(BookMapper.replaceEmptyInput(allowedString)).isEqualTo(allowedString);
+        Assertions.assertThat(BookMapper.validateNoEmptyInput(allowedString)).isEqualTo(allowedString);
+    }
+
+    @Test
+    void givenNonAllowedEmptyInputString_whenValidating_thenThrowError() {
+        String invalidEmptyInput = "";
+
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> BookMapper.validateNoEmptyInput(invalidEmptyInput));
+        // optional .hasMessageMatching("Some message")
+    }
+
+    @Test
+    void givenAllValidStringInputs_whenCreatingNewBook_thenCreateBook() {
         Author validAuthor = new Author("valid", "input");
         String validIsbn = "123456";
         String validSummary = "Cool story bro";
@@ -61,7 +75,7 @@ public class BookMapperTest {
     }
 
     @Test
-    public void givenSomeValidEmptyStringInputs_whenCreatingNewBook_thenCreateBook() {
+    void givenSomeValidEmptyStringInputs_whenCreatingNewBook_thenCreateBook() {
         String validEmptyInput = "";
         Author validAuthor = new Author(validEmptyInput, "input");
         String validIsbn = "123456";
@@ -83,7 +97,7 @@ public class BookMapperTest {
     }
 
     @Test
-    public void givenInvalidEmptyStringInputs_whenCreatingNewBook_thenThrowError() {
+    void givenInvalidEmptyStringInputs_whenCreatingNewBook_thenThrowError() {
         String invalidEmptyInput = "";
         Author validAuthor = new Author("", "input");
 
@@ -97,17 +111,4 @@ public class BookMapperTest {
         Assertions.assertThatIllegalArgumentException().isThrownBy(() -> BookMapper.createDtoToBook(createBookDto));
         // optional .hasMessageMatching("Some message")
     }
-
-
-    /**
-     * @param input The fields to validate
-     * @return the input if valid, throws invalid argument exception if it isn't
-     */
-
-
-    /**
-     * @param input A field to validate that's permitted to be empty
-     * @return the non-empty field, or an empty string
-     */
-
 }
