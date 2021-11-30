@@ -1,5 +1,6 @@
 package com.team418.domain.user;
 
+import com.team418.EmailAddressIsInvalidException;
 import com.team418.domain.Feature;
 
 import javax.mail.internet.AddressException;
@@ -33,9 +34,10 @@ public abstract class User {
 
     //need to discuss invalid email - exception or what ?
     public void setEmail(String email) {
-        boolean emailIsValid;
-        emailIsValid = isValidEmailAddress(email);
-        this.email = (emailIsValid) ? email : "default";
+        if(!isValidEmailAddress(email)) {
+            throw new EmailAddressIsInvalidException();
+        }
+        this.email = email;
     }
 
     private boolean isValidEmailAddress(String email) {
