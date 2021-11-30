@@ -1,12 +1,11 @@
 package com.team418.repository;
 
 import com.team418.domain.user.Admin;
-import com.team418.domain.user.Member;
 import com.team418.domain.user.User;
+import com.team418.exception.EmailNotUniqueException;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -29,7 +28,16 @@ public class UserRepository {
         users.put(admin.getUniqueId(),admin);
     }
 
-    public void createMember(Member member){
-        users.put(member.getUniqueId(),member);
+    public void addUser(User user){
+        assertEmailIsUnique(user.getEmail());
+        users.put(user.getUniqueId(),user);
     }
+
+    private void assertEmailIsUnique(String email){
+        users.values().forEach(user -> {
+            if(user.getEmail().equals(email))
+                throw new EmailNotUniqueException(email+" is already used.");
+        });
+    }
+
 }

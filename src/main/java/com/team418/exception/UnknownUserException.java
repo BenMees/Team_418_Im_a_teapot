@@ -1,12 +1,11 @@
-package com.team418.services.security.exception;
+package com.team418.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
-public class UnauthorizedException extends RuntimeException{
-
-    public UnauthorizedException(String message) {
+public class UnknownUserException extends RuntimeException{
+    public UnknownUserException(String message) {
         super(message);
     }
 }
