@@ -5,19 +5,12 @@ import com.team418.api.user.dto.LibrarianDto;
 import com.team418.domain.Feature;
 import com.team418.domain.user.Librarian;
 import com.team418.domain.user.User;
-import com.team418.exception.EmailNotUniqueException;
-import com.team418.services.UserService;
+import com.team418.services.LibraryService;
 import com.team418.services.security.SecurityService;
-import com.team418.exception.UnauthorizedException;
-import com.team418.exception.UnknownUserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @RestController
 @RequestMapping(path = "/users/librarians")
@@ -27,9 +20,8 @@ public class LibrarianController {
     private UserService userService;
     private SecurityService securityService;
 
-    public LibrarianController(UserService userService, SecurityService securityService) {
-
-        this.userService = userService;
+    public LibrarianController(LibraryService libraryService, SecurityService securityService) {
+        this.libraryService = libraryService;
         this.securityService = securityService;
 
     }

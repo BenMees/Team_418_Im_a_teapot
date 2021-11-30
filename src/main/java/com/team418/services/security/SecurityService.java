@@ -13,9 +13,11 @@ import java.util.Base64;
 public class SecurityService {
     UserRepository userRepository;
 
-    public SecurityService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public SecurityService(LibrarianRepository userRepository, AdminRepository adminRepository) {
+        this.librarianRepository = userRepository;
+        this.adminRepository = adminRepository;
     }
+
 
     public User validateAccessToFeature(String authorization, Feature feature) {
         String decodeUsernamePassword = new String(Base64.getDecoder().decode(authorization.substring("Basic ".length())));

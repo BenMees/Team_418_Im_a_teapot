@@ -43,7 +43,7 @@ public abstract class User {
     //need to discuss invalid email - exception or what ?
     private void setEmail(String email) {
         if(!isValidEmailAddress(email)) {
-            throw new EmailAddressIsInvalidException();
+            throw new EmailAddressIsInvalidException(email);
         }
         this.email = email;
     }
