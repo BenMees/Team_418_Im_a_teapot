@@ -2,11 +2,8 @@ package com.team418.api.book;
 
 import com.team418.api.book.dto.BookDto;
 import com.team418.api.book.dto.CreateBookDto;
+import com.team418.api.book.dto.UpdateBookDto;
 import com.team418.domain.Book;
-import com.team418.domain.user.User;
-import com.team418.exception.UnauthorizedException;
-import com.team418.exception.UnknownUserException;
-import com.team418.repository.UserRepository;
 import com.team418.services.BookService;
 import com.team418.services.UserService;
 import com.team418.services.security.SecurityService;
@@ -15,15 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.team418.api.book.BookMapper.bookToDto;
-import static com.team418.domain.Feature.REGISTER_NEW_BOOK;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static com.team418.domain.Feature.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -61,15 +54,26 @@ public class BookController {
     @ResponseStatus(HttpStatus.CREATED)
     public BookDto registerNewBook(@RequestBody CreateBookDto createBookDto, @RequestHeader String authorization) {
         TEST_LOGGER.info("Register a new book");
-
-        // securityService.validateUser(authorization); // todo add this after new pulls --> Should not be in controller
-        // todo put user validation and access check inside securityService so the controller doesn't know all the different steps
-        securityService.validate(authorization, REGISTER_NEW_BOOK); // throws error if no access
-        // validateAccess to feature should be 2 methods? Login vs actual access? (One method one purpose)
-
+        securityService.validate(authorization, REGISTER_NEW_BOOK);
         Book book = BookMapper.createDtoToBook(createBookDto); // throws error
-
         Book savedBook = bookService.saveBook(book);
         return bookToDto(savedBook);
+    }
+
+    @PutMapping(path = "{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public BookDto updateBook(@PathVariable String id, @RequestBody UpdateBookDto updateBookDto, @RequestHeader String authorization) {
+        TEST_LOGGER.info("update a book");
+        securityService.validate(authorization, UPDATE_BOOK);
+        Book bookToUpdate = bookService.getBook(id);
+        updateBook(updateBookDto, bookToUpdate);
+        return bookToDto(bookToUpdate);
+
+    }
+
+    private void updateBook(UpdateBookDto updateBookDto, Book bookToUpdate) {
+        bookToUpdate.setTitle(updateBookDto.getTitle());
+        bookToUpdate.setAuthor(updateBookDto.getAuthor());
+        bookToUpdate.setSummary(updateBookDto.getSummary());
     }
 }

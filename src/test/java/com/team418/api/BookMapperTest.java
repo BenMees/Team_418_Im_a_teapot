@@ -34,21 +34,21 @@ public class BookMapperTest {
     @Test
     void givenAllowedEmptyInputString_whenValidating_thenReturnEmptyString() {
         String allowedEmptyString = "";
-        Assertions.assertThat(BookMapper.replaceEmptyInput(allowedEmptyString)).isEqualTo(allowedEmptyString);
+        Assertions.assertThat(Book.replaceEmptyInput(allowedEmptyString)).isEqualTo(allowedEmptyString);
     }
 
     @Test
     void givenAllowedNonEmptyInputString_whenValidating_thenReturnInput() {
         String allowedString = "Not empty";
-        Assertions.assertThat(BookMapper.replaceEmptyInput(allowedString)).isEqualTo(allowedString);
-        Assertions.assertThat(BookMapper.validateNoEmptyInput(allowedString)).isEqualTo(allowedString);
+        Assertions.assertThat(Book.replaceEmptyInput(allowedString)).isEqualTo(allowedString);
+        Assertions.assertThat(Book.validateNoEmptyInput(allowedString)).isEqualTo(allowedString);
     }
 
     @Test
     void givenNonAllowedEmptyInputString_whenValidating_thenThrowError() {
         String invalidEmptyInput = "";
 
-        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> BookMapper.validateNoEmptyInput(invalidEmptyInput));
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> Book.validateNoEmptyInput(invalidEmptyInput));
         // optional .hasMessageMatching("Some message")
     }
 

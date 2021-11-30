@@ -3,12 +3,12 @@ package com.team418.domain;
 import java.util.Objects;
 
 public class Author {
-    private final String firstName;
-    private final String lastName;
+    private String firstName;
+    private String lastName;
 
     public Author(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = setFirstName(firstName);
+        this.lastName = setLastName(lastName);
     }
 
     public String getFirstName() {
@@ -17,6 +17,14 @@ public class Author {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String setFirstName(String firstName) {
+        return replaceEmptyInput(firstName);
+    }
+
+    public String setLastName(String lastName) {
+        return validateNoEmptyInput(lastName);
     }
 
     @Override
@@ -29,6 +37,25 @@ public class Author {
     @Override
     public int hashCode() {
         return Objects.hash(firstName, lastName);
+    }
+
+    /**
+     * @param input The fields to validate
+     * @return the input if valid, throws invalid argument exception if it isn't
+     */
+    public static String validateNoEmptyInput(String input) {
+        if (input == null || input.isBlank())
+            throw new IllegalArgumentException();
+        return input;
+    }
+
+
+    /**
+     * @param input A field to validate that's permitted to be empty
+     * @return the non-empty field, or an empty string
+     */
+    public static String replaceEmptyInput(String input) {
+        return (input == null) ? "" : input;
     }
 
     @Override

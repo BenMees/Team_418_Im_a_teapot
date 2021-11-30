@@ -5,6 +5,9 @@ import com.team418.api.book.dto.CreateBookDto;
 import com.team418.domain.Author;
 import com.team418.domain.Book;
 
+import static com.team418.domain.Book.replaceEmptyInput;
+import static com.team418.domain.Book.validateNoEmptyInput;
+
 public class BookMapper {
     // todo question: should this not be a singleton instead of a bunch of static methods?
 
@@ -37,22 +40,4 @@ public class BookMapper {
                 , replaceEmptyInput(createBookDto.getSummary()));
     }
 
-    /**
-     * @param input The fields to validate
-     * @return the input if valid, throws invalid argument exception if it isn't
-     */
-    public static String validateNoEmptyInput(String input) {
-        if (input == null || input.isBlank())
-            throw new IllegalArgumentException();
-        return input;
-    }
-
-
-    /**
-     * @param input A field to validate that's permitted to be empty
-     * @return the non-empty field, or an empty string
-     */
-    public static String replaceEmptyInput(String input) {
-        return (input == null) ? "" : input;
-    }
 }

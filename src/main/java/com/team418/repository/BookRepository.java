@@ -1,6 +1,6 @@
 package com.team418.repository;
 
-//import com.team418.domain.Author; // testing purposes
+import com.team418.domain.Author; // testing purposes
 
 import com.team418.domain.Book;
 import org.springframework.stereotype.Repository;
