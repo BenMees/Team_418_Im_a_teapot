@@ -2,6 +2,8 @@ package com.team418.domain;
 
 import java.util.Objects;
 
+import static com.team418.services.inputvalidator.InputValidator.INPUT_VALIDATOR;
+
 public class Author {
     private String firstName;
     private String lastName;
@@ -20,11 +22,11 @@ public class Author {
     }
 
     public String setFirstName(String firstName) {
-        return replaceEmptyInput(firstName);
+        return INPUT_VALIDATOR.validateNoEmptyInput(firstName);
     }
 
     public String setLastName(String lastName) {
-        return validateNoEmptyInput(lastName);
+        return INPUT_VALIDATOR.validateNoEmptyInput(lastName);
     }
 
     @Override
@@ -37,25 +39,6 @@ public class Author {
     @Override
     public int hashCode() {
         return Objects.hash(firstName, lastName);
-    }
-
-    /**
-     * @param input The fields to validate
-     * @return the input if valid, throws invalid argument exception if it isn't
-     */
-    public static String validateNoEmptyInput(String input) {
-        if (input == null || input.isBlank())
-            throw new IllegalArgumentException();
-        return input;
-    }
-
-
-    /**
-     * @param input A field to validate that's permitted to be empty
-     * @return the non-empty field, or an empty string
-     */
-    public static String replaceEmptyInput(String input) {
-        return (input == null) ? "" : input;
     }
 
     @Override

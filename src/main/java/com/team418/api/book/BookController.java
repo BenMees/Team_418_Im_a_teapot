@@ -4,10 +4,7 @@ import com.team418.api.book.dto.BookDto;
 import com.team418.api.book.dto.CreateBookDto;
 import com.team418.api.book.dto.UpdateBookDto;
 import com.team418.domain.Book;
-
 import com.team418.services.BookService;
-
-import com.team418.services.LibraryService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.team418.api.book.BookMapper.bookToDto;
-import static com.team418.domain.Feature.*;
+import static com.team418.domain.Feature.REGISTER_NEW_BOOK;
+import static com.team418.domain.Feature.UPDATE_BOOK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -26,12 +24,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class BookController {
     private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
-    private final LibraryService libraryService;
     private final SecurityService securityService;
 
-    public BookController(BookService bookService, LibraryService libraryService, SecurityService securityService) {
+    public BookController(BookService bookService, SecurityService securityService) {
         this.bookService = bookService;
-        this.libraryService = libraryService;
         this.securityService = securityService;
         TEST_LOGGER.info("BookController Creation");
     }

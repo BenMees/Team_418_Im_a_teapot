@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.team418.api.book.BookMapper.bookToDto;
+import static com.team418.services.inputvalidator.InputValidator.INPUT_VALIDATOR;
 
 public class BookMapperTest {
     private Book book;
@@ -34,21 +35,21 @@ public class BookMapperTest {
     @Test
     void givenAllowedEmptyInputString_whenValidating_thenReturnEmptyString() {
         String allowedEmptyString = "";
-        Assertions.assertThat(Book.replaceEmptyInput(allowedEmptyString)).isEqualTo(allowedEmptyString);
+        Assertions.assertThat(INPUT_VALIDATOR.replaceEmptyInput(allowedEmptyString)).isEqualTo(allowedEmptyString);
     }
 
     @Test
     void givenAllowedNonEmptyInputString_whenValidating_thenReturnInput() {
         String allowedString = "Not empty";
-        Assertions.assertThat(Book.replaceEmptyInput(allowedString)).isEqualTo(allowedString);
-        Assertions.assertThat(Book.validateNoEmptyInput(allowedString)).isEqualTo(allowedString);
+        Assertions.assertThat(INPUT_VALIDATOR.replaceEmptyInput(allowedString)).isEqualTo(allowedString);
+        Assertions.assertThat(INPUT_VALIDATOR.validateNoEmptyInput(allowedString)).isEqualTo(allowedString);
     }
 
     @Test
     void givenNonAllowedEmptyInputString_whenValidating_thenThrowError() {
         String invalidEmptyInput = "";
 
-        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> Book.validateNoEmptyInput(invalidEmptyInput));
+        Assertions.assertThatIllegalArgumentException().isThrownBy(() -> INPUT_VALIDATOR.validateNoEmptyInput(invalidEmptyInput));
         // optional .hasMessageMatching("Some message")
     }
 
