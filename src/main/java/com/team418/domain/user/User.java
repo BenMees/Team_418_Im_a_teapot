@@ -15,7 +15,6 @@ public abstract class User {
 
 
     public User(String firstName, String lastName, String email) {
-
         setEmail(email);
         this.uniqueId = UUID.randomUUID().toString();
         this.firstName = firstName;
@@ -32,8 +31,7 @@ public abstract class User {
         return uniqueId;
     }
 
-    //need to discuss invalid email - exception or what ?
-    public void setEmail(String email) {
+    private void setEmail(String email) {
         if(!isValidEmailAddress(email)) {
             throw new EmailAddressIsInvalidException();
         }
