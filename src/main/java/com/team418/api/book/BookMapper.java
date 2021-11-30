@@ -42,8 +42,8 @@ public class BookMapper {
      * @return the input if valid, throws invalid argument exception if it isn't
      */
     public static String validateNoEmptyInput(String input) {
-        if (input == null || input.length() < 1)
-            throw new IllegalArgumentException(); // todo catch and provide a nice sentence -> in controller?
+        if (input == null || input.isBlank())
+            throw new IllegalArgumentException();
         return input;
     }
 
