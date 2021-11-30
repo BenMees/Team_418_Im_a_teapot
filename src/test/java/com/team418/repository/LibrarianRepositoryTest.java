@@ -1,18 +1,14 @@
 package com.team418.repository;
 
 import com.team418.domain.user.Librarian;
-import com.team418.domain.user.Member;
 import com.team418.exception.EmailAddressIsInvalidException;
 import com.team418.exception.EmailNotUniqueException;
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class LibrarianRepositoryTest {
 
@@ -31,12 +27,12 @@ public class LibrarianRepositoryTest {
     }
 
     @Test
-    void whenRepositry_HasNoLibrarians_weGetEmptyMapBack() {
-        Assertions.assertThat(librarianRepository.getLibrarians().size()).isEqualTo(0);
+    void whenRepository_HasNoLibrarians_weGetEmptyMapBack() {
+        Assertions.assertThat(librarianRepository.getLibrarians()).isEmpty();
     }
 
     @Test
-    void whenGettingAllLibrarians_weGettheTwoLibrarian() {
+    void whenGettingAllLibrarians_weGetTheTwoLibrarian() {
         librarians.put(librarian1.getUniqueId(), librarian1);
         librarians.put(librarian2.getUniqueId(), librarian2);
 
@@ -49,25 +45,18 @@ public class LibrarianRepositoryTest {
     @Test
     void when_givingAnInvalidEmail_ThrowException() {
         String expectedMessage = "The email address that you entered is not valid : ann.couwbe-outlook.com";
-        try {
-            new Librarian("Ann", "Cauwberg", "ann.couwbe-outlook.com");
-            fail();
-        } catch (EmailAddressIsInvalidException exception) {
-            Assertions.assertThat(exception.getMessage()).isEqualTo(expectedMessage);
-        }
+        Assertions.assertThatExceptionOfType(EmailAddressIsInvalidException.class)
+                .isThrownBy(() -> new Librarian("Ann", "Cauwberg", "ann.couwbe-outlook.com"))
+                .withMessage(expectedMessage);
     }
 
     @Test
     void If_MemberWithSameEmail_AndDifferentInss_ThrowsAnException(){
-        String expectedMessage = librarian1.getEmail() + " is already used.";
-        Librarian libarrian3 = new Librarian(librarian1.getFirstName(), librarian1.getLastName(), librarian1.getEmail());
-        try{
+        Librarian librarian3 = new Librarian(librarian1.getFirstName(), librarian1.getLastName(), librarian1.getEmail());
+        Assertions.assertThatExceptionOfType(EmailNotUniqueException.class).isThrownBy(() -> {
             librarianRepository.addLibrarian(librarian1);
-            librarianRepository.addLibrarian(libarrian3);
-            Assert.fail();
-        }catch(EmailNotUniqueException e) {
-            Assertions.assertThat(e.getMessage().equals(expectedMessage));
-        }
+            librarianRepository.addLibrarian(librarian3);
+        });
     }
 }
 

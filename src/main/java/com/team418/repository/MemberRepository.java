@@ -29,14 +29,14 @@ public class MemberRepository {
     private void assertEmailIsUnique(String email) {
         members.values().forEach(user -> {
             if (user.getEmail().equals(email))
-                throw new EmailNotUniqueException(email + " is already used.");
+                throw new EmailNotUniqueException(email);
         });
     }
 
     private void assertInssIsUnique(String inss) {
         members.values().forEach(member -> {
             if (member.getInss().equals(inss))
-                throw new InssNotUniqueException(inss + " is already used.");
+                throw new InssNotUniqueException(inss);
         });
     }
 
