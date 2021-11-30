@@ -22,11 +22,11 @@ public class Author {
     }
 
     public String setFirstName(String firstName) {
-        return INPUT_VALIDATOR.validateNoEmptyInput(firstName);
+        return this.firstName = INPUT_VALIDATOR.replaceEmptyInput(firstName);
     }
 
     public String setLastName(String lastName) {
-        return INPUT_VALIDATOR.validateNoEmptyInput(lastName);
+        return this.lastName = INPUT_VALIDATOR.validateNoEmptyInput(lastName);
     }
 
     @Override
