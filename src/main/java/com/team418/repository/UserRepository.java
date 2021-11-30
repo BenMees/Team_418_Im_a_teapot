@@ -1,13 +1,11 @@
 package com.team418.repository;
 
 import com.team418.domain.user.Admin;
-import com.team418.domain.user.Librarian;
 import com.team418.domain.user.User;
 import com.team418.exception.EmailNotUniqueException;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -25,7 +23,7 @@ public class UserRepository {
                 .findFirst().orElse(null);
     }
 
-    private void createDefaultAdmin(){
+    public void createDefaultAdmin(){
         Admin admin = new Admin("admin","default","default@switchfully.com");
         users.put(admin.getUniqueId(),admin);
     }
@@ -41,4 +39,5 @@ public class UserRepository {
                 throw new EmailNotUniqueException(email+" is already used.");
         });
     }
+
 }
