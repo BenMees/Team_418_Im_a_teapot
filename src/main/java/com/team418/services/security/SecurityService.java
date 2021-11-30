@@ -3,8 +3,8 @@ package com.team418.services.security;
 import com.team418.domain.Feature;
 import com.team418.domain.user.User;
 import com.team418.repository.UserRepository;
-import com.team418.services.security.exception.UnauthorizedException;
-import com.team418.services.security.exception.UnknownUserException;
+import com.team418.exception.UnauthorizedException;
+import com.team418.exception.UnknownUserException;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;

@@ -30,4 +30,12 @@ public abstract class User {
     public String getUniqueId() {
         return uniqueId;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
 }
