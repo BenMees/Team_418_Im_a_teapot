@@ -1,4 +1,4 @@
-package com.team418.api;
+package com.team418.api.book.dto;
 
 import com.team418.domain.Author;
 

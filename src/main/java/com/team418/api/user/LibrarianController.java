@@ -6,17 +6,20 @@ import com.team418.domain.Feature;
 import com.team418.domain.user.Librarian;
 import com.team418.domain.user.User;
 import com.team418.services.LibraryService;
+import com.team418.services.UserService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping(path = "/users/librarians")
 public class LibrarianController {
 
-    private static final Logger logger = LoggerFactory.getLogger(LibrarianController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LibrarianController.class);
     private final LibraryService libraryService;
     private final SecurityService securityService;
 
@@ -25,10 +28,10 @@ public class LibrarianController {
         this.securityService = securityService;
     }
 
-    @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public LibrarianDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto, @RequestHeader String authorization) {
-        logger.info("Create librarian");
-        User user = securityService.validateAccessToFeature(authorization, Feature.CREATE_LIBRARIAN);
+        LOGGER.info("Create librarian");
+        securityService.validate(authorization, Feature.CREATE_LIBRARIAN);
         Librarian librarian = LibrarianMapper.dtoToModel(createLibrarianDto);
         libraryService.addLibrarian(librarian);
         return LibrarianMapper.modelToDto(librarian);
