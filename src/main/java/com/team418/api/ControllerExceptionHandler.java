@@ -1,5 +1,6 @@
-package com.team418;
+package com.team418.api;
 
+import com.team418.exception.EmailAddressIsInvalidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
