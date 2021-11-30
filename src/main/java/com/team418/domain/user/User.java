@@ -1,6 +1,6 @@
 package com.team418.domain.user;
 
-import com.team418.EmailAddressIsInvalidException;
+import com.team418.exception.EmailAddressIsInvalidException;
 import com.team418.domain.Feature;
 
 import javax.mail.internet.AddressException;

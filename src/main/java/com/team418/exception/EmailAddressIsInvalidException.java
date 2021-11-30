@@ -1,4 +1,4 @@
-package com.team418;
+package com.team418.exception;
 
 public class EmailAddressIsInvalidException extends RuntimeException {
     public EmailAddressIsInvalidException() {
