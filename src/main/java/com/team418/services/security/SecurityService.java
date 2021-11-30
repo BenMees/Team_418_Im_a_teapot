@@ -22,7 +22,7 @@ public class SecurityService {
         validateAccessToFeature(user, feature);
     }
 
-    public User validateUserName(String authorization) {
+    private User validateUserName(String authorization) {
         String decodeUsernamePassword = new String(Base64.getDecoder().decode(authorization.substring("Basic ".length())));
         String email = decodeUsernamePassword.substring(0, decodeUsernamePassword.indexOf(":"));
         User user = this.userRepository.getByEmail(email);
@@ -33,7 +33,7 @@ public class SecurityService {
         return user;
     }
 
-    public void validateAccessToFeature(User user, Feature feature) {
+    private void validateAccessToFeature(User user, Feature feature) {
         if (!user.isAbleTo(feature))
             throw new UnauthorizedException(user.getEmail() + " does not have access to " + feature.name());
     }
