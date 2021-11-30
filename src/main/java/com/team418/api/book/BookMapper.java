@@ -24,6 +24,7 @@ public class BookMapper {
      * The new book requires a valid ISBN, title, and author
      * The author requires at least a valid last name
      * If no summary or author first name are provided; an empty string comes in its place
+     *
      * @param createBookDto Creates a book out of a data transfer object
      * @return the book
      */
@@ -41,7 +42,8 @@ public class BookMapper {
      * @return the input if valid, throws invalid argument exception if it isn't
      */
     public static String validateNoEmptyInput(String input) throws IllegalArgumentException {
-        if (input == null || input.length() < 1) throw new IllegalArgumentException(); // todo catch to 403; and provide a nice sentence -> in controller?
+        if (input == null || input.length() < 1)
+            throw new IllegalArgumentException(); // todo catch to 403; and provide a nice sentence -> in controller?
         return input;
     }
 
