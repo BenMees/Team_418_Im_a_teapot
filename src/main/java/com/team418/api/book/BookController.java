@@ -9,10 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.team418.api.book.BookMapper.bookToDto;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -34,8 +37,8 @@ public class BookController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDto> getAll(){
-       bookService.getBooks().values().forEach(n->TEST_LOGGER.info(n.getUniqueId()));
+    public List<BookDto> getAll() {
+        bookService.getBooks().values().forEach(n -> TEST_LOGGER.info(n.getUniqueId()));
         return bookService.getBooks().values().stream()
                 .map(BookMapper::bookToDto)
                 .collect(Collectors.toList());
@@ -44,15 +47,21 @@ public class BookController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public BookDto registerNewBook(@RequestBody CreateBookDto createBookDto) {
-        Book book = BookMapper.createDtoToBook(createBookDto);
+
+        Book book = BookMapper.createDtoToBook(createBookDto); // throws error
+
         Book savedBook = bookService.saveBook(book);
         return bookToDto(savedBook);
 
         // todo check this method (test?)
+
         // todo if any other user besides a librarian tries to register a new book,
         //  let the server respond with 403 Forbidden and a custom message.
 
-
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    protected void illegalArgumentHandler(IllegalArgumentException exception, HttpServletResponse response) throws IOException {
+        response.sendError(BAD_REQUEST.value(), exception.getMessage());
+    }
 }
