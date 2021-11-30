@@ -31,7 +31,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         response.sendError(400, exception.getMessage()); // todo change number? #NotOurJob #NotOutStory xd
     }
 
-
     @ExceptionHandler(IllegalArgumentException.class)
     protected void illegalArgumentHandler(IllegalArgumentException exception, HttpServletResponse response) throws IOException {
         response.sendError(BAD_REQUEST.value(), exception.getMessage());
