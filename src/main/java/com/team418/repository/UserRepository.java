@@ -30,10 +30,9 @@ public class UserRepository {
         users.put(admin.getUniqueId(),admin);
     }
 
-    public <T extends User> T addUser(T user){
+    public void addUser(User user){
         assertEmailIsUnique(user.getEmail());
         users.put(user.getUniqueId(),user);
-        return user;
     }
 
     private void assertEmailIsUnique(String email){

@@ -13,8 +13,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Librarian addLibrarian(Librarian librarian){
+    public void addLibrarian(Librarian librarian){
         userRepository.addUser(librarian);
-        return librarian;
     }
 }
