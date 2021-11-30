@@ -3,27 +3,21 @@ package com.team418.api.book;
 import com.team418.api.book.dto.BookDto;
 import com.team418.api.book.dto.CreateBookDto;
 import com.team418.domain.Book;
-import com.team418.domain.user.User;
-import com.team418.exception.UnauthorizedException;
-import com.team418.exception.UnknownUserException;
-import com.team418.repository.UserRepository;
+
 import com.team418.services.BookService;
-import com.team418.services.UserService;
+
+import com.team418.services.LibraryService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.team418.api.book.BookMapper.bookToDto;
 import static com.team418.domain.Feature.REGISTER_NEW_BOOK;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -31,15 +25,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class BookController {
     private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
-    private final UserService userService;
+    private final LibraryService libraryService;
     private final SecurityService securityService;
 
-    public BookController(BookService bookService, UserService userService, SecurityService securityService) {
+    public BookController(BookService bookService, LibraryService libraryService, SecurityService securityService) {
         this.bookService = bookService;
-        this.userService = userService;
+        this.libraryService = libraryService;
         this.securityService = securityService;
         TEST_LOGGER.info("BookController Creation");
-
     }
 
     @GetMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)

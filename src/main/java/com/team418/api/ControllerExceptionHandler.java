@@ -1,6 +1,7 @@
 package com.team418.api;
 
 import com.team418.exception.EmailAddressIsInvalidException;
+import com.team418.exception.InssNotUniqueException;
 import com.team418.exception.UnauthorizedException;
 import com.team418.exception.UnknownUserException;
 import org.slf4j.LoggerFactory;

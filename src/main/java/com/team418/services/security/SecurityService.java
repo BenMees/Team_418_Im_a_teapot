@@ -29,7 +29,9 @@ public class SecurityService {
     private User validateUserName(String authorization) {
         String decodeUsernamePassword = new String(Base64.getDecoder().decode(authorization.substring("Basic ".length())));
         String email = decodeUsernamePassword.substring(0, decodeUsernamePassword.indexOf(":"));
-        User user = this.userRepository.getByEmail(email);
+
+        //was userRepository
+        User user = this.adminRepository.getByEmail(email);
 
         if (user == null)
             throw new UnknownUserException("No user corresponds to : " + email);

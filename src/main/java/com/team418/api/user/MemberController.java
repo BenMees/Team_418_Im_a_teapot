@@ -1,6 +1,6 @@
 package com.team418.api.user;
 
-import com.team418.api.BookController;
+import com.team418.api.book.BookController;
 import com.team418.api.user.dto.CreateMemberDto;
 import com.team418.api.user.dto.MemberDto;
 import com.team418.domain.user.Member;
@@ -15,7 +15,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping(path = "users/members")
 public class MemberController {
-    private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
+    private final static Logger TEST_LOGGER = LoggerFactory.getLogger(MemberController.class);
     private final MemberService memberService;
 
     public MemberController(MemberService memberService) {

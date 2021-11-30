@@ -6,7 +6,6 @@ import com.team418.domain.Feature;
 import com.team418.domain.user.Librarian;
 import com.team418.domain.user.User;
 import com.team418.services.LibraryService;
-import com.team418.services.UserService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
