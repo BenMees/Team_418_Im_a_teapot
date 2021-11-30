@@ -1,6 +1,7 @@
 package com.team418.api;
 
 import com.team418.exception.EmailAddressIsInvalidException;
+import com.team418.exception.InssNotUniqueException;
 import com.team418.exception.UnauthorizedException;
 import com.team418.exception.UnknownUserException;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     protected void illegalArgumentHandler(IllegalArgumentException exception, HttpServletResponse response) throws IOException {
         response.sendError(BAD_REQUEST.value(), exception.getMessage());
         LOGGER.error(exception.getMessage(), exception);
+    }
+
+    @ExceptionHandler(InssNotUniqueException.class)
+    protected void InssNotUniqueException(InssNotUniqueException inssException, HttpServletResponse response) throws IOException {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, inssException.getMessage());
+        LOGGER.error(inssException.getMessage(), inssException);
     }
 }
 
