@@ -17,17 +17,24 @@ public class SecurityService {
         this.userRepository = userRepository;
     }
 
-    public User validateAccessToFeature(String authorization, Feature feature) {
+    public void validate(String authorization, Feature feature) {
+        User user = validateUserName(authorization);
+        validateAccessToFeature(user, feature);
+    }
+
+    public User validateUserName(String authorization) {
         String decodeUsernamePassword = new String(Base64.getDecoder().decode(authorization.substring("Basic ".length())));
-        String email = decodeUsernamePassword.split(":")[0];
-        String password = decodeUsernamePassword.split(":")[1];
+        String email = decodeUsernamePassword.substring(0, decodeUsernamePassword.indexOf(":"));
         User user = this.userRepository.getByEmail(email);
 
         if (user == null)
             throw new UnknownUserException("No user corresponds to : " + email);
-        if (!user.isAbleTo(feature))
-            throw new UnauthorizedException(email + " does not have access to " + feature.name());
 
         return user;
+    }
+
+    public void validateAccessToFeature(User user, Feature feature) {
+        if (!user.isAbleTo(feature))
+            throw new UnauthorizedException(user.getEmail() + " does not have access to " + feature.name());
     }
 }

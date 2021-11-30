@@ -37,7 +37,7 @@ public class LibrarianController {
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
     public LibrarianDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto, @RequestHeader String authorization) {
         logger.info("Create librarian");
-        User user = securityService.validateAccessToFeature(authorization, Feature.CREATE_LIBRARIAN);
+        securityService.validate(authorization, Feature.CREATE_LIBRARIAN);
         Librarian librarian = LibrarianMapper.dtoToModel(createLibrarianDto);
         userService.addLibrarian(librarian);
         return LibrarianMapper.modelToDto(librarian);
