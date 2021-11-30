@@ -1,6 +1,6 @@
 package com.team418.repository;
 
-import com.team418.domain.Author; // testing purposes
+//import com.team418.domain.Author; // testing purposes
 
 import com.team418.domain.Book;
 import org.springframework.stereotype.Repository;
@@ -15,11 +15,11 @@ public class BookRepository {
 
     public BookRepository() {
         books = new ConcurrentHashMap<>();
-        Book book1 = new Book("1", "lskdj", new Author("sdf", "sdf"), "df"); // testing purposes
-        Book book2 = new Book("2", "lskdj", new Author("sdf", "sdf"), "df");
-
-        this.saveBook(book1);
-        this.saveBook(book2);
+//        Book book1 = new Book("1", "lskdj", new Author("sdf", "sdf"), "df"); // testing purposes
+//        Book book2 = new Book("2", "lskdj", new Author("sdf", "sdf"), "df");
+//
+//        this.saveBook(book1);
+//        this.saveBook(book2);
     }
 
     public Map<String, Book> getBooks() {
