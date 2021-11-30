@@ -16,6 +16,7 @@ public class UserRepository {
     public UserRepository() {
         users = new ConcurrentHashMap<>();
         createDefaultAdmin();
+        createDefaultLibrarian();
     }
 
     public User getByEmail(String email){
