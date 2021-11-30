@@ -64,7 +64,7 @@ public class BookController {
 
         // securityService.validateUser(authorization); // todo add this after new pulls --> Should not be in controller
         // todo put user validation and access check inside securityService so the controller doesn't know all the different steps
-        securityService.validateAccessToFeature(authorization, REGISTER_NEW_BOOK); // throws error if no access
+        securityService.validate(authorization, REGISTER_NEW_BOOK); // throws error if no access
         // validateAccess to feature should be 2 methods? Login vs actual access? (One method one purpose)
 
         Book book = BookMapper.createDtoToBook(createBookDto); // throws error
