@@ -17,13 +17,12 @@ import org.springframework.web.bind.annotation.*;
 public class LibrarianController {
 
     private static final Logger logger = LoggerFactory.getLogger(LibrarianController.class);
-    private UserService userService;
-    private SecurityService securityService;
+    private final LibraryService libraryService;
+    private final SecurityService securityService;
 
     public LibrarianController(LibraryService libraryService, SecurityService securityService) {
         this.libraryService = libraryService;
         this.securityService = securityService;
-
     }
 
     @PostMapping(consumes = "application/json", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,27 +30,8 @@ public class LibrarianController {
         logger.info("Create librarian");
         User user = securityService.validateAccessToFeature(authorization, Feature.CREATE_LIBRARIAN);
         Librarian librarian = LibrarianMapper.dtoToModel(createLibrarianDto);
-        userService.addLibrarian(librarian);
+        libraryService.addLibrarian(librarian);
         return LibrarianMapper.modelToDto(librarian);
-
-    }
-
-    @ExceptionHandler(UnauthorizedException.class)
-    protected void invalidMovieIdException(UnauthorizedException exception, HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.FORBIDDEN.value(), exception.getMessage());
-        logger.error(exception.getMessage(),exception);
-    }
-
-    @ExceptionHandler(UnknownUserException.class)
-    protected void invalidMovieIdException(UnknownUserException exception, HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.FORBIDDEN.value(), exception.getMessage());
-        logger.error(exception.getMessage(),exception);
-    }
-
-    @ExceptionHandler(EmailNotUniqueException.class)
-    protected void invalidMovieIdException(EmailNotUniqueException exception, HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
-        logger.error(exception.getMessage(),exception);
     }
 
 }

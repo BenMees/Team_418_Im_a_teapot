@@ -18,8 +18,8 @@ public class MemberController {
     private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
     private final MemberService memberService;
 
-    public MemberController(UserService userService) {
-        this.userService = userService;
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
         TEST_LOGGER.info("MemberController");
     }
 
