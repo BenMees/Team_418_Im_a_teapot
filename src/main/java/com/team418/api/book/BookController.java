@@ -62,8 +62,8 @@ public class BookController {
     public BookDto registerNewBook(@RequestBody CreateBookDto createBookDto, @RequestHeader String authorization) {
         TEST_LOGGER.info("Register a new book");
 
-        // todo question: should securityService be a singleton > or will it always be the same because of dependency injection?
-        // todo question: should the repositories be a singleton? (So we always get and use the same maps)^
+        // securityService.validateUser(authorization); // todo add this after new pulls --> Should not be in controller
+        // todo put user validation and access check inside securityService so the controller doesn't know all the different steps
         securityService.validateAccessToFeature(authorization, REGISTER_NEW_BOOK); // throws error if no access
         // validateAccess to feature should be 2 methods? Login vs actual access? (One method one purpose)
 
@@ -71,21 +71,5 @@ public class BookController {
 
         Book savedBook = bookService.saveBook(book);
         return bookToDto(savedBook);
-    }
-
-    @ExceptionHandler(UnauthorizedException.class)
-    protected void unauthorizedHandler(UnauthorizedException exception, HttpServletResponse response) throws IOException {
-        response.sendError(UNAUTHORIZED.value(), exception.getMessage());
-    }
-
-    @ExceptionHandler(UnknownUserException.class)
-    protected void unknownUserHandler(UnknownUserException exception, HttpServletResponse response) throws IOException {
-        response.sendError(400, exception.getMessage()); // todo change number? #NotOurJob #NotOutStory xd
-    }
-
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    protected void illegalArgumentHandler(IllegalArgumentException exception, HttpServletResponse response) throws IOException {
-        response.sendError(BAD_REQUEST.value(), exception.getMessage());
     }
 }

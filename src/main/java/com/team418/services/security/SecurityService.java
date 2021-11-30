@@ -17,6 +17,9 @@ public class SecurityService {
         this.userRepository = userRepository;
     }
 
+    // todo only ask SS to validate (more than one thing); keep them discreet
+    // public void/boolean thatThrowsErrors eg validate(String toValidate, optional Feature?) {}
+
     public User validateAccessToFeature(String authorization, Feature feature) {
         String decodeUsernamePassword = new String(Base64.getDecoder().decode(authorization.substring("Basic ".length())));
         String email = decodeUsernamePassword.split(":")[0];
