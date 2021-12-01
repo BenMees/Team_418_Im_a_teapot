@@ -1,12 +1,10 @@
 package com.team418.services.security;
 
 import com.team418.domain.Feature;
-import com.team418.domain.user.Librarian;
 import com.team418.exception.UnauthorizedException;
 import com.team418.exception.UnknownUserException;
 import com.team418.repository.AdminRepository;
 import com.team418.repository.LibrarianRepository;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

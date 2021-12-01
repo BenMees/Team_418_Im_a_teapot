@@ -1,6 +1,5 @@
 package com.team418.repository;
 
-
 import com.team418.domain.user.Member;
 import com.team418.exception.EmailAddressIsInvalidException;
 import com.team418.exception.EmailNotUniqueException;
@@ -10,8 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
-
-import static org.junit.Assert.fail;
 
 public class MemberRepositoryTest {
     private HashMap<String, Member> members;
@@ -25,8 +22,8 @@ public class MemberRepositoryTest {
         member1 = new Member("Holy", "Banjo", "chickchack@hotmail.com", "1345");
         member2 = new Member("yloH", "ojnaB", "chackchick@hotmail.com", "1323453445");
 
-        members.put(member1.getUniqueId(),member1);
-        members.put(member2.getUniqueId(),member2);
+        members.put(member1.getUniqueId(), member1);
+        members.put(member2.getUniqueId(), member2);
 
         repository = new MemberRepository();
     }
@@ -37,60 +34,46 @@ public class MemberRepositoryTest {
     }
 
     @Test
-    void addingNewMember_toTheMemberRepository(){
+    void addingNewMember_toTheMemberRepository() {
         repository.addMember(member1);
         repository.addMember(member2);
 
-        Assertions.assertThat(repository.getMembers().equals(members));
+        Assertions.assertThat(repository.getMembers()).isEqualTo(members);
     }
 
     @Test
-    void wrongEmailAddressThrowsAnException(){
-        String expectedMessage = "The email address that you entered is not valid : @wrongemail";
-        try{
-            new Member("coco","chocolate","@wrongemail","134");
-            fail();
-        }catch(EmailAddressIsInvalidException e) {
-            Assertions.assertThat(e.getMessage().equals(expectedMessage));
-        }
+    void wrongEmailAddressThrowsAnException() {
+        String expectedMessage = "The email address that you entered is not valid : ann.couwbe-outlook.com";
+
+        Assertions.assertThatExceptionOfType(EmailAddressIsInvalidException.class)
+                .isThrownBy(() -> new Member("Ann", "Cauwberg", "ann.couwbe-outlook.com", "45"))
+                .withMessage(expectedMessage);
     }
 
+
     @Test
-    void ExistingAddressThrowsAnException(){
+    void If_MemberWithSameEmail_AndDifferentInss_ThrowsAnException() {
         String expectedMessage = member1.getEmail() + " is already used.";
-        try{
-            repository.addMember(member1);
-            repository.addMember(member1);
-            fail();
-        }catch(EmailNotUniqueException e) {
-            Assertions.assertThat(e.getMessage().equals(expectedMessage));
-        }
+        Member member3 = new Member(member1.getFirstName(), member1.getLastName(), member1.getEmail(), "50");
+
+        Assertions.assertThatExceptionOfType(EmailNotUniqueException.class)
+                .isThrownBy(() -> {
+                    repository.addMember(member1);
+                    repository.addMember(member3);
+                })
+                .withMessage(expectedMessage);
     }
 
     @Test
-    void If_MemberWithSameEmail_AndDifferentInss_ThrowsAnException(){
-        String expectedMessage = member1.getEmail() + " is already used.";
-        Member member3 = new Member(member1.getFirstName(), member1.getLastName(), member1.getEmail(),"50");
-        try{
-            repository.addMember(member1);
-            repository.addMember(member3);
-            fail();
-        }catch(EmailNotUniqueException e) {
-            Assertions.assertThat(e.getMessage().equals(expectedMessage));
-        }
-    }
-
-    @Test
-    void If_MemeberWithSameInss_AndDifferentEmail_ThrowsAnException(){
-        String expectedMessage = member1.getEmail() + " is already used.";
+    void If_MemberWithSameInss_AndDifferentEmail_ThrowsAnException() {
+        String expectedMessage = member1.getInss() + " is already used.";
         Member member3 = new Member(member1.getFirstName(), member1.getLastName(), "email@outlook.com", member1.getInss());
-        try{
-            repository.addMember(member1);
-            repository.addMember(member3);
-            fail();
-        }catch(InssNotUniqueException e) {
-            Assertions.assertThat(e.getMessage().equals(expectedMessage));
-        }
 
+        Assertions.assertThatExceptionOfType(InssNotUniqueException.class)
+                .isThrownBy(() -> {
+                    repository.addMember(member1);
+                    repository.addMember(member3);
+                })
+                .withMessage(expectedMessage);
     }
 }

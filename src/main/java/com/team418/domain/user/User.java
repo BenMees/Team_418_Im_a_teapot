@@ -15,7 +15,6 @@ public abstract class User {
 
 
     public User(String firstName, String lastName, String email) {
-
         setEmail(email);
         this.uniqueId = UUID.randomUUID().toString();
         this.firstName = firstName;
