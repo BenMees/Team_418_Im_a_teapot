@@ -49,14 +49,14 @@ public class BookController {
     //waiting for implementing
     @GetMapping(params = "authorsContains")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDto> getBooksByAuthor(@RequestParam String authorsContains){
+    public List<BookDto> getBooksByAuthor(@RequestParam String authorsContains) {
         return null;
     }
 
     //waiting for implementing
     @GetMapping(params = "titleContains")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDto> getBooksByTitle(@RequestParam String titleContains){
+    public List<BookDto> getBooksByTitle(@RequestParam String titleContains) {
         return null;
     }
 

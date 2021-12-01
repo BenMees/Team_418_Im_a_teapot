@@ -4,7 +4,6 @@ import com.team418.domain.Book;
 import com.team418.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.*;
@@ -17,11 +16,11 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public Book saveBook(Book book){
+    public Book saveBook(Book book) {
         return bookRepository.saveBook(book);
     }
 
-    public Book getBook(String id){
+    public Book getBook(String id) {
         return bookRepository.getBook(id);
     }
 
@@ -33,14 +32,9 @@ public class BookService {
         List<Book> books = new ArrayList<>();
         Pattern pattern = Pattern.compile(regex);
 
-        for (Book book : bookRepository.getBooks().values()) {
-            Matcher matcher = pattern.matcher(book.getIsbn());
-            if (matcher.matches()) {
-                books.add(book);
-            }
-        }
-
-        return books;
+        return bookRepository.getBooks().values().stream()
+                .filter(book -> pattern.matcher(book.getIsbn()).matches())
+                .collect(Collectors.toList());
     }
 //    public List<Book> getBooksByIsbn(String regex) {
 //        List<Book> books = new ArrayList<>();
