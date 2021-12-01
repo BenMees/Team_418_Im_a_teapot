@@ -17,7 +17,7 @@ public class LibrarianRepository {
         librarians = new ConcurrentHashMap<>();
     }
 
-    public User getByEmail(String email) {
+    public Librarian getByEmail(String email) {
         return librarians.values().stream()
                 .filter(user -> user.getEmail().equals(email))
                 .findFirst().orElse(null);

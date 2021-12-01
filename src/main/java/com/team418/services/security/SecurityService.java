@@ -6,20 +6,22 @@ import com.team418.repository.AdminRepository;
 import com.team418.repository.LibrarianRepository;
 import com.team418.exception.UnauthorizedException;
 import com.team418.exception.UnknownUserException;
+import com.team418.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 
 @Service
 public class SecurityService {
-    LibrarianRepository librarianRepository;
-    AdminRepository adminRepository;
+    private final LibrarianRepository librarianRepository;
+    private final AdminRepository adminRepository;
+    private final MemberRepository memberRepository;
 
-    public SecurityService(LibrarianRepository userRepository, AdminRepository adminRepository) {
+    public SecurityService(LibrarianRepository userRepository, AdminRepository adminRepository, MemberRepository memberRepository) {
         this.librarianRepository = userRepository;
         this.adminRepository = adminRepository;
+        this.memberRepository = memberRepository;
     }
-
 
     public void validate(String authorization, Feature feature) {
         User user = validateUserName(authorization);
@@ -32,6 +34,13 @@ public class SecurityService {
 
         //was userRepository
         User user = this.adminRepository.getByEmail(email);
+        if (user == null) {
+            user = this.librarianRepository.getByEmail(email);
+        }
+
+        if (user == null) {
+            user = this.memberRepository.getByEmail(email);
+        }
 
         if (user == null)
             throw new UnknownUserException("No user corresponds to : " + email);
