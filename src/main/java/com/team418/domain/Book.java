@@ -12,6 +12,7 @@ public class Book {
     private String title;
     private Author author;
     private String summary;
+    private boolean isDeleted;
 
     public Book(String isbn, String title, Author author, String summary) {
         this.uniqueId = UUID.randomUUID().toString();
@@ -19,6 +20,7 @@ public class Book {
         this.title = setTitle(title);
         this.author = author;
         this.summary = setSummary(summary);
+        this.isDeleted = false;
     }
 
     public String getUniqueId() {
@@ -41,6 +43,10 @@ public class Book {
         return summary;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
     public String setTitle(String title) {
         return this.title = INPUT_VALIDATOR.validateNoEmptyInput(title);
     }
@@ -53,6 +59,13 @@ public class Book {
         return this.summary = INPUT_VALIDATOR.replaceEmptyInput(summary);
     }
 
+    public void softDelete(){
+        this.isDeleted = true;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Collectors;
 
 @Repository
 public class BookRepository {
@@ -25,8 +26,10 @@ public class BookRepository {
 //        this.saveBook(book2);
     }
 
-    public Map<String, Book> getBooks() {
-        return books;
+    public List<Book> getBooks() {
+        return books.values().stream()
+                .filter(book -> !book.isDeleted())
+                .collect(Collectors.toList());
     }
 
     public Book saveBook(Book book) {

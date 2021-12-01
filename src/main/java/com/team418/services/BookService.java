@@ -23,7 +23,7 @@ public class BookService {
         return bookRepository.getBook(id);
     }
 
-    public Map<String, Book> getBooks() {
+    public List<Book> getBooks() {
         return bookRepository.getBooks();
     }
 
