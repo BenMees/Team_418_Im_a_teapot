@@ -44,14 +44,13 @@ public class BookController {
     @GetMapping(params = "isbnContains")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getBooksByIsbn(@RequestParam String isbnContains) {
-        return bookService.getBooksByIsbn(isbnContains)
+        return bookService.searchBooksCorrespondingIsbnPattern(isbnContains)
                 .stream()
                 .map(BookMapper::bookToDto)
                 .collect(Collectors.toList());
     }
 
 
-    //waiting for implementing
     @GetMapping(params = "authorsContains")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getBooksByAuthor(@RequestParam String authorsContains) {
