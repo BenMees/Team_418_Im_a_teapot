@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/users/librarians")
+@RequestMapping(path = "/librarians")
 public class LibrarianController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibrarianController.class);
