@@ -74,4 +74,16 @@ public class Book {
     public int hashCode() {
         return Objects.hash(uniqueId);
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "uniqueId='" + uniqueId + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", summary='" + summary + '\'' +
+                ", isLent=" + isLent +
+                '}';
+    }
 }

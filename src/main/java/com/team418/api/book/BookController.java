@@ -3,8 +3,13 @@ package com.team418.api.book;
 import com.team418.api.book.dto.*;
 import com.team418.domain.Book;
 import com.team418.domain.Lending;
+import com.team418.domain.user.Member;
+import com.team418.exception.MemberNotFoundByInssException;
+import com.team418.exception.MoreThanOneIsbnMatchException;
+import com.team418.exception.NoBookFoundWithIsbnException;
 import com.team418.repository.LendingRepository;
 import com.team418.services.BookService;
+import com.team418.services.MemberService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +29,13 @@ public class BookController {
     private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
     private final SecurityService securityService;
+    private final MemberService memberService;
     private final LendingRepository lendingRepository;
 
-    public BookController(BookService bookService, SecurityService securityService, LendingRepository lendingRepository) {
+    public BookController(BookService bookService, SecurityService securityService, MemberService memberService, LendingRepository lendingRepository) {
         this.bookService = bookService;
         this.securityService = securityService;
+        this.memberService = memberService;
         this.lendingRepository = lendingRepository;
         TEST_LOGGER.info("BookController Creation");
     }
@@ -92,18 +99,34 @@ public class BookController {
         return bookToDto(bookToUpdate);
     }
 
-    @PostMapping(path = "{id}/borrow" ,consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/lendings" ,consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public LendingDto registerLending(@PathVariable String id, @RequestBody CreateLendingDto createLendingDto, @RequestHeader String authorization) {
+    public LendingDto registerLending(@RequestBody CreateLendingDto createLendingDto, @RequestHeader String authorization) {
         securityService.validate(authorization, REGISTER_NEW_LENDING);
-        Book lendingBook = bookService.getBook(id);
-        lendingBook.Lent();
+        Book lendingBook = getLendableBook(bookService.getBooksByIsbn(createLendingDto.bookIsbn()),createLendingDto.bookIsbn());
+        checkIfMemeberExcistWithGivenInss(createLendingDto);
         Lending actualLending = BookMapper.createLendingDtoToLending(createLendingDto);
         lendingRepository.addLending(actualLending);
+        lendingBook.Lent();
         return BookMapper.lendingToLendingDto(actualLending);
     }
 
+    private void checkIfMemeberExcistWithGivenInss(CreateLendingDto createLendingDto) {
+        Member lendingMember = memberService.getMemberByInss(createLendingDto.memberInss());
+        if (lendingMember == null) {
+            throw new MemberNotFoundByInssException(createLendingDto.memberInss());
+        }
+    }
 
+    private Book getLendableBook(List<Book> books,String isbn) {
+        if (books.isEmpty()) {
+            throw new NoBookFoundWithIsbnException(isbn);
+        }
+        if (books.size() > 1) {  // Multiple copies are defined in the Book so this should not be possible.
+            throw new MoreThanOneIsbnMatchException(isbn, books.size());
+        }
+        return books.get(0);
+    }
 
     private void updateBook(UpdateBookDto updateBookDto, Book bookToUpdate) {
         bookToUpdate.setTitle(updateBookDto.getTitle());

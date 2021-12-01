@@ -39,7 +39,6 @@ public class BookService {
                 books.add(book);
             }
         }
-
         return books;
     }
 //    public List<Book> getBooksByIsbn(String regex) {
