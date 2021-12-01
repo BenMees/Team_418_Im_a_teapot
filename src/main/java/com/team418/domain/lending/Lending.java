@@ -1,4 +1,4 @@
-package com.team418.domain;
+package com.team418.domain.lending;
 
 import java.time.LocalDate;
 import java.util.Objects;

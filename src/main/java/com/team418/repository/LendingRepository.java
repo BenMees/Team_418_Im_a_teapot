@@ -1,6 +1,6 @@
 package com.team418.repository;
 
-import com.team418.domain.Lending;
+import com.team418.domain.lending.Lending;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;

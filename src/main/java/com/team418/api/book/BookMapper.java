@@ -2,11 +2,11 @@ package com.team418.api.book;
 
 import com.team418.api.book.dto.BookDto;
 import com.team418.api.book.dto.CreateBookDto;
-import com.team418.api.book.dto.CreateLendingDto;
-import com.team418.api.book.dto.LendingDto;
+import com.team418.api.lending.dto.CreateLendingDto;
+import com.team418.api.lending.dto.LendingDto;
 import com.team418.domain.Author;
 import com.team418.domain.Book;
-import com.team418.domain.Lending;
+import com.team418.domain.lending.Lending;
 
 import static com.team418.services.inputvalidator.InputValidator.INPUT_VALIDATOR;
 
@@ -40,14 +40,6 @@ public class BookMapper {
                 , INPUT_VALIDATOR.validateNoEmptyInput(createBookDto.getTitle())
                 , author
                 , INPUT_VALIDATOR.replaceEmptyInput(createBookDto.getSummary()));
-    }
-
-    public static Lending createLendingDtoToLending(CreateLendingDto createLendingDto) {
-        return new Lending(createLendingDto.bookIsbn(), createLendingDto.memberInss());
-    }
-
-    public static LendingDto lendingToLendingDto(Lending lending) {
-        return new LendingDto(lending.getUniqueId(), lending.getBookIsbn(), lending.getMemberInss(),lending.getDueDate());
     }
 
 }

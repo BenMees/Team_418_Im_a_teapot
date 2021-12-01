@@ -1,4 +1,4 @@
-package com.team418.api.book.dto;
+package com.team418.api.lending.dto;
 
 import java.time.LocalDate;
 

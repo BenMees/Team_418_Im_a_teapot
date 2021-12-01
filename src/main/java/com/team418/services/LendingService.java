@@ -1,6 +1,6 @@
 package com.team418.services;
 
-import com.team418.domain.Lending;
+import com.team418.domain.lending.Lending;
 import com.team418.repository.LendingRepository;
 
 public class LendingService {
