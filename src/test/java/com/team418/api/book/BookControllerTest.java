@@ -1,5 +1,6 @@
 package com.team418.api.book;
 
+import com.team418.Utility;
 import com.team418.api.book.dto.BookDto;
 import com.team418.api.book.dto.CreateBookDto;
 import com.team418.domain.Author;
@@ -54,7 +55,7 @@ class BookControllerTest {
                         .body(createBookDto)
                         .accept(JSON)
                         .contentType(JSON)
-                        .header("Authorization", "Basic dG9tQHRvbS50b206")
+                        .header("Authorization", Utility.generateBase64Authorization("tom@tom.tom", "1234"))
                         .when()
                         .port(port)
                         .post("/books")
