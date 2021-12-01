@@ -49,22 +49,24 @@ public class BookController {
     @GetMapping(params = "isbnContains")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getBooksByIsbn(@RequestParam String isbnContains) {
-        List<Book> books = bookService.getBooksByIsbn(isbnContains);
-        return null;
+        return bookService.getBooksByIsbn(isbnContains)
+                .stream()
+                .map(BookMapper::bookToDto)
+                .collect(Collectors.toList());
     }
 
 
     //waiting for implementing
     @GetMapping(params = "authorsContains")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDto> getBooksByAuthor(@RequestParam String authorsContains){
+    public List<BookDto> getBooksByAuthor(@RequestParam String authorsContains) {
         return null;
     }
 
     //waiting for implementing
     @GetMapping(params = "titleContains")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDto> getBooksByTitle(@RequestParam String titleContains){
+    public List<BookDto> getBooksByTitle(@RequestParam String titleContains) {
         return null;
     }
 

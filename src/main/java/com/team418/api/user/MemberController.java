@@ -25,4 +25,6 @@ public class MemberController {
         memberService.addMember(member);
         return MemberMapper.modelToDto(member);
     }
+
+
 }

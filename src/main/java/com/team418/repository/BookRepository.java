@@ -5,8 +5,11 @@ package com.team418.repository;
 import com.team418.domain.Book;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Repository
 public class BookRepository {
@@ -34,5 +37,13 @@ public class BookRepository {
     public Book getBook(String uniqueId) {
 
         return books.get(uniqueId);
+    }
+
+    public List<Book> getBooksByIsbn(String regex) {
+        Pattern pattern = Pattern.compile(regex);
+
+        return this.books.values().stream()
+                .filter(book -> pattern.matcher(book.getIsbn()).matches())
+                .collect(Collectors.toList());
     }
 }
