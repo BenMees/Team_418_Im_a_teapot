@@ -5,6 +5,7 @@ import com.team418.exception.UnauthorizedException;
 import com.team418.exception.UnknownUserException;
 import com.team418.repository.AdminRepository;
 import com.team418.repository.LibrarianRepository;
+import com.team418.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,8 @@ class SecurityServiceTest {
     void setup() {
         AdminRepository adminRepository = new AdminRepository();
         LibrarianRepository librarianRepository = new LibrarianRepository();
-        securityService = new SecurityService(librarianRepository, adminRepository);
+        MemberRepository memberRepository = new MemberRepository();
+        securityService = new SecurityService(librarianRepository, adminRepository, memberRepository);
     }
 
     @Test
