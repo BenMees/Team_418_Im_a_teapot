@@ -6,8 +6,8 @@ import com.team418.domain.lending.Lending;
 
 public class LendingMapper {
 
-    public static Lending createLendingDtoToLending(CreateLendingDto createLendingDto) {
-        return new Lending(createLendingDto.bookIsbn(), createLendingDto.memberInss());
+    public static Lending createLendingDtoToLending(CreateLendingDto createLendingDto, String inss) {
+        return new Lending(createLendingDto.isbn(), inss);
     }
 
     public static LendingDto lendingToLendingDto(Lending lending) {

@@ -50,7 +50,6 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
-
     @GetMapping(params = "authorsContains")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getBooksByAuthor(@RequestParam String authorsContains) {
