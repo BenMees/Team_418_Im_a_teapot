@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -39,11 +40,27 @@ public class BookRepository {
         return books.get(uniqueId);
     }
 
-    public List<Book> getBooksByIsbn(String regex) {
+//    public List<Book> getBookByAuthor(String regex) {
+//        Pattern pattern = Pattern.compile(regex);
+//
+//        return this.books.values().stream()
+//                .filter(book -> pattern.matcher(book.getIsbn()).matches())
+//                .collect(Collectors.toList());
+//    }
+
+    public Book getBookByIsbn(String isbn){
+        return this.books.values().stream()
+                .filter(book -> book.getIsbn().equals(isbn))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<String> getAllIsbnCorresponding(String regex){
         Pattern pattern = Pattern.compile(regex);
 
         return this.books.values().stream()
-                .filter(book -> pattern.matcher(book.getIsbn()).matches())
+                .map(Book::getIsbn)
+                .filter(isbn -> pattern.matcher(isbn).matches())
                 .collect(Collectors.toList());
     }
 }
