@@ -2,6 +2,7 @@ package com.team418.repository;
 
 //import com.team418.domain.Author; // testing purposes
 
+import com.team418.domain.Author;
 import com.team418.domain.Book;
 import org.springframework.stereotype.Repository;
 
@@ -19,11 +20,6 @@ public class BookRepository {
 
     public BookRepository() {
         books = new ConcurrentHashMap<>();
-//        Book book1 = new Book("1", "lskdj", new Author("sdf", "sdf"), "df"); // testing purposes
-//        Book book2 = new Book("2", "lskdj", new Author("sdf", "sdf"), "df");
-//
-//        this.saveBook(book1);
-//        this.saveBook(book2);
     }
 
     public Map<String, Book> getBooks() {
@@ -40,13 +36,19 @@ public class BookRepository {
         return books.get(uniqueId);
     }
 
-//    public List<Book> getBookByAuthor(String regex) {
-//        Pattern pattern = Pattern.compile(regex);
-//
-//        return this.books.values().stream()
-//                .filter(book -> pattern.matcher(book.getIsbn()).matches())
-//                .collect(Collectors.toList());
-//    }
+    public List<Book> getBooksByAuthor(Author author) {
+        return this.books.values().stream()
+                .filter(book-> book.getAuthor().equals(author))
+                .collect(Collectors.toList());
+    }
+
+    public List<Author> getAllAuthorsCorresponding(String partNamesRegex){
+        return this.books.values().stream()
+                .map(Book::getAuthor)
+                .filter(author -> author.firstNameORLastNameCorresponding(partNamesRegex))
+                .collect(Collectors.toList());
+    }
+
 
     public Book getBookByIsbn(String isbn){
         return this.books.values().stream()

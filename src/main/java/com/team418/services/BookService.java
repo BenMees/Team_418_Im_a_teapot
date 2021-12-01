@@ -1,5 +1,6 @@
 package com.team418.services;
 
+import com.team418.domain.Author;
 import com.team418.domain.Book;
 import com.team418.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -33,11 +34,21 @@ public class BookService {
         return bookRepository.getBookByIsbn(isbn);
     }
 
-    public List<Book> searchBooksCorrespondingIsbnPattern(String isbnRegex){
-        isbnRegex = isbnRegex.replaceAll("\\*", ".*");
+    public List<Book> searchBooksCorrespondingIsbnPattern(String isbnQuery){
+        String isbnRegex = convertWildcardToRegex(isbnQuery);
         List<String> isbnMatches = bookRepository.getAllIsbnCorresponding(isbnRegex);
         return isbnMatches.stream()
                 .map(bookRepository::getBookByIsbn)
                 .collect(Collectors.toList());
+    }
+
+    public List<Book> searchBooksCorrespondingAuthorPattern(String partNamesQuery){
+        String partNamesRegex = convertWildcardToRegex(partNamesQuery);
+        List<Author> authorsCorresponding = bookRepository.getAllAuthorsCorresponding(partNamesRegex);
+        return null; // return all books
+    }
+
+    private String convertWildcardToRegex(String stringWithWildcard){
+        return stringWithWildcard.replaceAll("\\*", ".*");
     }
 }
