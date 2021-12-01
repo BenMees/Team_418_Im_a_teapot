@@ -3,19 +3,22 @@ package com.team418.domain;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.team418.services.inputvalidator.InputValidator.INPUT_VALIDATOR;
+
+
 public class Book {
     private final String uniqueId;
     private final String isbn;
-    private final String title;
-    private final Author author;
-    private final String summary;
+    private String title;
+    private Author author;
+    private String summary;
 
     public Book(String isbn, String title, Author author, String summary) {
         this.uniqueId = UUID.randomUUID().toString();
         this.isbn = isbn;
-        this.title = title;
+        this.title = setTitle(title);
         this.author = author;
-        this.summary = summary;
+        this.summary = setSummary(summary);
     }
 
     public String getUniqueId() {
@@ -37,6 +40,19 @@ public class Book {
     public String getSummary() {
         return summary;
     }
+
+    public String setTitle(String title) {
+        return this.title = INPUT_VALIDATOR.validateNoEmptyInput(title);
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public String setSummary(String summary) {
+        return this.summary = INPUT_VALIDATOR.replaceEmptyInput(summary);
+    }
+
 
     @Override
     public boolean equals(Object o) {

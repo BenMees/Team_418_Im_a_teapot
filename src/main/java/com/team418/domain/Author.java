@@ -2,13 +2,15 @@ package com.team418.domain;
 
 import java.util.Objects;
 
+import static com.team418.services.inputvalidator.InputValidator.INPUT_VALIDATOR;
+
 public class Author {
-    private final String firstName;
-    private final String lastName;
+    private String firstName;
+    private String lastName;
 
     public Author(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = setFirstName(firstName);
+        this.lastName = setLastName(lastName);
     }
 
     public String getFirstName() {
@@ -17,6 +19,14 @@ public class Author {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String setFirstName(String firstName) {
+        return this.firstName = INPUT_VALIDATOR.replaceEmptyInput(firstName);
+    }
+
+    public String setLastName(String lastName) {
+        return this.lastName = INPUT_VALIDATOR.validateNoEmptyInput(lastName);
     }
 
     @Override
