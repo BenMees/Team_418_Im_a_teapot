@@ -23,9 +23,10 @@ public class SecurityService {
         this.memberRepository = memberRepository;
     }
 
-    public void validate(String authorization, Feature feature) {
+    public User validate(String authorization, Feature feature) {
         User user = validateUserName(authorization);
         validateAccessToFeature(user, feature);
+        return user;
     }
 
     private User validateUserName(String authorization) {
