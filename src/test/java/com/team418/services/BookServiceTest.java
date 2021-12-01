@@ -22,7 +22,7 @@ class BookServiceTest {
 
     @Test
     void getBooksByIsbn_givenPartIsbn_thenGetBooksContainingIsbn() {
-        String regex = "1245789.*";
+        String regex = "1245789*";
 
         Author author = new Author("jk", "R");
 

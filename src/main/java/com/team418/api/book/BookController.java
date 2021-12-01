@@ -41,8 +41,10 @@ public class BookController {
     @GetMapping(params = "isbnContains")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getBooksByIsbn(@RequestParam String isbnContains) {
-        List<Book> books = bookService.getBooksByIsbn(isbnContains);
-        return null;
+        return bookService.getBooksByIsbn(isbnContains)
+                .stream()
+                .map(BookMapper::bookToDto)
+                .collect(Collectors.toList());
     }
 
 

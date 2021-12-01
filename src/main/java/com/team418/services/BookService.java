@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -29,22 +30,11 @@ public class BookService {
     }
 
     public List<Book> getBooksByIsbn(String regex) {
-        List<Book> books = new ArrayList<>();
+        regex = regex.replaceAll("\\*", ".*");
         Pattern pattern = Pattern.compile(regex);
 
         return bookRepository.getBooks().values().stream()
                 .filter(book -> pattern.matcher(book.getIsbn()).matches())
                 .collect(Collectors.toList());
     }
-//    public List<Book> getBooksByIsbn(String regex) {
-//        List<Book> books = new ArrayList<>();
-//
-//        for (Book book : bookRepository.getBooks().values()) {
-//            if (book.getIsbn().contains(regex)) {
-//                books.add(book);
-//            }
-//        }
-//
-//        return books;
-//    }
 }
