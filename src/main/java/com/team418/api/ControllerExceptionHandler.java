@@ -1,9 +1,6 @@
 package com.team418.api;
 
-import com.team418.exception.EmailAddressIsInvalidException;
-import com.team418.exception.InssNotUniqueException;
-import com.team418.exception.UnauthorizedException;
-import com.team418.exception.UnknownUserException;
+import com.team418.exception.*;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -44,9 +41,28 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(InssNotUniqueException.class)
-    protected void InssNotUniqueException(InssNotUniqueException inssException, HttpServletResponse response) throws IOException {
+    protected void inssNotUniqueException(InssNotUniqueException inssException, HttpServletResponse response) throws IOException {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, inssException.getMessage());
         LOGGER.error(inssException.getMessage(), inssException);
     }
+
+    @ExceptionHandler(MoreThanOneIsbnMatchException.class)
+    protected void moreThenOneIsbnMatchException(MoreThanOneIsbnMatchException moreThanOneIsbnMatchException, HttpServletResponse response) throws IOException {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, moreThanOneIsbnMatchException.getMessage());
+        LOGGER.error(moreThanOneIsbnMatchException.getMessage(), moreThanOneIsbnMatchException);
+    }
+
+    @ExceptionHandler(NoBookFoundWithIsbnException.class)
+    protected void noBookFoundException(NoBookFoundWithIsbnException noBookFoundException, HttpServletResponse response) throws IOException {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, noBookFoundException.getMessage());
+        LOGGER.error(noBookFoundException.getMessage(), noBookFoundException);
+    }
+
+    @ExceptionHandler(MemberNotFoundByInssException.class)
+    protected void noBookFoundException(MemberNotFoundByInssException memberNotFoundByInssException, HttpServletResponse response) throws IOException {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, memberNotFoundByInssException.getMessage());
+        LOGGER.error(memberNotFoundByInssException.getMessage(), memberNotFoundByInssException);
+    }
+
 }
 
