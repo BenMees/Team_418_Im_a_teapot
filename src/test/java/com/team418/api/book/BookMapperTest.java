@@ -1,4 +1,4 @@
-package com.team418.api;
+package com.team418.api.book;
 
 import com.team418.api.book.BookMapper;
 import com.team418.api.book.dto.BookDto;
