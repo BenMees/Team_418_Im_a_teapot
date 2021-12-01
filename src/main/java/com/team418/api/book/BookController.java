@@ -1,9 +1,9 @@
 package com.team418.api.book;
 
-import com.team418.api.book.dto.BookDto;
-import com.team418.api.book.dto.CreateBookDto;
-import com.team418.api.book.dto.UpdateBookDto;
+import com.team418.api.book.dto.*;
 import com.team418.domain.Book;
+import com.team418.domain.Lending;
+import com.team418.repository.LendingRepository;
 import com.team418.services.BookService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.team418.api.book.BookMapper.bookToDto;
-import static com.team418.domain.Feature.REGISTER_NEW_BOOK;
-import static com.team418.domain.Feature.UPDATE_BOOK;
+import static com.team418.domain.Feature.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -25,10 +24,12 @@ public class BookController {
     private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
     private final SecurityService securityService;
+    private final LendingRepository lendingRepository;
 
-    public BookController(BookService bookService, SecurityService securityService) {
+    public BookController(BookService bookService, SecurityService securityService, LendingRepository lendingRepository) {
         this.bookService = bookService;
         this.securityService = securityService;
+        this.lendingRepository = lendingRepository;
         TEST_LOGGER.info("BookController Creation");
     }
 
@@ -66,8 +67,20 @@ public class BookController {
         Book bookToUpdate = bookService.getBook(id);
         updateBook(updateBookDto, bookToUpdate);
         return bookToDto(bookToUpdate);
-
     }
+
+    @PostMapping(path = "{id}/borrow" ,consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public LendingDto registerLending(@PathVariable String id, @RequestBody CreateLendingDto createLendingDto, @RequestHeader String authorization) {
+        securityService.validate(authorization, REGISTER_NEW_LENDING);
+        Book lendingBook = bookService.getBook(id);
+        lendingBook.Lent();
+        Lending actualLending = BookMapper.createLendingDtoToLending(createLendingDto);
+        lendingRepository.addLending(actualLending);
+        return BookMapper.lendingToLendingDto(actualLending);
+    }
+
+
 
     private void updateBook(UpdateBookDto updateBookDto, Book bookToUpdate) {
         bookToUpdate.setTitle(updateBookDto.getTitle());

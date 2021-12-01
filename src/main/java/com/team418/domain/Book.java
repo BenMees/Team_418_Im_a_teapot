@@ -12,6 +12,7 @@ public class Book {
     private String title;
     private Author author;
     private String summary;
+    private boolean isLent = false;
 
     public Book(String isbn, String title, Author author, String summary) {
         this.uniqueId = UUID.randomUUID().toString();
@@ -53,6 +54,13 @@ public class Book {
         return this.summary = INPUT_VALIDATOR.replaceEmptyInput(summary);
     }
 
+    public boolean Lent() {
+       if (!isLent) {
+           isLent = true;
+           return true;
+       }
+       return false;
+    }
 
     @Override
     public boolean equals(Object o) {

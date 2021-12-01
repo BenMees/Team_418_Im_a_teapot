@@ -1,9 +1,13 @@
 package com.team418.domain.user;
 
 import com.team418.domain.Feature;
-import com.team418.repository.MemberRepository;
 
-public class Member extends User{
+import java.util.List;
+
+import static com.team418.domain.Feature.REGISTER_NEW_LENDING;
+
+public class Member extends User {
+    private static final List<Feature> FEATURES = List.of(REGISTER_NEW_LENDING);
 
     private final String inss;
 
@@ -12,18 +16,12 @@ public class Member extends User{
         this.inss = inss;
     }
 
-    private void setInss(String inss){
-
-    }
-
-
     public String getInss() {
         return inss;
     }
 
     @Override
     public boolean isAbleTo(Feature feature) {
-        return false;
+        return FEATURES.contains(feature);
     }
-
 }
