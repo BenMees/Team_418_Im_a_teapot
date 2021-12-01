@@ -26,8 +26,10 @@ public class BookRepository {
 //        this.saveBook(book2);
     }
 
-    public Map<String, Book> getBooks() {
-        return books;
+    public List<Book> getBooks() {
+        return books.values().stream()
+                .filter(book -> !book.isDeleted())
+                .collect(Collectors.toList());
     }
 
     public Book saveBook(Book book) {

@@ -2,9 +2,7 @@ package com.team418.api.book;
 
 import com.team418.api.book.dto.*;
 import com.team418.domain.Book;
-import com.team418.repository.LendingRepository;
 import com.team418.services.BookService;
-import com.team418.services.MemberService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,21 +22,21 @@ public class BookController {
     private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
     private final SecurityService securityService;
-    private final MemberService memberService;
-    private final LendingRepository lendingRepository;
 
-    public BookController(BookService bookService, SecurityService securityService, MemberService memberService, LendingRepository lendingRepository) {
+    public BookController(BookService bookService, SecurityService securityService) {
         this.bookService = bookService;
         this.securityService = securityService;
-        this.memberService = memberService;
-        this.lendingRepository = lendingRepository;
         TEST_LOGGER.info("BookController Creation");
     }
 
     @GetMapping(path = "{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public BookDto getBook(@PathVariable String id) {
-        return bookToDto(bookService.getBook(id));
+    public BookDto getBook(@PathVariable String id, @RequestHeader String authorization) {
+        Book book = bookService.getBook(id);
+        if (book.isDeleted()) {
+            securityService.validate(authorization, VIEW_DELETED_BOOK);
+        }
+        return bookToDto(book);
     }
 
     @GetMapping(params = "isbnContains")
@@ -67,8 +65,8 @@ public class BookController {
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getAll() {
-        bookService.getBooks().values().forEach(n -> TEST_LOGGER.info(n.getUniqueId()));
-        return bookService.getBooks().values().stream()
+        bookService.getBooks().forEach(n -> TEST_LOGGER.info(n.getUniqueId()));
+        return bookService.getBooks().stream()
                 .map(BookMapper::bookToDto)
                 .collect(Collectors.toList());
     }
@@ -94,10 +92,32 @@ public class BookController {
         return bookToDto(bookToUpdate);
     }
 
+    @PutMapping(path = "restore/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public BookDto restoreBook(@PathVariable String id, @RequestBody UpdateBookDto updateBookDto, @RequestHeader String authorization) {
+        TEST_LOGGER.info("restore a book");
+        securityService.validate(authorization, RESTORE_BOOK);
+        Book bookToRestore = bookService.getBook(id);
+        restoreBook(updateBookDto, bookToRestore);
+        return bookToDto(bookToRestore);
+    }
+
+    @DeleteMapping(path = "{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteBook(@PathVariable String id, @RequestHeader String authorization) {
+        TEST_LOGGER.info("delete a book");
+        securityService.validate(authorization, DELETE_BOOK);
+        Book bookToDelete = bookService.getBook(id);
+        bookToDelete.softDelete();
+    }
 
     private void updateBook(UpdateBookDto updateBookDto, Book bookToUpdate) {
         bookToUpdate.setTitle(updateBookDto.getTitle());
         bookToUpdate.setAuthor(updateBookDto.getAuthor());
         bookToUpdate.setSummary(updateBookDto.getSummary());
+    }
+
+    private void restoreBook(UpdateBookDto restoreBookDto, Book bookToRestore) {
+        bookToRestore.setDeleted(restoreBookDto.isDeleted());
     }
 }
