@@ -9,6 +9,7 @@ import com.team418.domain.user.Member;
 import com.team418.exception.NoBookFoundWithIsbnException;
 import com.team418.repository.LendingRepository;
 import com.team418.services.BookService;
+import com.team418.services.LendingService;
 import com.team418.services.MemberService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
@@ -26,12 +27,12 @@ public class LendingController {
     private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
     private final SecurityService securityService;
-    private final LendingRepository lendingRepository;
+    private final LendingService lendingService;
 
-    public LendingController(BookService bookService, SecurityService securityService, MemberService memberService, LendingRepository lendingRepository) {
+    public LendingController(BookService bookService, SecurityService securityService, MemberService memberService, LendingRepository lendingRepository, LendingService lendingService) {
         this.bookService = bookService;
         this.securityService = securityService;
-        this.lendingRepository = lendingRepository;
+        this.lendingService = lendingService;
         TEST_LOGGER.info("BookController Creation");
     }
 
@@ -40,14 +41,17 @@ public class LendingController {
     @ResponseStatus(HttpStatus.CREATED)
     public LendingDto registerLending(@RequestBody CreateLendingDto createLendingDto, @RequestHeader String authorization) {
         Member lendingMember = (Member) securityService.validate(authorization, REGISTER_NEW_LENDING);   // should be generic or something else
-        Book lendingBook = CheckIfNull(bookService.getBookByIsbn(createLendingDto.isbn()), createLendingDto.isbn());
-        Lending actualLending = LendingMapper.createLendingDtoToLending(createLendingDto, lendingMember.getInss());
-        lendingRepository.addLending(actualLending);
+
+        Book lendingBook = CheckIfBookIsNull(bookService.getBookByIsbn(createLendingDto.isbn()), createLendingDto.isbn());
         lendingBook.Lent();
+
+        Lending actualLending = LendingMapper.createLendingDtoToLending(createLendingDto, lendingMember.getInss());
+        lendingService.addLending(actualLending);
+
         return LendingMapper.lendingToLendingDto(actualLending);
     }
 
-    private Book CheckIfNull(Book book, String isbn) {
+    private Book CheckIfBookIsNull(Book book, String isbn) {
         if (book == null) {
             throw new NoBookFoundWithIsbnException(isbn);
         }

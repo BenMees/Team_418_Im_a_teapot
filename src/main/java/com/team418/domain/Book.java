@@ -1,5 +1,7 @@
 package com.team418.domain;
 
+import com.team418.exception.NoBookAvailableForNowException;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -61,13 +63,17 @@ public class Book {
     }
 
     public boolean Lent() {
-       if (!isLent) {
-           isLent = true;
-           return true;
-       }
-       return false;
+
+        //modified alone
+        if (!isLent && !isDeleted) {
+            isLent = true;
+            return true;
+        }
+        //??when it's false ? exception ?
+        throw new NoBookAvailableForNowException(this.getTitle());
     }
-    public void softDelete(){
+
+    public void softDelete() {
         this.isDeleted = true;
     }
 
