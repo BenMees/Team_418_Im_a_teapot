@@ -1,4 +1,4 @@
-package com.team418.api.book;
+package com.team418.api.lending;
 
 
 import com.team418.Utility;

@@ -1,10 +1,13 @@
 package com.team418.api.lending;
 
 import com.team418.api.lending.dto.AnswerReturnDto;
+import com.team418.api.book.BookMapper;
+import com.team418.api.book.dto.BookDto;
 import com.team418.api.lending.dto.CreateLendingDto;
 import com.team418.api.lending.dto.LendingDto;
 import com.team418.api.lending.dto.ReturnLendingDto;
 import com.team418.domain.Book;
+import com.team418.domain.Feature;
 import com.team418.domain.lending.Lending;
 import com.team418.domain.user.User;
 import com.team418.exception.NoBookFoundWithIsbnException;
@@ -18,6 +21,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.team418.domain.Feature.*;
+import java.util.stream.Collectors;
+
+import static com.team418.domain.Feature.REGISTER_NEW_LENDING;
+import static com.team418.domain.Feature.VIEW_OVERDUE_LENDINGS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -32,6 +39,16 @@ public class LendingController {
         this.bookService = bookService;
         this.securityService = securityService;
         this.lendingService = lendingService;
+    }
+
+    @GetMapping(params = "userId")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDto> getAllBooksBorrowedByMember(@RequestParam String userId, @RequestHeader String authorization) {
+        securityService.validate(authorization, Feature.VIEW_BORROWED_BOOK);
+
+        return lendingService.getAllBooksBorrowedByMember(userId).stream()
+                .map(BookMapper::bookToDto)
+                .collect(Collectors.toList());
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
