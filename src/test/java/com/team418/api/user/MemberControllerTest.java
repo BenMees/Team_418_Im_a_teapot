@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
+import static com.team418.api.user.MemberMapper.memberToDtoViewingPurposes;
 import static com.team418.api.user.MemberMapper.modelToDto;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -90,7 +91,7 @@ class MemberControllerTest {
                         .as(MemberDto[].class);
 
         assertThat(startingSize).isEqualTo(memberDtos.length);
-        assertThat(memberDtos).contains(modelToDto(tommy), modelToDto(tommy2));
+        assertThat(memberDtos).contains(memberToDtoViewingPurposes(tommy), memberToDtoViewingPurposes(tommy2));
     }
 
 
@@ -108,4 +109,35 @@ class MemberControllerTest {
     }
 
 
+    @Test
+    void givenFilledRepoWithMembers_whenGettingThemAsALibrarian_thenDoNotDisplayThemAll() {
+        RestAssured.given()
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization(librarian.getEmail(), "admin"))
+                .when()
+                .port(port)
+                .get("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+
+    @Test
+    void givenFilledRepoWithMembers_whenGettingThemAsNonUser_thenDoNotDisplayThemAll() {
+        RestAssured.given()
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .get("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+
+    @Test
+    void givenFilledMemberRepo_whenGettingMembers_thenDontShareIsnn() {
+
+    }
 }

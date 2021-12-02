@@ -12,4 +12,8 @@ public class MemberMapper {
     public static Member dtoToModel(CreateMemberDto memberDto) {
         return new Member(memberDto.firstName(), memberDto.lastName(), memberDto.email(), memberDto.inss(), memberDto.address());
     }
+
+    public static MemberDto memberToDtoViewingPurposes(Member member) {
+        return new MemberDto(member.getUniqueId(), member.getFirstName(), member.getLastName(), member.getEmail(), null, member.getAddress());
+    }
 }

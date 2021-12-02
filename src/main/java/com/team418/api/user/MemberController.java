@@ -41,7 +41,7 @@ public class MemberController {
     @ResponseStatus(HttpStatus.OK)
     public List<MemberDto> getAllMembers(@RequestHeader String authorization) {
         securityService.validate(authorization, VIEW_ALL_MEMBERS);
-        return memberService.getMembers().stream().map(MemberMapper::modelToDto).collect(Collectors.toList());
+        return memberService.getMembers().stream().map(MemberMapper::memberToDtoViewingPurposes).collect(Collectors.toList());
     }
 
 
