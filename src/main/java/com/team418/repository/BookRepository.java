@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -42,11 +43,11 @@ public class BookRepository {
                 .collect(Collectors.toList());
     }
 
-    public List<Author> getAllAuthorsCorresponding(String partNamesRegex){
+    public Set<Author> getAllAuthorsCorresponding(String partNamesRegex){
         return this.books.values().stream()
                 .map(Book::getAuthor)
                 .filter(author -> author.firstNameORLastNameCorresponding(partNamesRegex))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
 

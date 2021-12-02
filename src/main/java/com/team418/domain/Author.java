@@ -1,5 +1,6 @@
 package com.team418.domain;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -32,13 +33,17 @@ public class Author {
     }
 
     public boolean firstNameORLastNameCorresponding(String partNamesRegex) {
+        String lowerCaseFirstName = firstName.toLowerCase();
+        String lowerCaseLastName = lastName.toLowerCase();
+        String lowerCasePartNamesRegex = partNamesRegex.toLowerCase();
         boolean isMatching;
-        Pattern pattern = Pattern.compile(partNamesRegex);
 
-        isMatching = pattern.matcher(firstName).matches();
-        isMatching = isMatching || pattern.matcher(lastName).matches();
-        isMatching = isMatching || pattern.matcher(firstName+" "+lastName).matches();
-        isMatching = isMatching || pattern.matcher(lastName+" "+firstName).matches();
+        Pattern pattern = Pattern.compile(lowerCasePartNamesRegex);
+
+        isMatching = pattern.matcher(lowerCaseFirstName).matches();
+        isMatching = isMatching || pattern.matcher(lowerCaseLastName).matches();
+        isMatching = isMatching || pattern.matcher(lowerCaseFirstName+" "+lowerCaseLastName).matches();
+        isMatching = isMatching || pattern.matcher(lowerCaseLastName+" "+lowerCaseFirstName).matches();
 
         return isMatching;
     }

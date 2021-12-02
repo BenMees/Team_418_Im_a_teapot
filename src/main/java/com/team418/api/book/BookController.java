@@ -48,10 +48,13 @@ public class BookController {
     }
 
 
-    @GetMapping(params = "authorsContains")
+    @GetMapping(params = "authorsContain")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getBooksByAuthor(@RequestParam String authorsContains) {
-        return null;
+        return bookService.searchBooksCorrespondingAuthorPattern(authorsContains)
+                .stream()
+                .map(BookMapper::bookToDto)
+                .collect(Collectors.toList());
     }
 
     //waiting for implementing

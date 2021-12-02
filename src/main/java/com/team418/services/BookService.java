@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,11 +31,11 @@ public class BookService {
     }
 
 
-    public Book getBookByIsbn(String isbn){
+    public Book getBookByIsbn(String isbn) {
         return bookRepository.getBookByIsbn(isbn);
     }
 
-    public List<Book> searchBooksCorrespondingIsbnPattern(String isbnQuery){
+    public List<Book> searchBooksCorrespondingIsbnPattern(String isbnQuery) {
         String isbnRegex = convertWildcardToRegex(isbnQuery);
         List<String> isbnMatches = bookRepository.getAllIsbnCorresponding(isbnRegex);
         return isbnMatches.stream()
@@ -42,13 +43,15 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    public List<Book> searchBooksCorrespondingAuthorPattern(String partNamesQuery){
+    public List<Book> searchBooksCorrespondingAuthorPattern(String partNamesQuery) {
         String partNamesRegex = convertWildcardToRegex(partNamesQuery);
-        List<Author> authorsCorresponding = bookRepository.getAllAuthorsCorresponding(partNamesRegex);
-        return null; // return all books
+        Set<Author> authorsCorresponding = bookRepository.getAllAuthorsCorresponding(partNamesRegex);
+        return authorsCorresponding.stream()
+                .flatMap(author -> (bookRepository.getBooksByAuthor(author)).stream())
+                .collect(Collectors.toList());
     }
 
-    private String convertWildcardToRegex(String stringWithWildcard){
+    private String convertWildcardToRegex(String stringWithWildcard) {
         return stringWithWildcard.replaceAll("\\*", ".*");
     }
 }
