@@ -67,6 +67,8 @@ class BookControllerTest {
                 .setAuthor(new Author("tom", "tom"))
                 .setSummary("short summary");
 
+        System.out.println("\u001B[35m" + createBookDto);
+
         BookDto bookDto =
                 RestAssured
                         .given()
@@ -82,6 +84,8 @@ class BookControllerTest {
                         .statusCode(HttpStatus.CREATED.value())
                         .extract()
                         .as(BookDto.class);
+
+        System.out.println(bookDto);
 
         assertThat(bookDto.getIsbn()).isEqualTo(createBookDto.getIsbn());
         assertThat(bookDto.getTitle()).isEqualTo(createBookDto.getTitle());
