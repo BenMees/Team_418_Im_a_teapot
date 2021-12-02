@@ -10,18 +10,15 @@ import com.team418.domain.Book;
 import com.team418.domain.user.Admin;
 import com.team418.domain.user.Librarian;
 import com.team418.domain.user.Member;
-import com.team418.repository.BookRepository;
-import com.team418.repository.LendingRepository;
-import com.team418.repository.MemberRepository;
+import com.team418.repository.*;
 import com.team418.services.LendingService;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
@@ -89,6 +86,8 @@ public class LendingControllerTest {
     @Test
     void whenAdminTriesToLendABook_itGeneratesAnException() {
         Admin admin = new Admin("Zinedine", "Zidane", "zinedine.zidane@uefa.com");
+        AdminRepository adminRepository = new AdminRepository();
+        adminRepository.addNewAdmin(admin);
         CreateLendingDto createLendingDto = new CreateLendingDto(ISBN);
 
         RestAssured
@@ -107,7 +106,9 @@ public class LendingControllerTest {
 
     @Test
     void whenLibrarianTriesToLendABook_itGeneratesAnException() {
-        Librarian librarian = new Librarian("Zinedine", "Zidane", "zinedine.zidane@uefa.com");
+        Librarian librarian = new Librarian("Zinedine", "Zidane", "zin.zidane@uefa.com");
+        LibrarianRepository librarianRepository = new LibrarianRepository();
+        librarianRepository.addLibrarian(librarian);
         CreateLendingDto createLendingDto = new CreateLendingDto(ISBN);
 
         RestAssured
@@ -115,7 +116,7 @@ public class LendingControllerTest {
                 .body(createLendingDto)
                 .accept(JSON)
                 .contentType(JSON)
-                .header("Authorization", Utility.generateBase64Authorization("zinedine.zidane@uefa.com", "234"))
+                .header("Authorization", Utility.generateBase64Authorization("zin.zidane@uefa.com", "234"))
                 .when()
                 .port(port)
                 .post("/lendings")
