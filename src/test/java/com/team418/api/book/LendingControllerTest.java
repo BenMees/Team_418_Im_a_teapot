@@ -54,26 +54,26 @@ public class LendingControllerTest {
         memberRepository.addMember(member);
     }
 
-   @Test
-   void createLending_givenALendingToCreate_thenTheNewlyCreatedLendingIsSavedAndReturned() {
-       CreateLendingDto createLendingDto = new CreateLendingDto("134567");
-
-       LendingDto lendingDto =
-               RestAssured
-                       .given()
-                       .body(createLendingDto)
-                       .accept(JSON)
-                       .contentType(JSON)
-                       .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
-                       .when()
-                       .port(port)
-                       .post("/lendings")
-                       .then()
-                       .assertThat()
-                       .statusCode(HttpStatus.CREATED.value())
-                       .extract()
-                       .as(LendingDto.class);
-
-   }
+//   @Test
+//   void createLending_givenALendingToCreate_thenTheNewlyCreatedLendingIsSavedAndReturned() {
+//       CreateLendingDto createLendingDto = new CreateLendingDto("134567");
+//
+//       LendingDto lendingDto =
+//               RestAssured
+//                       .given()
+//                       .body(createLendingDto)
+//                       .accept(JSON)
+//                       .contentType(JSON)
+//                       .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
+//                       .when()
+//                       .port(port)
+//                       .post("/lendings")
+//                       .then()
+//                       .assertThat()
+//                       .statusCode(HttpStatus.CREATED.value())
+//                       .extract()
+//                       .as(LendingDto.class);
+//
+//   }
 
 }

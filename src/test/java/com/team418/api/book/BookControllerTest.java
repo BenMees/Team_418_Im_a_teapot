@@ -4,6 +4,7 @@ import com.team418.Utility;
 import com.team418.api.book.dto.BookDto;
 import com.team418.api.book.dto.CreateBookDto;
 import com.team418.api.book.dto.UpdateBookDto;
+import com.team418.domain.Address;
 import com.team418.domain.Author;
 import com.team418.domain.Book;
 import com.team418.domain.user.Librarian;
@@ -33,6 +34,7 @@ class BookControllerTest {
     @Value("${server.port}")
     private int port;
     private Book book;
+    private Address address;
     private final LibrarianRepository librarianRepository;
     private final BookRepository bookRepository;
     private final BookService bookService;
@@ -50,7 +52,8 @@ class BookControllerTest {
     public void setUp() {
         Librarian tom = new Librarian("tom", "tom", "tom@tom.tom");
         librarianRepository.addLibrarian(tom);
-        Member member = new Member("Justin", "Member", "justin@member.com", "1234567");
+        address = new Address("Sesame Street","221B","9900","Leuven");
+        Member member = new Member("Justin", "Member", "justin@member.com", "1234567",address);
         memberRepository.addMember(member);
         book = new Book("1234567", "How To Integration Test", new Author("Tom", "Tom"), "Short summary");
         bookRepository.saveBook(book);

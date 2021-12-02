@@ -2,6 +2,7 @@ package com.team418.api.user;
 
 import com.team418.Utility;
 import com.team418.api.user.dto.*;
+import com.team418.domain.Address;
 import com.team418.domain.user.*;
 import com.team418.repository.*;
 import io.restassured.RestAssured;
@@ -20,6 +21,7 @@ class LibrarianControllerTest {
 
     @Value("${server.port}")
     private int port;
+    private Address address;
     private final LibrarianRepository librarianRepository;
     private final AdminRepository adminRepository;
     private final MemberRepository memberRepository;
@@ -39,8 +41,8 @@ class LibrarianControllerTest {
     void setUp() {
         librarian = new Librarian("libr", "rian", "libr@rian.com");
         librarianRepository.addLibrarian(librarian);
-
-        member = new Member("pay2", "win", "pay2@win.com", "inss");
+        address = new Address("Sesame Street","221B","9900","Leuven");
+        member = new Member("pay2", "win", "pay2@win.com", "inss",address);
         memberRepository.addMember(member);
 
         admin = new Admin("ad", "min", "funny@min");
