@@ -288,7 +288,7 @@ public class LendingControllerTest {
 
         ReturnLendingDto returnLendingDto = new ReturnLendingDto(lending.getUniqueLendingId());
 
-        String actualResult = RestAssured
+     AnswerReturnDto actualResult = RestAssured
                 .given()
                 .body(returnLendingDto)
                 .accept(JSON)
