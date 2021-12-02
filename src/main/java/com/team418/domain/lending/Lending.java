@@ -55,6 +55,15 @@ public class Lending {
         }
         return "Book is returned on time";
     }
+    /**
+     * only used for testing purposes right now
+     * @param dueDate this is date the book should be returned
+     * @return the lending with the new date
+     */
+    public Lending setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+        return this;
+    }
 
     @Override
     public String toString() {

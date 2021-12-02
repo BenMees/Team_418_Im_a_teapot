@@ -2,6 +2,7 @@ package com.team418.api.book;
 
 
 import com.team418.Utility;
+import com.team418.api.lending.LendingMapper;
 import com.team418.api.lending.dto.CreateLendingDto;
 import com.team418.api.lending.dto.LendingDto;
 import com.team418.domain.Address;
@@ -11,10 +12,7 @@ import com.team418.domain.lending.Lending;
 import com.team418.domain.user.Admin;
 import com.team418.domain.user.Librarian;
 import com.team418.domain.user.Member;
-import com.team418.repository.AdminRepository;
-import com.team418.repository.BookRepository;
-import com.team418.repository.LibrarianRepository;
-import com.team418.repository.MemberRepository;
+import com.team418.repository.*;
 import io.restassured.RestAssured;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,6 +21,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
@@ -40,12 +39,16 @@ public class LendingControllerTest {
 
     private final BookRepository bookRepository;
     private final MemberRepository memberRepository;
+    private final LibrarianRepository librarianRepository;
+    private final LendingRepository lendingRepository;
     private Member member;
 
     @Autowired
-    public LendingControllerTest(MemberRepository memberRepository, BookRepository bookRepository) {
+    public LendingControllerTest(MemberRepository memberRepository, BookRepository bookRepository, LibrarianRepository librarianRepository, LendingRepository lendingRepository) {
         this.bookRepository = bookRepository;
         this.memberRepository = memberRepository;
+        this.librarianRepository = librarianRepository;
+        this.lendingRepository = lendingRepository;
     }
 
     @BeforeAll
@@ -188,7 +191,79 @@ public class LendingControllerTest {
                 .statusCode(HttpServletResponse.SC_EXPECTATION_FAILED);
     }
 
+    @Test
+    void givenOneLendingOverDueDate_whenAskedByLibrarian_thenReturnLending() {
+        Librarian librarian = new Librarian("tommy", "tom", "unique@email.com");
+        librarianRepository.addLibrarian(librarian);
+        Book book = new Book("777", "casino", new Author("Napoleon", "Games"), "lucky");
+        bookRepository.saveBook(book);
+        Lending lending = new Lending(book.getIsbn(), member.getUniqueId());
+        lending.setDueDate(LocalDate.now().minusDays(1));
+        lendingRepository.addLending(lending);
 
+
+        LendingDto[] lendingDtos =
+                RestAssured
+                        .given()
+                        .contentType(JSON)
+                        .header("Authorization", Utility.generateBase64Authorization(librarian.getEmail(), "234"))
+                        .when()
+                        .port(port)
+                        .get("/lendings/overdue")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .as(LendingDto[].class);
+
+        assertThat(lendingDtos).contains(LendingMapper.lendingToLendingDto(lending));
+    }
+
+    @Test
+    void givenOneLendingNotOverDueDate_whenAskedByLibrarian_thenReturnNoLending() {
+        Librarian librarian = new Librarian("tommy", "tom", "unique@emailto.com");
+        librarianRepository.addLibrarian(librarian);
+        Book book = new Book("888", "casino", new Author("Napoleon", "Games"), "lucky");
+        bookRepository.saveBook(book);
+        Lending lending = new Lending(book.getIsbn(), member.getUniqueId());
+        lendingRepository.addLending(lending);
+
+
+        LendingDto[] lendingDtos =
+                RestAssured
+                        .given()
+                        .contentType(JSON)
+                        .header("Authorization", Utility.generateBase64Authorization(librarian.getEmail(), "234"))
+                        .when()
+                        .port(port)
+                        .get("/lendings/overdue")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .as(LendingDto[].class);
+
+        assertThat(lendingDtos).doesNotContain(LendingMapper.lendingToLendingDto(lending));
+    }
+
+    @Test
+    void givenOneLendingOverDueDate_whenAskedByMember_thenReturnUnauthorizedError() {
+        Book book = new Book("999", "casino", new Author("Napoleon", "Games"), "lucky");
+        bookRepository.saveBook(book);
+        Lending lending = new Lending(book.getIsbn(), member.getUniqueId());
+        lendingRepository.addLending(lending);
+
+        RestAssured
+                .given()
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization(member.getEmail(), "234"))
+                .when()
+                .port(port)
+                .get("/lendings/overdue")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value());
+    }
     //  possible checks:
     // return a book we have lent before (and are on time)
     // return a book when we are to late
