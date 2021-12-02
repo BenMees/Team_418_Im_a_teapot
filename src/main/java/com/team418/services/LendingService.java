@@ -15,4 +15,8 @@ public class LendingService {
     public void addLending(Lending lending) {
         lendingRepository.addLending(lending);
     }
+
+    public Lending getLendingById(String uniqueId) {
+        return lendingRepository.getLendingById(uniqueId);
+    }
 }

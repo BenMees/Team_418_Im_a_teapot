@@ -4,9 +4,10 @@ import com.team418.domain.Address;
 import com.team418.domain.Feature;
 import java.util.List;
 import static com.team418.domain.Feature.REGISTER_NEW_LENDING;
+import static com.team418.domain.Feature.RETURN_lENDED_BOOK;
 
 public class Member extends User {
-    private static final List<Feature> FEATURES = List.of(REGISTER_NEW_LENDING);
+    private static final List<Feature> FEATURES = List.of(REGISTER_NEW_LENDING, RETURN_lENDED_BOOK);
     private final String inss;
     private final Address address;
 

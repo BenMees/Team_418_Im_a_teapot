@@ -1,7 +1,6 @@
 package com.team418.api.book.dto;
 
 import com.team418.domain.Author;
-
 import java.util.Objects;
 
 public class BookDto {

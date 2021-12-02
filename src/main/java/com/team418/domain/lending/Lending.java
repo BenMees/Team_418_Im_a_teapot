@@ -1,5 +1,7 @@
 package com.team418.domain.lending;
 
+import com.team418.exception.LendingIsAlreadyReturnedException;
+
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
@@ -10,7 +12,7 @@ public class Lending {
     private final String bookIsbn;
     private final String memberInss;
     private final LocalDate dueDate;
-//    private boolean isReturned = false;
+   private boolean isReturned = false;
 
     public Lending(String bookIsbn, String memberInss) {
         this.uniqueId = UUID.randomUUID().toString();
@@ -33,6 +35,21 @@ public class Lending {
 
     public LocalDate getDueDate() {
         return dueDate;
+    }
+
+    public String returnBook() {
+        if (isReturned){
+           throw new LendingIsAlreadyReturnedException();
+        }
+        isReturned = true;
+        return getCorrectResponsBasedOnTiming();
+    }
+
+    private String getCorrectResponsBasedOnTiming() {
+        if (LocalDate.now().isAfter(dueDate)) {
+            return "The book is returned too late.";
+        }
+        return "Book is returned on time";
     }
 
     @Override
