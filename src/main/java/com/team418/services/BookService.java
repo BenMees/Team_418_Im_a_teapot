@@ -1,9 +1,12 @@
 package com.team418.services;
 
+import com.team418.domain.Author;
 import com.team418.domain.Book;
 import com.team418.repository.BookRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,11 +34,23 @@ public class BookService {
         return bookRepository.getBookByIsbn(isbn);
     }
 
-    public List<Book> searchBooksCorrespondingIsbnPattern(String isbnRegex) {
-        isbnRegex = isbnRegex.replaceAll("\\*", ".*");
+    public List<Book> searchBooksCorrespondingIsbnPattern(String isbnQuery) {
+        String isbnRegex = convertWildcardToRegex(isbnQuery);
         List<String> isbnMatches = bookRepository.getAllIsbnCorresponding(isbnRegex);
         return isbnMatches.stream()
                 .map(bookRepository::getBookByIsbn)
                 .collect(Collectors.toList());
+    }
+
+    public List<Book> searchBooksCorrespondingAuthorPattern(String partNamesQuery) {
+        String partNamesRegex = convertWildcardToRegex(partNamesQuery);
+        Set<Author> authorsCorresponding = bookRepository.getAllAuthorsCorresponding(partNamesRegex);
+        return authorsCorresponding.stream()
+                .flatMap(author -> (bookRepository.getBooksByAuthor(author)).stream())
+                .collect(Collectors.toList());
+    }
+
+    private String convertWildcardToRegex(String stringWithWildcard) {
+        return stringWithWildcard.replaceAll("\\*", ".*");
     }
 }

@@ -2,11 +2,8 @@ package com.team418.api.book;
 
 import com.team418.api.book.dto.BookDto;
 import com.team418.api.book.dto.CreateBookDto;
-import com.team418.api.lending.dto.CreateLendingDto;
-import com.team418.api.lending.dto.LendingDto;
 import com.team418.domain.Author;
 import com.team418.domain.Book;
-import com.team418.domain.lending.Lending;
 
 import static com.team418.services.inputvalidator.InputValidator.INPUT_VALIDATOR;
 

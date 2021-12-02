@@ -24,4 +24,13 @@ public class AdminRepository {
                 .filter(user -> user.getEmail().equals(email))
                 .findFirst().orElse(null);
     }
+
+    /**
+     * This method is purely for TESTING currently,
+     * and should be refactored when implementing story 8: Register Admin
+     * @param admin the admin to add
+     */
+    public void addNewAdmin(Admin admin) {
+        admins.put(admin.getUniqueId(), admin);
+    }
 }

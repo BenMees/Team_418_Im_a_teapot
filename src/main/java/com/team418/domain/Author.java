@@ -1,6 +1,9 @@
 package com.team418.domain;
 
+import java.util.Locale;
 import java.util.Objects;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.team418.services.inputvalidator.InputValidator.INPUT_VALIDATOR;
 
@@ -27,6 +30,22 @@ public class Author {
 
     public String setLastName(String lastName) {
         return this.lastName = INPUT_VALIDATOR.validateNoEmptyInput(lastName);
+    }
+
+    public boolean firstNameORLastNameCorresponding(String partNamesRegex) {
+        String lowerCaseFirstName = firstName.toLowerCase();
+        String lowerCaseLastName = lastName.toLowerCase();
+        String lowerCasePartNamesRegex = partNamesRegex.toLowerCase();
+        boolean isMatching;
+
+        Pattern pattern = Pattern.compile(lowerCasePartNamesRegex);
+
+        isMatching = pattern.matcher(lowerCaseFirstName).matches();
+        isMatching = isMatching || pattern.matcher(lowerCaseLastName).matches();
+        isMatching = isMatching || pattern.matcher(lowerCaseFirstName+" "+lowerCaseLastName).matches();
+        isMatching = isMatching || pattern.matcher(lowerCaseLastName+" "+lowerCaseFirstName).matches();
+
+        return isMatching;
     }
 
     @Override

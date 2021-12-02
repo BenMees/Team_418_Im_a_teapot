@@ -18,7 +18,7 @@ import static com.team418.domain.Feature.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "books")
+@RequestMapping(path = "/books")
 public class BookController {
     private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
@@ -51,10 +51,14 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(params = "authorsContains")
+
+    @GetMapping(params = "authorsContain")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getBooksByAuthor(@RequestParam String authorsContains) {
-        return null;
+        return bookService.searchBooksCorrespondingAuthorPattern(authorsContains)
+                .stream()
+                .map(BookMapper::bookToDto)
+                .collect(Collectors.toList());
     }
 
     //waiting for implementing

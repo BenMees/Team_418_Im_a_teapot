@@ -14,7 +14,6 @@ public class LibrarianRepository {
 
     public LibrarianRepository() {
         librarians = new ConcurrentHashMap<>();
-//        addDefaultLibrarian();
     }
 
     public Librarian getByEmail(String email) {
@@ -34,11 +33,6 @@ public class LibrarianRepository {
                 throw new EmailNotUniqueException(email + " is already used.");
         });
     }
-
-//    private void addDefaultLibrarian(){
-//        Librarian tom = new Librarian("tom", "tom", "tom@tom.tom");
-//        librarians.put(tom.getUniqueId(), tom);
-//    }
 
     public Map<String,Librarian> getLibrarians(){
         return librarians;
