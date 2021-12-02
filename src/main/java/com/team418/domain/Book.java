@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import static com.team418.services.inputvalidator.InputValidator.INPUT_VALIDATOR;
 
-
 public class Book {
     private final String uniqueId;
     private final String isbn;
@@ -62,14 +61,10 @@ public class Book {
         return this.summary = INPUT_VALIDATOR.replaceEmptyInput(summary);
     }
 
-    public boolean Lent() {
-
-        //modified alone
+    public void Lent() {
         if (!isLent && !isDeleted) {
             isLent = true;
-            return true;
         }
-        //??when it's false ? exception ?
         throw new NoBookAvailableForNowException(this.getTitle());
     }
 

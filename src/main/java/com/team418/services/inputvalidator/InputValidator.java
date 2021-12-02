@@ -2,6 +2,7 @@ package com.team418.services.inputvalidator;
 
 public enum InputValidator {
     INPUT_VALIDATOR;
+
     /**
      * @param input The fields to validate
      * @return the input if valid, throws invalid argument exception if it isn't
@@ -11,7 +12,6 @@ public enum InputValidator {
             throw new IllegalArgumentException();
         return input;
     }
-
 
     /**
      * @param input A field to validate that's permitted to be empty

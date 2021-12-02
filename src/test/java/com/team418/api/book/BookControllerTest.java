@@ -44,7 +44,7 @@ class BookControllerTest {
     @Test
     void createBook_givenABookToCreate_thenTheNewlyCreatedBookIsSavedAndReturned() {
         CreateBookDto createBookDto = new CreateBookDto()
-                .setIsbn("1234567")
+                .setIsbn("12345678")
                 .setTitle("How To Integration Test")
                 .setAuthor(new Author("tom", "tom"))
                 .setSummary("short summary");

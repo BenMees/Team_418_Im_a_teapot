@@ -13,7 +13,6 @@ public abstract class User {
     private final String lastName;
     private String email;
 
-
     public User(String firstName, String lastName, String email) {
         setEmail(email);
         this.uniqueId = UUID.randomUUID().toString();
@@ -39,9 +38,8 @@ public abstract class User {
         return lastName;
     }
 
-    //need to discuss invalid email - exception or what ?
     private void setEmail(String email) {
-        if(!isValidEmailAddress(email)) {
+        if (!isValidEmailAddress(email)) {
             throw new EmailAddressIsInvalidException(email);
         }
         this.email = email;
@@ -50,8 +48,8 @@ public abstract class User {
     private boolean isValidEmailAddress(String email) {
         boolean result = true;
         try {
-            InternetAddress emailAddr = new InternetAddress(email);
-            emailAddr.validate();
+            InternetAddress emailAddress = new InternetAddress(email);
+            emailAddress.validate();
         } catch (AddressException ex) {
             result = false;
         }

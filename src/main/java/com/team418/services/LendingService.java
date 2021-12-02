@@ -12,7 +12,7 @@ public class LendingService {
         this.lendingRepository = lendingRepository;
     }
 
-    public Lending addLending(Lending lending) {
-        return lendingRepository.addLending(lending);
+    public void addLending(Lending lending) {
+        lendingRepository.addLending(lending);
     }
 }

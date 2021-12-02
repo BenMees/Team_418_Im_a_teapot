@@ -77,21 +77,11 @@ public class BookController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public BookDto registerNewBook(@RequestBody CreateBookDto createBookDto, @RequestHeader String authorization) {
-        TEST_LOGGER.info("Register a new book");
         securityService.validate(authorization, REGISTER_NEW_BOOK);
-
         checkIfBookAlreadyExists(createBookDto);
 
-        Book book = BookMapper.createDtoToBook(createBookDto); // throws error
-
-        Book savedBook = bookService.saveBook(book);
+        Book savedBook = bookService.saveBook(BookMapper.createDtoToBook(createBookDto));
         return bookToDto(savedBook);
-    }
-
-    private void checkIfBookAlreadyExists(CreateBookDto createBookDto) {
-        if (bookService.getBookByIsbn(createBookDto.getIsbn()) != null) {
-            throw new CreateBookWithAlreadyExistingIsbnException(createBookDto.getIsbn());
-        }
     }
 
     @PutMapping(path = "{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -131,5 +121,11 @@ public class BookController {
 
     private void restoreBook(UpdateBookDto restoreBookDto, Book bookToRestore) {
         bookToRestore.setDeleted(restoreBookDto.isDeleted());
+    }
+
+    private void checkIfBookAlreadyExists(CreateBookDto createBookDto) {
+        if (bookService.getBookByIsbn(createBookDto.getIsbn()) != null) {
+            throw new CreateBookWithAlreadyExistingIsbnException(createBookDto.getIsbn());
+        }
     }
 }

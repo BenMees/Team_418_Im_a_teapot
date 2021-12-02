@@ -1,19 +1,14 @@
 package com.team418.api.lending;
 
-import com.team418.api.book.BookController;
 import com.team418.api.lending.dto.CreateLendingDto;
 import com.team418.api.lending.dto.LendingDto;
 import com.team418.domain.Book;
 import com.team418.domain.lending.Lending;
 import com.team418.domain.user.Member;
 import com.team418.exception.NoBookFoundWithIsbnException;
-import com.team418.repository.LendingRepository;
 import com.team418.services.BookService;
 import com.team418.services.LendingService;
-import com.team418.services.MemberService;
 import com.team418.services.security.SecurityService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,18 +19,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(path = "/lendings")
 public class LendingController {
 
-    private final static Logger TEST_LOGGER = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
     private final SecurityService securityService;
     private final LendingService lendingService;
 
-    public LendingController(BookService bookService, SecurityService securityService, MemberService memberService, LendingRepository lendingRepository, LendingService lendingService) {
+    public LendingController(BookService bookService, SecurityService securityService, LendingService lendingService) {
         this.bookService = bookService;
         this.securityService = securityService;
         this.lendingService = lendingService;
-        TEST_LOGGER.info("BookController Creation");
     }
-
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)

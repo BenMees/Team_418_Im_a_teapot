@@ -2,7 +2,6 @@ package com.team418.repository;
 
 import com.team418.domain.user.Admin;
 import org.springframework.stereotype.Repository;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
