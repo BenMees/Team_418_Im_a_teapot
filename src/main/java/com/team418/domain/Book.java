@@ -61,12 +61,15 @@ public class Book {
     }
 
     public boolean Lent() {
+        // todo remark: shouldn't this whole method be replaced by " return isLent = !isLent; " ? & why not void
        if (!isLent) {
            isLent = true;
            return true;
        }
        return false;
     }
+
+
     public void softDelete(){
         this.isDeleted = true;
     }
