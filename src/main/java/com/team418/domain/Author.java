@@ -32,7 +32,7 @@ public class Author {
         return this.lastName = INPUT_VALIDATOR.validateNoEmptyInput(lastName);
     }
 
-    public boolean firstNameORLastNameCorresponding(String partNamesRegex) {
+    public boolean firstNameORLastNameMatch(String partNamesRegex) {
         String lowerCaseFirstName = firstName.toLowerCase();
         String lowerCaseLastName = lastName.toLowerCase();
         String lowerCasePartNamesRegex = partNamesRegex.toLowerCase();
@@ -42,8 +42,8 @@ public class Author {
 
         isMatching = pattern.matcher(lowerCaseFirstName).matches();
         isMatching = isMatching || pattern.matcher(lowerCaseLastName).matches();
-        isMatching = isMatching || pattern.matcher(lowerCaseFirstName+" "+lowerCaseLastName).matches();
-        isMatching = isMatching || pattern.matcher(lowerCaseLastName+" "+lowerCaseFirstName).matches();
+        isMatching = isMatching || pattern.matcher(lowerCaseFirstName + " " + lowerCaseLastName).matches();
+        isMatching = isMatching || pattern.matcher(lowerCaseLastName + " " + lowerCaseFirstName).matches();
 
         return isMatching;
     }

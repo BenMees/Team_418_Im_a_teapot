@@ -35,37 +35,46 @@ public class BookRepository {
     }
 
     public Book getBook(String uniqueId) {
-
         return books.get(uniqueId);
     }
 
     public List<Book> getBooksByAuthor(Author author) {
         return this.books.values().stream()
-                .filter(book-> book.getAuthor().equals(author))
+                .filter(book -> book.getAuthor().equals(author))
                 .collect(Collectors.toList());
     }
 
-    public Set<Author> getAllAuthorsCorresponding(String partNamesRegex){
-        return this.books.values().stream()
-                .map(Book::getAuthor)
-                .filter(author -> author.firstNameORLastNameCorresponding(partNamesRegex))
-                .collect(Collectors.toSet());
-    }
-
-
-    public Book getBookByIsbn(String isbn){
+    public Book getBookByIsbn(String isbn) {
         return this.books.values().stream()
                 .filter(book -> book.getIsbn().equals(isbn))
                 .findFirst()
                 .orElse(null);
     }
 
-    public List<String> getAllIsbnCorresponding(String regex){
-        Pattern pattern = Pattern.compile(regex);
-
+    public List<Book> getBooksByTitle(String title) {
         return this.books.values().stream()
-                .map(Book::getIsbn)
-                .filter(isbn -> pattern.matcher(isbn).matches())
+                .filter(book -> book.titleMatch(title))
                 .collect(Collectors.toList());
+    }
+
+    public List<String> getAllIsbnCorresponding(String isbnRegex) {
+        return this.books.values().stream()
+                .filter(book -> book.isbnMatch(isbnRegex))
+                .map(Book::getIsbn)
+                .collect(Collectors.toList());
+    }
+
+    public Set<String> getAllTitleCorresponding(String titleRegex) {
+        return this.books.values().stream()
+                .filter(book -> book.titleMatch(titleRegex))
+                .map(Book::getTitle)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Author> getAllAuthorsCorresponding(String partNamesRegex) {
+        return this.books.values().stream()
+                .map(Book::getAuthor)
+                .filter(author -> author.firstNameORLastNameMatch(partNamesRegex))
+                .collect(Collectors.toSet());
     }
 }
