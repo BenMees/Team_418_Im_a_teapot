@@ -115,6 +115,24 @@ class BookServiceTest {
     }
 
     @Test
+    void searchBooksCorrespondingAuthorPattern_givenOnlyWildcard_thenReturnAllBooks() {
+        String searchName = "*";
+
+        List<Book> booksReturned = bookService.searchBooksCorrespondingAuthorPattern(searchName);
+
+        Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book1, book2,book3);
+    }
+
+    @Test
+    void searchBooksCorrespondingAuthorPattern_givenTwoWildcards_thenReturnAllBooks() {
+        String searchName = "**";
+
+        List<Book> booksReturned = bookService.searchBooksCorrespondingAuthorPattern(searchName);
+
+        Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book1, book2,book3);
+    }
+
+    @Test
     void searchBooksCorrespondingTitlePattern_givenWildcardAndPartialTitle_thenReturnBooks() {
         String searchTitle = "*harry*";
 
