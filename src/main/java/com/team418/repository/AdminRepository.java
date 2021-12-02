@@ -2,6 +2,8 @@ package com.team418.repository;
 
 import com.team418.domain.user.Admin;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,6 +14,10 @@ public class AdminRepository {
     public AdminRepository() {
         admins = new ConcurrentHashMap<>();
         createDefaultAdmin();
+    }
+
+    public List<Admin> getAllAdmins() {
+        return admins.values().stream().toList();
     }
 
     private void createDefaultAdmin() {

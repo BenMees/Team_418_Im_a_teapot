@@ -21,7 +21,6 @@ class LibrarianControllerTest {
 
     @Value("${server.port}")
     private int port;
-    private Address address;
     private final LibrarianRepository librarianRepository;
     private final AdminRepository adminRepository;
     private final MemberRepository memberRepository;
@@ -41,8 +40,8 @@ class LibrarianControllerTest {
     void setUp() {
         librarian = new Librarian("libr", "rian", "libr@rian.com");
         librarianRepository.addLibrarian(librarian);
-        address = new Address("Sesame Street","221B","9900","Leuven");
-        member = new Member("pay2", "win", "pay2@win.com", "inss",address);
+        Address address = new Address("Sesame Street", "221B", "9900", "Leuven");
+        member = new Member("pay2", "win", "pay2@win.com", "inss", address);
         memberRepository.addMember(member);
 
         admin = new Admin("ad", "min", "funny@min");
