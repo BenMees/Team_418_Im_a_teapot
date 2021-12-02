@@ -1,6 +1,5 @@
 package com.team418.api.book;
 
-import com.team418.api.book.BookMapper;
 import com.team418.api.book.dto.BookDto;
 import com.team418.api.book.dto.CreateBookDto;
 import com.team418.domain.Author;
