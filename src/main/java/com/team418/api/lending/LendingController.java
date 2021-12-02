@@ -12,7 +12,10 @@ import com.team418.services.security.SecurityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.team418.domain.Feature.REGISTER_NEW_LENDING;
+import static com.team418.domain.Feature.VIEW_OVERDUE_LENDINGS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -41,6 +44,14 @@ public class LendingController {
         lendingService.addLending(actualLending);
 
         return LendingMapper.lendingToLendingDto(actualLending);
+    }
+
+    //we know this is not restfull, we need to refactor this endpoint to param ?overdue
+    @GetMapping(path = "/overdue", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<LendingDto> getOverdueLendings(@RequestHeader String authorization) {
+        securityService.validate(authorization, VIEW_OVERDUE_LENDINGS);
+        return lendingService.getOverdueLendings();
     }
 
     private Book checkIfBookIsNull(Book book, String isbn) {
