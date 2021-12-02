@@ -10,8 +10,10 @@ import com.team418.domain.Book;
 import com.team418.domain.user.Admin;
 import com.team418.domain.user.Librarian;
 import com.team418.domain.user.Member;
-import com.team418.repository.*;
-import com.team418.services.LendingService;
+import com.team418.repository.AdminRepository;
+import com.team418.repository.BookRepository;
+import com.team418.repository.LibrarianRepository;
+import com.team418.repository.MemberRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,17 +36,13 @@ public class LendingControllerTest {
     @Value("${server.port}")
     private int port;
 
-    private final LendingService lendingService;
     private final BookRepository bookRepository;
-    private final LendingRepository lendingRepository;
     private final MemberRepository memberRepository;
     private Member member;
 
     @Autowired
-    public LendingControllerTest(MemberRepository memberRepository, LendingService lendingService, BookRepository bookRepository, LendingRepository lendingRepository) {
-        this.lendingService = lendingService;
+    public LendingControllerTest(MemberRepository memberRepository, BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.lendingRepository = lendingRepository;
         this.memberRepository = memberRepository;
     }
 

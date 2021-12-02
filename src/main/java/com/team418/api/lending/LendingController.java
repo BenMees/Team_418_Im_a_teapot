@@ -4,7 +4,6 @@ import com.team418.api.lending.dto.CreateLendingDto;
 import com.team418.api.lending.dto.LendingDto;
 import com.team418.domain.Book;
 import com.team418.domain.lending.Lending;
-import com.team418.domain.user.Member;
 import com.team418.domain.user.User;
 import com.team418.exception.NoBookFoundWithIsbnException;
 import com.team418.services.BookService;

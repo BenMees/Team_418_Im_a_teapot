@@ -39,11 +39,11 @@ public class MemberRepository {
                 .findFirst().orElse(null);
     }
 
-    public Member getMemberByInss(String inss) {
-        return members.values().stream()
-                .filter(n -> n.getInss().equals(inss))
-                .findFirst().orElse(null);
-    }
+//    public Member getMemberByInss(String inss) {
+//        return members.values().stream()
+//                .filter(n -> n.getInss().equals(inss))
+//                .findFirst().orElse(null);
+//    }
 
     private void assertInssIsUnique(String inss) {
         members.values().forEach(member -> {

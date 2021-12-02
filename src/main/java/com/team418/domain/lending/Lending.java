@@ -10,7 +10,7 @@ public class Lending {
     private final String bookIsbn;
     private final String memberId;
     private final LocalDate dueDate;
-    private boolean isReturned = false;
+ //   private boolean isReturned = false;
 
     public Lending(String bookIsbn, String memberId) {
         this.uniqueId = UUID.randomUUID().toString();
@@ -35,9 +35,9 @@ public class Lending {
         return dueDate;
     }
 
-    public boolean isReturned() {
-        return isReturned;
-    }
+//    public boolean isReturned() {
+//        return isReturned;
+//    }
 
     @Override
     public String toString() {
