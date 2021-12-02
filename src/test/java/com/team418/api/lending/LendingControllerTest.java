@@ -266,11 +266,6 @@ public class LendingControllerTest {
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
-    //  possible checks:
-    // return other Lending no from us
-    // return Lending not existing
-    // return Librarian and Admin should give error
-
 
     @Test
     void whenGivenCorrectLendingId_returnTheBookCorrectly_whenOnTime_giveCorrectMessage() {
@@ -452,5 +447,35 @@ public class LendingControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(400).toString());
+    }
+
+    @Test
+    void returningSomeoneElseBook_givesException() {
+        Author author = new Author("PS", "TK");
+        Book book = new Book("600", "Lent Out Book2", author, "Coding Magic");
+
+        Address address = new Address("Sesame Street", "221B", "9900", "Leuven");
+        Member member2 = new Member("NotSpeedy", "Gonzales", "not.speedy.gonzales@outlook.com", "1521", address);
+
+        book.lent();
+        bookRepository.saveBook(book);
+
+        Lending lending = new Lending(book.getIsbn(),member2.getUniqueId());
+        lending.setDueDate(lending.getDueDate().minusWeeks(4));
+        lendingRepository.addLending(lending);
+        ReturnLendingDto returnLendingDto = new ReturnLendingDto(lending.getUniqueLendingId());
+
+        System.out.println(RestAssured
+                .given()
+                .body(returnLendingDto)
+                .accept(JSON)
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
+                .when()
+                .port(port)
+                .delete("/lendings")
+                .then()
+                .assertThat()
+                .statusCode(403).toString());
     }
 }
