@@ -173,6 +173,7 @@ public class LendingControllerTest {
     void whenBookNotAvailableToRent_giveBackCorrectException() {
         CreateLendingDto createLendingDto = new CreateLendingDto(ISBN);
 
+
         RestAssured
                 .given()
                 .body(createLendingDto)
