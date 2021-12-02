@@ -42,30 +42,33 @@ public class BookController {
         return bookToDto(book);
     }
 
-    @GetMapping(params = "isbnContains")
+    @GetMapping(params = "isbnContain")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDto> getBooksByIsbn(@RequestParam String isbnContains) {
-        return bookService.searchBooksCorrespondingIsbnPattern(isbnContains)
+    public List<BookDto> getBooksByIsbn(@RequestParam String isbnContain) {
+        return bookService.searchBooksCorrespondingIsbnPattern(isbnContain)
                 .stream()
                 .map(BookMapper::bookToDto)
                 .collect(Collectors.toList());
     }
 
 
-    @GetMapping(params = "authorsContain")
+    @GetMapping(params = "authorContain")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDto> getBooksByAuthor(@RequestParam String authorsContains) {
-        return bookService.searchBooksCorrespondingAuthorPattern(authorsContains)
+    public List<BookDto> getBooksByAuthor(@RequestParam String authorContain) {
+        return bookService.searchBooksCorrespondingAuthorPattern(authorContain)
                 .stream()
                 .map(BookMapper::bookToDto)
                 .collect(Collectors.toList());
     }
 
-    //waiting for implementing
-    @GetMapping(params = "titleContains")
+
+    @GetMapping(params = "titleContain")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDto> getBooksByTitle(@RequestParam String titleContains) {
-        return null;
+    public List<BookDto> getBooksByTitle(@RequestParam String titleContain) {
+        return bookService.searchBooksCorrespondingTitlePattern(titleContain)
+                .stream()
+                .map(BookMapper::bookToDto)
+                .collect(Collectors.toList());
     }
 
 

@@ -6,11 +6,11 @@ import com.team418.domain.lending.Lending;
 
 public class LendingMapper {
 
-    public static Lending createLendingDtoToLending(CreateLendingDto createLendingDto, String inss) {
-        return new Lending(createLendingDto.isbn(), inss);
+    public static Lending createLendingDtoToLending(CreateLendingDto createLendingDto, String memberId) {
+        return new Lending(createLendingDto.isbn(), memberId);
     }
 
     public static LendingDto lendingToLendingDto(Lending lending) {
-        return new LendingDto(lending.getUniqueId(), lending.getBookIsbn(), lending.getMemberInss(),lending.getDueDate());
+        return new LendingDto(lending.getUniqueId(), lending.getBookIsbn(), lending.getMemberId(),lending.getDueDate());
     }
 }

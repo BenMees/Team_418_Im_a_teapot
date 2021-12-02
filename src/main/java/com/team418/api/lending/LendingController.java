@@ -4,7 +4,7 @@ import com.team418.api.lending.dto.CreateLendingDto;
 import com.team418.api.lending.dto.LendingDto;
 import com.team418.domain.Book;
 import com.team418.domain.lending.Lending;
-import com.team418.domain.user.Member;
+import com.team418.domain.user.User;
 import com.team418.exception.NoBookFoundWithIsbnException;
 import com.team418.exception.NoLendingFoundException;
 import com.team418.exception.UnauthorizedException;
@@ -35,21 +35,22 @@ public class LendingController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public LendingDto registerLending(@RequestBody CreateLendingDto createLendingDto, @RequestHeader String authorization) {
-        Member lendingMember = (Member) securityService.validate(authorization, REGISTER_NEW_LENDING);
+        User lendingMember = securityService.validate(authorization, REGISTER_NEW_LENDING);
 
         Book lendingBook = checkIfBookIsNull(bookService.getBookByIsbn(createLendingDto.isbn()), createLendingDto.isbn());
-        lendingBook.Lent();
+        lendingBook.lent();
 
-        Lending actualLending = LendingMapper.createLendingDtoToLending(createLendingDto, lendingMember.getInss());
+        Lending actualLending = LendingMapper.createLendingDtoToLending(createLendingDto, lendingMember.getUniqueId());
         lendingService.addLending(actualLending);
 
         return LendingMapper.lendingToLendingDto(actualLending);
     }
 
+    private Book checkIfBookIsNull(Book book, String isbn) {
     @DeleteMapping(consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public String returnLentBook(@RequestBody String lending , @RequestHeader String authorization) {
-        Member lendingMember = (Member) securityService.validate(authorization, RETURN_lENDED_BOOK);
+        User lendingMember = securityService.validate(authorization, RETURN_lENDED_BOOK);
         Lending lendingOfMember = lendingService.getLendingById(lending);
         checkIfLendExist(lendingOfMember);
         checkMemberIsTheOneWhoLentTheBook(lendingMember, lendingOfMember);

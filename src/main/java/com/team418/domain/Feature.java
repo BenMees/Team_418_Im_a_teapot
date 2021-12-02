@@ -8,5 +8,6 @@ public enum Feature {
     RETURN_lENDED_BOOK,
     DELETE_BOOK,
     VIEW_DELETED_BOOK,
-    RESTORE_BOOK
+    RESTORE_BOOK,
+    VIEW_ALL_MEMBERS
 }

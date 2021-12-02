@@ -5,7 +5,6 @@ import com.team418.domain.Book;
 import com.team418.repository.BookRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,6 +46,14 @@ public class BookService {
         Set<Author> authorsCorresponding = bookRepository.getAllAuthorsCorresponding(partNamesRegex);
         return authorsCorresponding.stream()
                 .flatMap(author -> (bookRepository.getBooksByAuthor(author)).stream())
+                .collect(Collectors.toList());
+    }
+
+    public List<Book> searchBooksCorrespondingTitlePattern(String titleQuery) {
+        String titleRegex = convertWildcardToRegex(titleQuery);
+        Set<String> titlesCorresponding = bookRepository.getAllTitleCorresponding(titleRegex);
+        return titlesCorresponding.stream()
+                .flatMap(title -> (bookRepository.getBooksByTitle(title)).stream())
                 .collect(Collectors.toList());
     }
 
