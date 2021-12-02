@@ -123,6 +123,8 @@ class LibrarianControllerTest {
 
     @Test
     void givenLibrarianRepo_whenAddingExistingLibrarian_thenRepoDoesNotAddAgain() {
+        int currentSize = librarianRepository.getLibrarians().size();
+
         RestAssured
                 .given()
                 .body(createLibrarianDto)
@@ -149,7 +151,7 @@ class LibrarianControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.UNAUTHORIZED.value());
 
-        // 2 Because we initialise one (beforeAll), and add one
-        assertThat(2).isEqualTo(librarianRepository.getLibrarians().size());
+        assertThat(currentSize + 1).isEqualTo(librarianRepository.getLibrarians().size());
+
     }
 }
