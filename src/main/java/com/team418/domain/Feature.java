@@ -7,5 +7,6 @@ public enum Feature {
     REGISTER_NEW_LENDING,
     DELETE_BOOK,
     VIEW_DELETED_BOOK,
+    VIEW_BORROWED_BOOK,
     RESTORE_BOOK
 }
