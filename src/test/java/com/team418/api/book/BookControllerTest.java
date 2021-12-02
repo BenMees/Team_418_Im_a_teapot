@@ -247,7 +247,7 @@ class BookControllerTest {
                         .as(BookDto[].class);
 
 
-        assertThat(bookDtos).hasSize(2);
+        assertThat(bookDtos).hasSize(bookRepository.getBooks().size());
         assertThat(bookDtos).contains(bookdto, book1dto);
     }
 }
