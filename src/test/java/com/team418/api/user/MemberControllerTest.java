@@ -24,7 +24,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import static com.team418.api.user.MemberMapper.memberToDtoViewingPurposes;
-import static com.team418.api.user.MemberMapper.modelToDto;
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,15 +51,15 @@ class MemberControllerTest {
 
     @BeforeAll
     void setUp() {
-        librarian = new Librarian("libr", "rian", "libr@rian.com");
+        librarian = new Librarian("libr", "rian", "libr@rian.com2");
         librarianRepository.addLibrarian(librarian);
 
         address = new Address("Sesame Street", "221B", "9900", "Leuven");
 
-        member = new Member("pay2", "win", "pay2@win.com", "inss", address);
+        member = new Member("pay2", "win", "pay2@win.com2", "isssnss", address);
         memberRepository.addMember(member);
 
-        admin = new Admin("ad", "min", "funny@min");
+        admin = new Admin("ad", "min", "funny@min2");
         adminRepository.addNewAdmin(admin);
 
         createLibrarianDto = new CreateLibrarianDto("Tom", "Tom", "t@m.tom");
