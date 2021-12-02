@@ -12,27 +12,30 @@ import java.util.List;
 
 class BookServiceTest {
     BookService bookService;
+    Book book1;
+    Book book2;
+    Book book3;
 
     @BeforeEach
     void init() {
         BookRepository bookRepository = new BookRepository();
-
         bookService = new BookService(bookRepository);
+
+        Author author = new Author("jk", "Rowling");
+        Author author1 = new Author("Jon Kelvin", "Gnilwor");
+
+        book1 = new Book("1245789999999", "HarryPotter", author, "sorcery");
+        book2 = new Book("1245789625689", "HarryPotter 2", author, "sorcery");
+        book3 = new Book("1245799625689", "fake HarryPotter", author1, "sorcery");
+
+        bookService.saveBook(book1);
+        bookService.saveBook(book2);
+        bookService.saveBook(book3);
     }
 
     @Test
     void searchBooksCorrespondingIsbnPattern_givenPartIsbn_thenGetBooksContainingIsbn() {
         String regex = "1245789*";
-
-        Author author = new Author("jk", "R");
-
-        Book book1 = new Book("1245789999999", "HarryPotter", author, "sorcery");
-        Book book2 = new Book("1245789625689", "HarryPotter 2", author, "sorcery");
-        Book book3 = new Book("1245799625689", "fake HarryPotter", author, "sorcery");
-
-        bookService.saveBook(book1);
-        bookService.saveBook(book2);
-        bookService.saveBook(book3);
 
         List<Book> booksReturned = bookService.searchBooksCorrespondingIsbnPattern(regex);
 
@@ -43,16 +46,6 @@ class BookServiceTest {
     void searchBooksCorrespondingIsbnPattern_givenFullIsbn_thenGetOneBook() {
         String regex = "1245789999999";
 
-        Author author = new Author("jk", "R");
-
-        Book book1 = new Book("1245789999999", "HarryPotter", author, "sorcery");
-        Book book2 = new Book("1245789625689", "HarryPotter 2", author, "sorcery");
-        Book book3 = new Book("1245799625689", "fake HarryPotter", author, "sorcery");
-
-        bookService.saveBook(book1);
-        bookService.saveBook(book2);
-        bookService.saveBook(book3);
-
         List<Book> booksReturned = bookService.searchBooksCorrespondingIsbnPattern(regex);
 
         Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book1);
@@ -61,16 +54,6 @@ class BookServiceTest {
     @Test
     void searchBooksCorrespondingIsbnPattern_givenIsbnThatDoesntExist_thenEmptyList() {
         String regex = "duck*";
-
-        Author author = new Author("jk", "R");
-
-        Book book1 = new Book("1245789999999", "HarryPotter", author, "sorcery");
-        Book book2 = new Book("1245789625689", "HarryPotter 2", author, "sorcery");
-        Book book3 = new Book("1245799625689", "fake HarryPotter", author, "sorcery");
-
-        bookService.saveBook(book1);
-        bookService.saveBook(book2);
-        bookService.saveBook(book3);
 
         List<Book> booksReturned = bookService.searchBooksCorrespondingIsbnPattern(regex);
 
@@ -81,16 +64,6 @@ class BookServiceTest {
     void searchBooksCorrespondingIsbnPattern_givenOnlyWildcard_thenReturnsAllBooks() {
         String regex = "*";
 
-        Author author = new Author("jk", "R");
-
-        Book book1 = new Book("1245789999999", "HarryPotter", author, "sorcery");
-        Book book2 = new Book("1245789625689", "HarryPotter 2", author, "sorcery");
-        Book book3 = new Book("1245799625689", "fake HarryPotter", author, "sorcery");
-
-        bookService.saveBook(book1);
-        bookService.saveBook(book2);
-        bookService.saveBook(book3);
-
         List<Book> booksReturned = bookService.searchBooksCorrespondingIsbnPattern(regex);
 
         Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book1,book2,book3);
@@ -99,18 +72,46 @@ class BookServiceTest {
     @Test
     void getBookByIsbn_givenFullIsbn_thenReturnsOneBookCorresponding(){
         String isbn = "1245789625689";
-        Author author = new Author("jk", "R");
-
-        Book book1 = new Book("1245789999999", "HarryPotter", author, "sorcery");
-        Book book2 = new Book(isbn, "HarryPotter 2", author, "sorcery");
-        Book book3 = new Book("1245799625689", "fake HarryPotter", author, "sorcery");
-
-        bookService.saveBook(book1);
-        bookService.saveBook(book2);
-        bookService.saveBook(book3);
 
         Book booksReturned = bookService.getBookByIsbn(isbn);
 
         Assertions.assertThat(booksReturned).isEqualTo(book2);
     }
+
+    @Test
+    void searchBooksCorrespondingAuthorPattern_givenWildcardAndLastname_thenReturnBooks() {
+        String searchName = "*ling";
+
+        List<Book> booksReturned = bookService.searchBooksCorrespondingAuthorPattern(searchName);
+
+        Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book1, book2);
+    }
+
+    @Test
+    void searchBooksCorrespondingAuthorPattern_givenWildcardAndFirstname_thenReturnBooks() {
+        String searchName = "*kel*";
+
+        List<Book> booksReturned = bookService.searchBooksCorrespondingAuthorPattern(searchName);
+
+        Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book3);
+    }
+
+    @Test
+    void searchBooksCorrespondingAuthorPattern_givenPartialFirstnameAndLastname_thenReturnBooks() {
+        String searchName = "*vin gnil*";
+
+        List<Book> booksReturned = bookService.searchBooksCorrespondingAuthorPattern(searchName);
+
+        Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book3);
+    }
+
+    @Test
+    void searchBooksCorrespondingAuthorPattern_givenPartialLastnameAndFirstname_thenReturnBooks() {
+        String searchName = "*wor jo*";
+
+        List<Book> booksReturned = bookService.searchBooksCorrespondingAuthorPattern(searchName);
+
+        Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book3);
+    }
+
 }
