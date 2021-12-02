@@ -4,12 +4,18 @@ import com.team418.domain.user.Member;
 import com.team418.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
 
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
+    }
+
+    public List<Member> getMembers() {
+        return memberRepository.getMembers().values().stream().toList();
     }
 
     public void addMember(Member member) {
