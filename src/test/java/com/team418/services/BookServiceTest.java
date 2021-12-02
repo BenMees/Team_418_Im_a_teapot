@@ -114,4 +114,31 @@ class BookServiceTest {
         Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book3);
     }
 
+    @Test
+    void searchBooksCorrespondingTitlePattern_givenWildcardAndPartialTitle_thenReturnBooks() {
+        String searchTitle = "*harry*";
+
+        List<Book> booksReturned= bookService.searchBooksCorrespondingTitlePattern(searchTitle);
+
+        Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book1, book2, book3);
+    }
+
+    @Test
+    void searchBooksCorrespondingTitlePattern_givenPartialBeginningTitle_thenReturnBooks() {
+        String searchTitle = "harry*";
+
+        List<Book> booksReturned= bookService.searchBooksCorrespondingTitlePattern(searchTitle);
+
+        Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book1, book2);
+    }
+
+    @Test
+    void searchBooksCorrespondingTitlePattern_givenPartialEndingTitle_thenReturnBooks() {
+        String searchTitle = "*potter";
+
+        List<Book> booksReturned= bookService.searchBooksCorrespondingTitlePattern(searchTitle);
+
+        Assertions.assertThat(booksReturned).containsExactlyInAnyOrder(book1, book3);
+    }
+
 }

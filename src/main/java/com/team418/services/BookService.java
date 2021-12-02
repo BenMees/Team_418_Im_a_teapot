@@ -51,6 +51,14 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
+    public List<Book> searchBooksCorrespondingTitlePattern(String titleQuery) {
+        String titleRegex = convertWildcardToRegex(titleQuery);
+        Set<String> titlesCorresponding = bookRepository.getAllTitleCorresponding(titleRegex);
+        return titlesCorresponding.stream()
+                .flatMap(title -> (bookRepository.getBooksByTitle(title)).stream())
+                .collect(Collectors.toList());
+    }
+
     private String convertWildcardToRegex(String stringWithWildcard) {
         return stringWithWildcard.replaceAll("\\*", ".*");
     }
