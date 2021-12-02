@@ -8,21 +8,21 @@ import java.util.UUID;
 
 public class Lending {
     public static final int LENDING_WEEKS = 3;
-    private final String uniqueId;
+    private final String uniqueLendingId;
     private final String bookIsbn;
     private final String memberId;
-    private final LocalDate dueDate;
+    private LocalDate dueDate;
     private boolean isReturned = false;
 
     public Lending(String bookIsbn, String memberId) {
-        this.uniqueId = UUID.randomUUID().toString();
+        this.uniqueLendingId = UUID.randomUUID().toString();
         this.bookIsbn = bookIsbn;
         this.memberId = memberId;
         this.dueDate = LocalDate.now().plusWeeks(LENDING_WEEKS);
     }
 
-    public String getUniqueId() {
-        return uniqueId;
+    public String getUniqueLendingId() {
+        return uniqueLendingId;
     }
 
     public String getBookIsbn() {
@@ -46,10 +46,10 @@ public class Lending {
            throw new LendingIsAlreadyReturnedException();
         }
         isReturned = true;
-        return getCorrectResponsBasedOnTiming();
+        return getCorrectResponseBasedOnTiming();
     }
 
-    private String getCorrectResponsBasedOnTiming() {
+    private String getCorrectResponseBasedOnTiming() {
         if (LocalDate.now().isAfter(dueDate)) {
             return "The book is returned too late.";
         }
@@ -68,7 +68,7 @@ public class Lending {
     @Override
     public String toString() {
         return "Lending{" +
-                "uniqueId='" + uniqueId + '\'' +
+                "uniqueLendingId='" + uniqueLendingId + '\'' +
                 ", bookIsbn='" + bookIsbn + '\'' +
                 ", memberInss='" + memberId + '\'' +
                 ", dueDate=" + dueDate;
@@ -79,11 +79,11 @@ public class Lending {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Lending lending = (Lending) o;
-        return Objects.equals(uniqueId, lending.uniqueId);
+        return Objects.equals(uniqueLendingId, lending.uniqueLendingId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uniqueId);
+        return Objects.hash(uniqueLendingId);
     }
 }

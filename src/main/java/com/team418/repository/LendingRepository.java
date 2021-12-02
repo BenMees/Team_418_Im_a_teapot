@@ -13,7 +13,7 @@ public class LendingRepository {
     private final Map<String, Lending> lends = new ConcurrentHashMap<>();
 
     public void addLending(Lending lending) {
-        lends.put(lending.getUniqueId(), lending);
+        lends.put(lending.getUniqueLendingId(), lending);
     }
 
     public List<Lending> getLendings() {
@@ -21,6 +21,9 @@ public class LendingRepository {
     }
 
     public Lending getLendingById(String uniqueId) {
-        return lends.get(uniqueId);
+        return this.lends.values().stream()
+                .filter(lending -> lending.getUniqueLendingId().equals(uniqueId))
+                .findFirst()
+                .orElse(null);
     }
 }

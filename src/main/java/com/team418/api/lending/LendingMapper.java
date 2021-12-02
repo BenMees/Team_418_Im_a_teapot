@@ -11,6 +11,6 @@ public class LendingMapper {
     }
 
     public static LendingDto lendingToLendingDto(Lending lending) {
-        return new LendingDto(lending.getUniqueId(), lending.getBookIsbn(), lending.getMemberId(),lending.getDueDate());
+        return new LendingDto(lending.getUniqueLendingId(), lending.getBookIsbn(), lending.getMemberId(),lending.getDueDate());
     }
 }

@@ -78,14 +78,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(LendingIsAlreadyReturnedException.class)
     protected void lendingIsAlreadyReturnedException(LendingIsAlreadyReturnedException isbnAlreadyExists, HttpServletResponse response) throws IOException {
-        response.sendError(179, isbnAlreadyExists.getMessage());
-        LOGGER.error(isbnAlreadyExists.getMessage(), isbnAlreadyExists);
-    }
-
-    @ExceptionHandler(NoLendingFoundException.class)
-    protected void noLendingFoundException(NoLendingFoundException isbnAlreadyExists, HttpServletResponse response) throws IOException {
-        response.sendError(299, isbnAlreadyExists.getMessage());
-
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, isbnAlreadyExists.getMessage());
         LOGGER.error(isbnAlreadyExists.getMessage(), isbnAlreadyExists);
     }
 }

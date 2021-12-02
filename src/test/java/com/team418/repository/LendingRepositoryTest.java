@@ -45,8 +45,8 @@ public class LendingRepositoryTest {
 
     @Test
     void whenGettingAllLendings_WeGetTheTwoLendings() {
-        lendings.put(lending1.getUniqueId(), lending1);
-        lendings.put(lending2.getUniqueId(), lending2);
+        lendings.put(lending1.getUniqueLendingId(), lending1);
+        lendings.put(lending2.getUniqueLendingId(), lending2);
 
         lendingRepository.addLending(lending1);
         lendingRepository.addLending(lending2);

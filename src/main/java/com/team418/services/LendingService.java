@@ -33,8 +33,6 @@ public class LendingService {
         return lending.getDueDate().isBefore(LocalDate.now());
     }
 
-
-
     public Lending getLendingById(String uniqueId) {
         return lendingRepository.getLendingById(uniqueId);
     }
