@@ -1,11 +1,12 @@
 package com.team418.domain;
 
+import com.team418.exception.NoBookAvailableForNowException;
+
 import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
 import static com.team418.services.inputvalidator.InputValidator.INPUT_VALIDATOR;
-
 
 public class Book {
     private final String uniqueId;
@@ -61,6 +62,12 @@ public class Book {
         return this.summary = INPUT_VALIDATOR.replaceEmptyInput(summary);
     }
 
+    public void Lent() {
+        if (!isLent && !isDeleted) {
+            isLent = true;
+        }
+        throw new NoBookAvailableForNowException(this.getTitle());
+    }
     public boolean isbnMatch(String isbnRegex) {
         Pattern pattern = Pattern.compile(isbnRegex.toLowerCase());
         return pattern.matcher(isbn.toLowerCase()).matches();
@@ -69,16 +76,6 @@ public class Book {
     public boolean titleMatch(String titleRegex) {
         Pattern pattern = Pattern.compile(titleRegex.toLowerCase());
         return pattern.matcher(title.toLowerCase()).matches();
-    }
-
-
-    public boolean Lent() {
-        // todo remark: shouldn't this whole method be replaced by " return isLent = !isLent; " ? & why not void
-        if (!isLent) {
-            isLent = true;
-            return true;
-        }
-        return false;
     }
 
     public void softDelete() {

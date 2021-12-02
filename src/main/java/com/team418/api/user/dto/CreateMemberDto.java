@@ -1,4 +1,6 @@
 package com.team418.api.user.dto;
 
-public record CreateMemberDto (String firstName,String lastName,String email, String inss) {
+import com.team418.domain.Address;
+
+public record CreateMemberDto(String firstName, String lastName, String email, String inss, Address address) {
 }

@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 public class BookRepository {
     private final Map<String, Book> books;
 
-
     public BookRepository() {
         books = new ConcurrentHashMap<>();
     }

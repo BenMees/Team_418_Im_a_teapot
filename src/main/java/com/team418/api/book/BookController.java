@@ -2,6 +2,7 @@ package com.team418.api.book;
 
 import com.team418.api.book.dto.*;
 import com.team418.domain.Book;
+import com.team418.exception.CreateBookWithAlreadyExistingIsbnException;
 import com.team418.services.BookService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
@@ -33,6 +34,8 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public BookDto getBook(@PathVariable String id, @RequestHeader String authorization) {
         Book book = bookService.getBook(id);
+
+
         if (book.isDeleted()) {
             securityService.validate(authorization, VIEW_DELETED_BOOK);
         }
@@ -81,11 +84,10 @@ public class BookController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public BookDto registerNewBook(@RequestBody CreateBookDto createBookDto, @RequestHeader String authorization) {
-        TEST_LOGGER.info("Register a new book");
         securityService.validate(authorization, REGISTER_NEW_BOOK);
-        Book book = BookMapper.createDtoToBook(createBookDto); // throws error
+        checkIfBookAlreadyExists(createBookDto);
 
-        Book savedBook = bookService.saveBook(book);
+        Book savedBook = bookService.saveBook(BookMapper.createDtoToBook(createBookDto));
         return bookToDto(savedBook);
     }
 
@@ -126,5 +128,11 @@ public class BookController {
 
     private void restoreBook(UpdateBookDto restoreBookDto, Book bookToRestore) {
         bookToRestore.setDeleted(restoreBookDto.isDeleted());
+    }
+
+    private void checkIfBookAlreadyExists(CreateBookDto createBookDto) {
+        if (bookService.getBookByIsbn(createBookDto.getIsbn()) != null) {
+            throw new CreateBookWithAlreadyExistingIsbnException(createBookDto.getIsbn());
+        }
     }
 }

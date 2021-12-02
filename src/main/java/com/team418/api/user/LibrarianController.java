@@ -8,6 +8,7 @@ import com.team418.services.LibraryService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -26,6 +27,7 @@ public class LibrarianController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
     public LibrarianDto createLibrarian(@RequestBody CreateLibrarianDto createLibrarianDto, @RequestHeader String authorization) {
         LOGGER.info("Create librarian");
         securityService.validate(authorization, Feature.CREATE_LIBRARIAN);
@@ -33,5 +35,4 @@ public class LibrarianController {
         libraryService.addLibrarian(librarian);
         return LibrarianMapper.modelToDto(librarian);
     }
-
 }

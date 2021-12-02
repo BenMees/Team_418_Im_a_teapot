@@ -23,4 +23,24 @@ public class UpdateBookDto {
     public boolean isDeleted() {
         return isDeleted;
     }
+
+    public UpdateBookDto setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public UpdateBookDto setAuthor(Author author) {
+        this.author = author;
+        return this;
+    }
+
+    public UpdateBookDto setSummary(String summary) {
+        this.summary = summary;
+        return this;
+    }
+
+    public UpdateBookDto setDeleted(boolean deleted) {
+        isDeleted = deleted;
+        return this;
+    }
 }

@@ -2,6 +2,8 @@ package com.team418.api.book.dto;
 
 import com.team418.domain.Author;
 
+import java.util.Objects;
+
 public class BookDto {
     private String isbn;
     private String title;
@@ -52,5 +54,18 @@ public class BookDto {
                 ", author=" + author +
                 ", summary='" + summary + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookDto bookDto = (BookDto) o;
+        return Objects.equals(isbn, bookDto.isbn) && Objects.equals(title, bookDto.title) && Objects.equals(author, bookDto.author) && Objects.equals(summary, bookDto.summary);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isbn, title, author, summary);
     }
 }

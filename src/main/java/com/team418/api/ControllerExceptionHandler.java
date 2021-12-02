@@ -59,9 +59,21 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(MemberNotFoundByInssException.class)
-    protected void noBookFoundException(MemberNotFoundByInssException memberNotFoundByInssException, HttpServletResponse response) throws IOException {
+    protected void noMemberFoundException(MemberNotFoundByInssException memberNotFoundByInssException, HttpServletResponse response) throws IOException {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, memberNotFoundByInssException.getMessage());
         LOGGER.error(memberNotFoundByInssException.getMessage(), memberNotFoundByInssException);
+    }
+
+    @ExceptionHandler(NoBookAvailableForNowException.class)
+    protected void bookIsNotAvailable(NoBookAvailableForNowException bookNotAvailableException, HttpServletResponse response) throws IOException {
+        response.sendError(HttpServletResponse.SC_EXPECTATION_FAILED, bookNotAvailableException.getMessage());
+        LOGGER.error(bookNotAvailableException.getMessage(), bookNotAvailableException);
+    }
+
+    @ExceptionHandler(CreateBookWithAlreadyExistingIsbnException.class)
+    protected void isbnAlreadyPresent(CreateBookWithAlreadyExistingIsbnException isbnAlreadyExists, HttpServletResponse response) throws IOException {
+        response.sendError(HttpServletResponse.SC_CONFLICT, isbnAlreadyExists.getMessage());
+        LOGGER.error(isbnAlreadyExists.getMessage(), isbnAlreadyExists);
     }
 }
 

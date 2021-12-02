@@ -33,13 +33,6 @@ public class MemberRepository {
         });
     }
 
-    private void assertInssIsUnique(String inss) {
-        members.values().forEach(member -> {
-            if (member.getInss().equals(inss))
-                throw new InssNotUniqueException(inss);
-        });
-    }
-
     public Member getByEmail(String email) {
         return members.values().stream()
                 .filter(user -> user.getEmail().equals(email))
@@ -48,7 +41,14 @@ public class MemberRepository {
 
     public Member getMemberByInss(String inss) {
         return members.values().stream()
-                .filter(n->n.getInss().equals(inss))
+                .filter(n -> n.getInss().equals(inss))
                 .findFirst().orElse(null);
+    }
+
+    private void assertInssIsUnique(String inss) {
+        members.values().forEach(member -> {
+            if (member.getInss().equals(inss))
+                throw new InssNotUniqueException(inss);
+        });
     }
 }

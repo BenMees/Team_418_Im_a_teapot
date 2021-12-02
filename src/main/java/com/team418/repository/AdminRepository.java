@@ -2,7 +2,6 @@ package com.team418.repository;
 
 import com.team418.domain.user.Admin;
 import org.springframework.stereotype.Repository;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,5 +23,14 @@ public class AdminRepository {
         return admins.values().stream()
                 .filter(user -> user.getEmail().equals(email))
                 .findFirst().orElse(null);
+    }
+
+    /**
+     * This method is purely for TESTING currently,
+     * and should be refactored when implementing story 8: Register Admin
+     * @param admin the admin to add
+     */
+    public void addNewAdmin(Admin admin) {
+        admins.put(admin.getUniqueId(), admin);
     }
 }
