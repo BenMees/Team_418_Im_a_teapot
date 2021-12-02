@@ -9,16 +9,14 @@ import com.team418.domain.Author;
 import com.team418.domain.Book;
 import com.team418.domain.user.Member;
 import com.team418.repository.BookRepository;
-import com.team418.repository.LendingRepository;
 import com.team418.repository.MemberRepository;
-import com.team418.services.LendingService;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
@@ -34,17 +32,13 @@ public class LendingControllerTest {
     @Value("${server.port}")
     private int port;
 
-    private final LendingService lendingService;
     private final BookRepository bookRepository;
-    private final LendingRepository lendingRepository;
     private final MemberRepository memberRepository;
     private Member member;
 
     @Autowired
-    public LendingControllerTest(MemberRepository memberRepository, LendingService lendingService, BookRepository bookRepository, LendingRepository lendingRepository) {
-        this.lendingService = lendingService;
+    public LendingControllerTest(MemberRepository memberRepository, BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.lendingRepository = lendingRepository;
         this.memberRepository = memberRepository;
     }
 
@@ -80,18 +74,6 @@ public class LendingControllerTest {
                        .statusCode(HttpStatus.CREATED.value())
                        .extract()
                        .as(LendingDto.class);
-
-//       System.out.println("\u001B[34m" + RestAssured
-//                       .given()
-//                       .body(createLendingDto)
-//                       .accept(JSON)
-//                       .contentType(JSON)
-//                       .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
-//                       .when()
-//                       .port(port)
-//                       .post("/lendings")
-//                       .then().toString() +  "\u001B[0m");
-//       System.out.println(lendingDto + "\u001B[0m");
 
        System.out.println(createLendingDto.isbn());
        System.out.println(lendingDto.bookIsbn());

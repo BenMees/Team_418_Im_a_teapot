@@ -5,16 +5,13 @@ import com.team418.api.user.dto.MemberDto;
 import com.team418.domain.user.Member;
 import com.team418.services.MemberService;
 import com.team418.services.security.SecurityService;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.team418.domain.Feature.VIEW_ALL_MEMBERS;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 
 
 @RestController
@@ -41,8 +38,6 @@ public class MemberController {
     @ResponseStatus(HttpStatus.OK)
     public List<MemberDto> getAllMembers(@RequestHeader String authorization) {
         securityService.validate(authorization, VIEW_ALL_MEMBERS);
-        return memberService.getMembers().stream().map(MemberMapper::memberToDtoViewingPurposes).collect(Collectors.toList());
+        return memberService.getMembersAsMemberDtoForViewerPurposes();
     }
-
-
 }

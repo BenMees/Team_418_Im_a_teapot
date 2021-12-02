@@ -1,10 +1,13 @@
 package com.team418.services;
 
+import com.team418.api.user.MemberMapper;
+import com.team418.api.user.dto.MemberDto;
 import com.team418.domain.user.Member;
 import com.team418.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberService {
@@ -22,7 +25,7 @@ public class MemberService {
         memberRepository.addMember(member);
     }
 
-//    public Member getMemberByInss(String inss) {
-//        return memberRepository.getMemberByInss(inss);
-//    }
+    public List<MemberDto> getMembersAsMemberDtoForViewerPurposes() {
+        return getMembers().stream().map(MemberMapper::memberToDtoViewingPurposes).collect(Collectors.toList());
+    }
 }

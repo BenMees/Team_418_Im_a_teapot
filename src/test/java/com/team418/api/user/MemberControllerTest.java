@@ -1,23 +1,12 @@
 package com.team418.api.user;
 
 import com.team418.Utility;
-import com.team418.api.book.BookMapper;
-import com.team418.api.book.dto.BookDto;
-import com.team418.api.user.dto.CreateLibrarianDto;
 import com.team418.api.user.dto.MemberDto;
 import com.team418.domain.Address;
-import com.team418.domain.Author;
-import com.team418.domain.Book;
-import com.team418.domain.user.Admin;
-import com.team418.domain.user.Librarian;
-import com.team418.domain.user.Member;
-import com.team418.repository.AdminRepository;
-import com.team418.repository.LibrarianRepository;
-import com.team418.repository.MemberRepository;
+import com.team418.domain.user.*;
+import com.team418.repository.*;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,11 +22,9 @@ class MemberControllerTest {
 
     @Value("${server.port}")
     private int port;
-    private Address address;
     private final LibrarianRepository librarianRepository;
     private final AdminRepository adminRepository;
     private final MemberRepository memberRepository;
-    private CreateLibrarianDto createLibrarianDto;
     private Librarian librarian;
     private Member member;
     private Admin admin;
@@ -54,15 +41,13 @@ class MemberControllerTest {
         librarian = new Librarian("libr", "rian", "libr@rian.com2");
         librarianRepository.addLibrarian(librarian);
 
-        address = new Address("Sesame Street", "221B", "9900", "Leuven");
+        Address address = new Address("Sesame Street", "221B", "9900", "Leuven");
 
         member = new Member("pay2", "win", "pay2@win.com2", "isssnss", address);
         memberRepository.addMember(member);
 
         admin = new Admin("ad", "min", "funny@min2");
         adminRepository.addNewAdmin(admin);
-
-        createLibrarianDto = new CreateLibrarianDto("Tom", "Tom", "t@m.tom");
     }
 
     @Test
@@ -136,7 +121,7 @@ class MemberControllerTest {
 
 
     @Test
-    void givenFilledMemberRepo_whenGettingMembers_thenDontShareIsnn() {
+    void givenFilledMemberRepo_whenGettingMembers_thenDontShareInss() {
         MemberDto[] memberDtos =
                 RestAssured.given()
                         .contentType(JSON)
