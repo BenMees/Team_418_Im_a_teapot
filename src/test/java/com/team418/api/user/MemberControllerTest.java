@@ -138,6 +138,21 @@ class MemberControllerTest {
 
     @Test
     void givenFilledMemberRepo_whenGettingMembers_thenDontShareIsnn() {
+        MemberDto[] memberDtos =
+                RestAssured.given()
+                        .contentType(JSON)
+                        .header("Authorization", Utility.generateBase64Authorization(admin.getEmail(), "admin"))
+                        .when()
+                        .port(port)
+                        .get("/members")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .as(MemberDto[].class);
 
+        for(MemberDto member : memberDtos) {
+            assertThat(member.inss()).isNullOrEmpty();
+        }
     }
 }
