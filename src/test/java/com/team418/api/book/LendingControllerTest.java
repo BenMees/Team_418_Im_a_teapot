@@ -7,6 +7,8 @@ import com.team418.api.lending.dto.LendingDto;
 import com.team418.domain.Address;
 import com.team418.domain.Author;
 import com.team418.domain.Book;
+import com.team418.domain.user.Admin;
+import com.team418.domain.user.Librarian;
 import com.team418.domain.user.Member;
 import com.team418.repository.BookRepository;
 import com.team418.repository.LendingRepository;
@@ -19,8 +21,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 
 import static io.restassured.http.ContentType.JSON;
@@ -50,52 +53,33 @@ public class LendingControllerTest {
 
     @BeforeAll
     public void setup() {
-        Address address = new Address("Sesame Street","221B","9900","Leuven");
-        Author author = new Author("J","K");
-        Book book = new Book(ISBN,"Harry Potter", author,"Magic");
-        member = new Member("Speedy","Gonzales","speedy.gonzales@outlook.com","789456",address);
+        Address address = new Address("Sesame Street", "221B", "9900", "Leuven");
+        Author author = new Author("J", "K");
+        Book book = new Book(ISBN, "Harry Potter", author, "Magic");
+        member = new Member("Speedy", "Gonzales", "speedy.gonzales@outlook.com", "789456", address);
         bookRepository.saveBook(book);
         memberRepository.addMember(member);
     }
 
-   @Test
-   void createLending_givenALendingToCreate_thenTheNewlyCreatedLendingIsSavedAndReturned() {
-       CreateLendingDto createLendingDto = new CreateLendingDto(ISBN);
+    @Test
+    void createLending_givenALendingToCreate_thenTheNewlyCreatedLendingIsSavedAndReturned() {
+        CreateLendingDto createLendingDto = new CreateLendingDto(ISBN);
 
-       System.out.println("\u001B[35m" + createLendingDto);
-
-
-       LendingDto lendingDto =
-               RestAssured
-                       .given()
-                       .body(createLendingDto)
-                       .accept(JSON)
-                       .contentType(JSON)
-                       .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
-                       .when()
-                       .port(port)
-                       .post("/lendings")
-                       .then()
-                       .assertThat()
-                       .statusCode(HttpStatus.CREATED.value())
-                       .extract()
-                       .as(LendingDto.class);
-
-//       System.out.println("\u001B[34m" + RestAssured
-//                       .given()
-//                       .body(createLendingDto)
-//                       .accept(JSON)
-//                       .contentType(JSON)
-//                       .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
-//                       .when()
-//                       .port(port)
-//                       .post("/lendings")
-//                       .then().toString() +  "\u001B[0m");
-//       System.out.println(lendingDto + "\u001B[0m");
-
-       System.out.println(createLendingDto.isbn());
-       System.out.println(lendingDto.bookIsbn());
-       System.out.println("=========================");
+        LendingDto lendingDto =
+                RestAssured
+                        .given()
+                        .body(createLendingDto)
+                        .accept(JSON)
+                        .contentType(JSON)
+                        .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
+                        .when()
+                        .port(port)
+                        .post("/lendings")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpServletResponse.SC_CREATED)
+                        .extract()
+                        .as(LendingDto.class);
 
        assertThat(lendingDto.bookIsbn()).isEqualTo(createLendingDto.isbn());
        assertThat(lendingDto.memberId()).isEqualTo(member.getUniqueId());
