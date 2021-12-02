@@ -5,6 +5,7 @@ import com.team418.api.lending.dto.LendingDto;
 import com.team418.domain.Book;
 import com.team418.domain.lending.Lending;
 import com.team418.domain.user.Member;
+import com.team418.domain.user.User;
 import com.team418.exception.NoBookFoundWithIsbnException;
 import com.team418.services.BookService;
 import com.team418.services.LendingService;
@@ -32,18 +33,18 @@ public class LendingController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public LendingDto registerLending(@RequestBody CreateLendingDto createLendingDto, @RequestHeader String authorization) {
-        Member lendingMember = (Member) securityService.validate(authorization, REGISTER_NEW_LENDING);   // should be generic or something else
+        User lendingMember = securityService.validate(authorization, REGISTER_NEW_LENDING);
 
-        Book lendingBook = CheckIfBookIsNull(bookService.getBookByIsbn(createLendingDto.isbn()), createLendingDto.isbn());
-        lendingBook.Lent();
+        Book lendingBook = checkIfBookIsNull(bookService.getBookByIsbn(createLendingDto.isbn()), createLendingDto.isbn());
+        lendingBook.lent();
 
-        Lending actualLending = LendingMapper.createLendingDtoToLending(createLendingDto, lendingMember.getInss());
+        Lending actualLending = LendingMapper.createLendingDtoToLending(createLendingDto, lendingMember.getUniqueId());
         lendingService.addLending(actualLending);
 
         return LendingMapper.lendingToLendingDto(actualLending);
     }
 
-    private Book CheckIfBookIsNull(Book book, String isbn) {
+    private Book checkIfBookIsNull(Book book, String isbn) {
         if (book == null) {
             throw new NoBookFoundWithIsbnException(isbn);
         }

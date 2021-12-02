@@ -5,18 +5,18 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Lending {
-    public static final int LENDING_DAYS = 21;
+    public static final int LENDING_WEEKS = 3;
     private final String uniqueId;
     private final String bookIsbn;
-    private final String memberInss;
+    private final String memberId;
     private final LocalDate dueDate;
-//    private boolean isReturned = false;
+ //   private boolean isReturned = false;
 
-    public Lending(String bookIsbn, String memberInss) {
+    public Lending(String bookIsbn, String memberId) {
         this.uniqueId = UUID.randomUUID().toString();
         this.bookIsbn = bookIsbn;
-        this.memberInss = memberInss;
-        this.dueDate = LocalDate.now().plusDays(LENDING_DAYS);
+        this.memberId = memberId;
+        this.dueDate = LocalDate.now().plusWeeks(LENDING_WEEKS);
     }
 
     public String getUniqueId() {
@@ -27,8 +27,8 @@ public class Lending {
         return bookIsbn;
     }
 
-    public String getMemberInss() {
-        return memberInss;
+    public String getMemberId() {
+        return memberId;
     }
 
     public LocalDate getDueDate() {
@@ -40,7 +40,7 @@ public class Lending {
         return "Lending{" +
                 "uniqueId='" + uniqueId + '\'' +
                 ", bookIsbn='" + bookIsbn + '\'' +
-                ", memberInss='" + memberInss + '\'' +
+                ", memberInss='" + memberId + '\'' +
                 ", dueDate=" + dueDate;
     }
 

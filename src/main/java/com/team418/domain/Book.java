@@ -13,7 +13,7 @@ public class Book {
     private String title;
     private Author author;
     private String summary;
-    private boolean isLent = false;
+    private boolean isLent;
     private boolean isDeleted;
 
     public Book(String isbn, String title, Author author, String summary) {
@@ -23,6 +23,7 @@ public class Book {
         this.author = author;
         this.summary = setSummary(summary);
         this.isDeleted = false;
+        this.isLent = false;
     }
 
     public String getUniqueId() {
@@ -61,11 +62,11 @@ public class Book {
         return this.summary = INPUT_VALIDATOR.replaceEmptyInput(summary);
     }
 
-    public void Lent() {
-        if (!isLent && !isDeleted) {
-            isLent = true;
+    public void lent() {
+        if (isLent || isDeleted) {
+            throw new NoBookAvailableForNowException(this.getTitle());
         }
-        throw new NoBookAvailableForNowException(this.getTitle());
+        isLent = true;
     }
 
     public void softDelete() {
