@@ -69,6 +69,7 @@ public class Book {
         }
         isLent = true;
     }
+
     public boolean isbnMatch(String isbnRegex) {
         Pattern pattern = Pattern.compile(isbnRegex.toLowerCase());
         return pattern.matcher(isbn.toLowerCase()).matches();
