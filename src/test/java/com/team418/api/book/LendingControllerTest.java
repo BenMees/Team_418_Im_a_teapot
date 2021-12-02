@@ -81,8 +81,110 @@ public class LendingControllerTest {
                         .extract()
                         .as(LendingDto.class);
 
-       assertThat(lendingDto.bookIsbn()).isEqualTo(createLendingDto.isbn());
-       assertThat(lendingDto.memberId()).isEqualTo(member.getUniqueId());
-       assertThat(lendingDto.dueDate()).isEqualTo(LocalDate.now().plusWeeks(3));
-   }
+        assertThat(lendingDto.bookIsbn()).isEqualTo(createLendingDto.isbn());
+        assertThat(lendingDto.memberId()).isEqualTo(member.getUniqueId());
+        assertThat(lendingDto.dueDate()).isEqualTo(LocalDate.now().plusWeeks(3)); // check if due
+    }
+
+    @Test
+    void whenAdminTriesToLendABook_itGeneratesAnException() {
+        Admin admin = new Admin("Zinedine", "Zidane", "zinedine.zidane@uefa.com");
+        CreateLendingDto createLendingDto = new CreateLendingDto(ISBN);
+
+        RestAssured
+                .given()
+                .body(createLendingDto)
+                .accept(JSON)
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization("zinedine.zidane@uefa.com", "234"))
+                .when()
+                .port(port)
+                .post("/lendings")
+                .then()
+                .assertThat()
+                .statusCode(HttpServletResponse.SC_UNAUTHORIZED);
+    }
+
+    @Test
+    void whenLibrarianTriesToLendABook_itGeneratesAnException() {
+        Librarian librarian = new Librarian("Zinedine", "Zidane", "zinedine.zidane@uefa.com");
+        CreateLendingDto createLendingDto = new CreateLendingDto(ISBN);
+
+        RestAssured
+                .given()
+                .body(createLendingDto)
+                .accept(JSON)
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization("zinedine.zidane@uefa.com", "234"))
+                .when()
+                .port(port)
+                .post("/lendings")
+                .then()
+                .assertThat()
+                .statusCode(401);
+    }
+
+    @Test
+    void whenBookNotExistingToRent_giveBackCorrectException() {
+        CreateLendingDto createLendingDto = new CreateLendingDto("0000");  // Should not excist
+
+        RestAssured
+                .given()
+                .body(createLendingDto)
+                .accept(JSON)
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
+                .when()
+                .port(port)
+                .post("/lendings")
+                .then()
+                .assertThat()
+                .statusCode(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+
+    @Test
+    void whenBookSoftDeleted_giveBackCorrectException() {
+
+        Author author = new Author("M", "S");
+        Book bookSoftDeleted = new Book("654", "Harry Potter", author, "2");
+        bookRepository.saveBook(bookSoftDeleted);
+        bookSoftDeleted.setDeleted(true);
+
+        CreateLendingDto createLendingDto = new CreateLendingDto("654");
+
+        RestAssured
+                .given()
+                .body(createLendingDto)
+                .accept(JSON)
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
+                .when()
+                .port(port)
+                .post("/lendings")
+                .then()
+                .assertThat()
+                .statusCode(HttpServletResponse.SC_EXPECTATION_FAILED);
+    }
+
+
+    @Test
+    void whenBookNotAvailableToRent_giveBackCorrectException() {
+        CreateLendingDto createLendingDto = new CreateLendingDto(ISBN);
+
+        RestAssured
+                .given()
+                .body(createLendingDto)
+                .accept(JSON)
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
+                .when()
+                .port(port)
+                .post("/lendings")
+                .then()
+                .assertThat()
+                .statusCode(HttpServletResponse.SC_EXPECTATION_FAILED);
+    }
+
+
 }
