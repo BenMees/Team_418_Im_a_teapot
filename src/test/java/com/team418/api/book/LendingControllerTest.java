@@ -72,8 +72,8 @@ public class LendingControllerTest {
 //                       .assertThat()
 //                       .statusCode(HttpStatus.CREATED.value())
 //                       .extract()
-//                       .as(LendingDto.class);
 //
+//                       .as(LendingDto.class);
 //   }
 
 }
