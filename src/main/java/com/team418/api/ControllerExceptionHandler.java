@@ -63,6 +63,5 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, memberNotFoundByInssException.getMessage());
         LOGGER.error(memberNotFoundByInssException.getMessage(), memberNotFoundByInssException);
     }
-
 }
 
