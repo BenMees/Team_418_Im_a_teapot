@@ -46,7 +46,6 @@ public class LendingController {
         return LendingMapper.lendingToLendingDto(actualLending);
     }
 
-    private Book checkIfBookIsNull(Book book, String isbn) {
     @DeleteMapping(consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public String returnLentBook(@RequestBody String lending , @RequestHeader String authorization) {
@@ -57,8 +56,8 @@ public class LendingController {
         return lendingOfMember.returnBook();
     }
 
-    private void checkMemberIsTheOneWhoLentTheBook(Member lendingMember, Lending lendingOfMember) {
-        if (!lendingOfMember.getMemberInss().equals(lendingMember.getInss())) {
+    private void checkMemberIsTheOneWhoLentTheBook(User lendingMember, Lending lendingOfMember) {
+        if (!lendingOfMember.getMemberId().equals(lendingMember.getUniqueId())) {
             throw new UnauthorizedException("This Member did not lent the proposed book");
         }
     }

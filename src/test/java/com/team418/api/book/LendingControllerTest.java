@@ -7,6 +7,7 @@ import com.team418.api.lending.dto.LendingDto;
 import com.team418.domain.Address;
 import com.team418.domain.Author;
 import com.team418.domain.Book;
+import com.team418.domain.lending.Lending;
 import com.team418.domain.user.Admin;
 import com.team418.domain.user.Librarian;
 import com.team418.domain.user.Member;
@@ -15,6 +16,7 @@ import com.team418.repository.BookRepository;
 import com.team418.repository.LibrarianRepository;
 import com.team418.repository.MemberRepository;
 import io.restassured.RestAssured;
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -186,4 +188,61 @@ public class LendingControllerTest {
     }
 
 
+    //  possible checks:
+    // return a book we have lent before (and are on time)
+    // return a book when we are to late
+    // return other Lending no from us
+    // return Lending not existing
+    // return Librarian and Admin should give error
+
+
+    @Test
+    void whenGivenCorrectLendingId_returnTheBookCorrectly() {
+        Author author = new Author("PS", "TK");
+        Book book = new Book("521", "Lent Out Book", author, "Coding Magic");
+
+        book.lent();
+        bookRepository.saveBook(book);
+
+        Lending lending = new Lending(book.getIsbn(),member.getUniqueId());
+
+        String expectedResult =  "Book is returned on time";
+
+        String actualResult = RestAssured
+                .given()
+                .body(lending.getUniqueId())
+                .accept(JSON)
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
+                .when()
+                .port(port)
+                .delete("/lendings")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .as(String.class);
+
+        assertThat(actualResult).isEqualTo(expectedResult);
+        assertThat(lending.isReturned()).isTrue();
+    }
+
+    @Test
+    void returningABookWith_aLendingIdThatDoesntMatchAnyExistingLendingId() {
+
+        String lendingId = "helloIShouldBe_ALendingID_ButImJust_aRandomSentenceToFailThisTest";
+
+        RestAssured
+                .given()
+                .body(lendingId)
+                .accept(JSON)
+                .contentType(JSON)
+                .header("Authorization", Utility.generateBase64Authorization("speedy.gonzales@outlook.com", "234"))
+                .when()
+                .port(port)
+                .delete("/lendings")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
 }
