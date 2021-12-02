@@ -9,8 +9,8 @@ public class Lending {
     private final String uniqueId;
     private final String bookIsbn;
     private final String memberId;
-    private final LocalDate dueDate;
-    private boolean isReturned = false;
+    private LocalDate dueDate;
+ //   private boolean isReturned = false;
 
     public Lending(String bookIsbn, String memberId) {
         this.uniqueId = UUID.randomUUID().toString();
@@ -35,8 +35,14 @@ public class Lending {
         return dueDate;
     }
 
-    public boolean isReturned() {
-        return isReturned;
+    /**
+     * only used for testing purposes right now
+     * @param dueDate this is date the book should be returned
+     * @return the lending with the new date
+     */
+    public Lending setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+        return this;
     }
 
     @Override

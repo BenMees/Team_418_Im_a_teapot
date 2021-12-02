@@ -1,9 +1,7 @@
 package com.team418.domain;
 
-import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static com.team418.services.inputvalidator.InputValidator.INPUT_VALIDATOR;
 
