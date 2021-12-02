@@ -4,6 +4,7 @@ import com.team418.exception.NoBookAvailableForNowException;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import static com.team418.services.inputvalidator.InputValidator.INPUT_VALIDATOR;
 
@@ -67,6 +68,15 @@ public class Book {
             throw new NoBookAvailableForNowException(this.getTitle());
         }
         isLent = true;
+    }
+    public boolean isbnMatch(String isbnRegex) {
+        Pattern pattern = Pattern.compile(isbnRegex.toLowerCase());
+        return pattern.matcher(isbn.toLowerCase()).matches();
+    }
+
+    public boolean titleMatch(String titleRegex) {
+        Pattern pattern = Pattern.compile(titleRegex.toLowerCase());
+        return pattern.matcher(title.toLowerCase()).matches();
     }
 
     public void softDelete() {
