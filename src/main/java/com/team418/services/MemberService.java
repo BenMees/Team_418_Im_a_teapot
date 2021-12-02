@@ -15,4 +15,8 @@ public class MemberService {
     public void addMember(Member member) {
         memberRepository.addMember(member);
     }
+
+    public Member getMemberByInss(String inss) {
+        return memberRepository.getMemberByInss(inss);
+    }
 }

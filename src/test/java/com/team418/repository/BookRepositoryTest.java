@@ -34,7 +34,7 @@ class BookRepositoryTest {
     void givenABookRepository_whenAddingABook_thenBookRepositoryContainsThatBook() {
         repository.saveBook(book1);
 
-        Assertions.assertThat(repository.getBooks().containsValue(book1)).isTrue();
+        Assertions.assertThat(repository.getBooks().contains(book1)).isTrue();
     }
 
     @Test
@@ -54,6 +54,6 @@ class BookRepositoryTest {
         repository.saveBook(book1);
         repository.saveBook(book2);
 
-        Assertions.assertThat(repository.getBooks()).isEqualTo(books);
+        Assertions.assertThat(repository.getBooks()).isEqualTo(books.values().stream().toList());
     }
 }

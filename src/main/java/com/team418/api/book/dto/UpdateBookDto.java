@@ -6,6 +6,7 @@ public class UpdateBookDto {
     private String title;
     private Author author;
     private String summary;
+    private boolean isDeleted;
 
     public String getTitle() {
         return title;
@@ -19,4 +20,7 @@ public class UpdateBookDto {
         return summary;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
 }

@@ -1,7 +1,6 @@
 package com.team418.repository;
 
 import com.team418.domain.user.Librarian;
-import com.team418.domain.user.User;
 import com.team418.exception.EmailNotUniqueException;
 import org.springframework.stereotype.Repository;
 

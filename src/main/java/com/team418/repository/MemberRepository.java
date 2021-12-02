@@ -1,7 +1,6 @@
 package com.team418.repository;
 
 import com.team418.domain.user.Member;
-import com.team418.domain.user.User;
 import com.team418.exception.EmailNotUniqueException;
 import com.team418.exception.InssNotUniqueException;
 import org.springframework.stereotype.Repository;
@@ -44,6 +43,12 @@ public class MemberRepository {
     public Member getByEmail(String email) {
         return members.values().stream()
                 .filter(user -> user.getEmail().equals(email))
+                .findFirst().orElse(null);
+    }
+
+    public Member getMemberByInss(String inss) {
+        return members.values().stream()
+                .filter(n->n.getInss().equals(inss))
                 .findFirst().orElse(null);
     }
 }

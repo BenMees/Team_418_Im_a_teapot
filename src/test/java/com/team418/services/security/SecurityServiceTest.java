@@ -1,5 +1,6 @@
 package com.team418.services.security;
 
+import com.team418.Utility;
 import com.team418.domain.Feature;
 import com.team418.exception.UnauthorizedException;
 import com.team418.exception.UnknownUserException;
@@ -47,7 +48,7 @@ class SecurityServiceTest {
     @Test
     void validate_givenAuthorizationThatIsInvalidAndCorrectAccess_thenNoExceptionIsThrown() {
         // GIVEN
-        String authorization = "Basic " + Base64.getEncoder().encodeToString("jon@snow.com:password".getBytes(StandardCharsets.UTF_8));
+        String authorization = Utility.generateBase64Authorization("jon@snow.com", "1234");
 
         // THEN
         Assertions.assertThatExceptionOfType(UnknownUserException.class).isThrownBy(() -> securityService.validate(authorization, Feature.REGISTER_NEW_BOOK));

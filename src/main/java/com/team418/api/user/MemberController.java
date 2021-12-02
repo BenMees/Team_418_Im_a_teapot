@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "users/members")
+@RequestMapping(path = "/members")
 public class MemberController {
     private final MemberService memberService;
 
@@ -25,4 +25,6 @@ public class MemberController {
         memberService.addMember(member);
         return MemberMapper.modelToDto(member);
     }
+
+
 }

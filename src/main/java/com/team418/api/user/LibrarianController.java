@@ -4,18 +4,16 @@ import com.team418.api.user.dto.CreateLibrarianDto;
 import com.team418.api.user.dto.LibrarianDto;
 import com.team418.domain.Feature;
 import com.team418.domain.user.Librarian;
-import com.team418.domain.user.User;
 import com.team418.services.LibraryService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/users/librarians")
+@RequestMapping(path = "/librarians")
 public class LibrarianController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LibrarianController.class);
