@@ -104,9 +104,7 @@ class BookControllerTest {
 
     @Test
     void updateBook_givenABookToUpdate_thenTheBookIsUpdatedAndReturned() {
-        UpdateBookDto updateBookDto = new UpdateBookDto()
-                .setTitle("Integration tests vol. 2")
-                .setSummary("Newer and better");
+        UpdateBookDto updateBookDto = new UpdateBookDto("Integration tests vol. 2", null, "Newer and better", null);
 
         BookDto bookDto =
                 RestAssured
@@ -124,18 +122,17 @@ class BookControllerTest {
                         .extract()
                         .as(BookDto.class);
 
-        assertThat(bookDto.title()).isEqualTo(updateBookDto.getTitle());
-        assertThat(bookDto.author()).isEqualTo(updateBookDto.getAuthor());
-        assertThat(bookDto.summary()).isEqualTo(updateBookDto.getSummary());
-        assertThat(bookService.getBook(book.getUniqueId()).getTitle()).isEqualTo(updateBookDto.getTitle());
+        assertThat(bookDto.title()).isEqualTo(updateBookDto.title());
+        assertThat(bookDto.author()).isEqualTo(book.getAuthor());
+        assertThat(bookDto.summary()).isEqualTo(updateBookDto.summary());
+        assertThat(bookService.getBook(book.getUniqueId()).getTitle()).isEqualTo(updateBookDto.title());
 
     }
 
     @Test
     void restoreBook_givenABookToRestore_thenTheBookIsRestoredAndReturned() {
         book.setDeleted(true);
-        UpdateBookDto updateBookDto = new UpdateBookDto()
-                .setDeleted(false);
+        UpdateBookDto updateBookDto = new UpdateBookDto(null, null, null, false);
 
         BookDto bookDto =
                 RestAssured

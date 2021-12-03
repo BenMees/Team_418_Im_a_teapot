@@ -1,6 +1,7 @@
 package com.team418.api.book;
 
 import com.team418.api.book.dto.*;
+import com.team418.domain.Author;
 import com.team418.domain.Book;
 import com.team418.exception.CreateBookWithAlreadyExistingIsbnException;
 import com.team418.exception.NoBookFoundWithIsbnException;
@@ -127,13 +128,19 @@ public class BookController {
     }
 
     private void updateBook(UpdateBookDto updateBookDto, Book bookToUpdate) {
-        bookToUpdate.setTitle(updateBookDto.getTitle());
-        bookToUpdate.setAuthor(updateBookDto.getAuthor());
-        bookToUpdate.setSummary(updateBookDto.getSummary());
+        bookToUpdate.setTitle(checkInputFields(bookToUpdate.getTitle(), updateBookDto.title()));
+        bookToUpdate.setAuthor(checkInputFields(bookToUpdate.getAuthor(), updateBookDto.author()));
+        bookToUpdate.setSummary(checkInputFields(bookToUpdate.getSummary(), updateBookDto.summary()));
     }
 
+
+    public <T> T checkInputFields(T original, T input) {
+        return input == null ? original : input;
+    }
+
+
     private void restoreBook(UpdateBookDto restoreBookDto, Book bookToRestore) {
-        bookToRestore.setDeleted(restoreBookDto.isDeleted());
+        bookToRestore.setDeleted(Boolean.TRUE.equals(restoreBookDto.isDeleted()));
     }
 
     private void checkIfBookAlreadyExists(CreateBookDto createBookDto) {
