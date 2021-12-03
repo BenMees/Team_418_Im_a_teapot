@@ -1,10 +1,10 @@
 package com.team418.api.book;
 
-import com.team418.api.book.dto.*;
-import com.team418.domain.Author;
+import com.team418.api.book.dto.BookDto;
+import com.team418.api.book.dto.CreateBookDto;
+import com.team418.api.book.dto.UpdateBookDto;
 import com.team418.domain.Book;
 import com.team418.exception.CreateBookWithAlreadyExistingIsbnException;
-import com.team418.exception.NoBookFoundWithIsbnException;
 import com.team418.services.BookService;
 import com.team418.services.security.SecurityService;
 import org.slf4j.Logger;
@@ -47,15 +47,11 @@ public class BookController {
     @GetMapping(params = "isbnContain")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDto> getBooksByIsbn(@RequestParam String isbnContain) {
-        List<BookDto> foundBooksDto = bookService.searchBooksCorrespondingIsbnPattern(isbnContain)
+
+        return bookService.searchBooksCorrespondingIsbnPattern(isbnContain)
                 .stream()
                 .map(BookMapper::bookToDto)
                 .collect(Collectors.toList());
-
-        if (foundBooksDto.isEmpty())
-            throw new NoBookFoundWithIsbnException(isbnContain);
-
-        return foundBooksDto;
     }
 
 
