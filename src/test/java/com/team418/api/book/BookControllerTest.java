@@ -84,10 +84,10 @@ class BookControllerTest {
 
         System.out.println(bookDto);
 
-        assertThat(bookDto.getIsbn()).isEqualTo(createBookDto.getIsbn());
-        assertThat(bookDto.getTitle()).isEqualTo(createBookDto.getTitle());
-        assertThat(bookDto.getAuthor()).isEqualTo(createBookDto.getAuthor());
-        assertThat(bookDto.getSummary()).isEqualTo(createBookDto.getSummary());
+        assertThat(bookDto.isbn()).isEqualTo(createBookDto.getIsbn());
+        assertThat(bookDto.title()).isEqualTo(createBookDto.getTitle());
+        assertThat(bookDto.author()).isEqualTo(createBookDto.getAuthor());
+        assertThat(bookDto.summary()).isEqualTo(createBookDto.getSummary());
     }
 
     @Test
@@ -130,9 +130,9 @@ class BookControllerTest {
                         .extract()
                         .as(BookDto.class);
 
-        assertThat(bookDto.getTitle()).isEqualTo(updateBookDto.getTitle());
-        assertThat(bookDto.getAuthor()).isEqualTo(updateBookDto.getAuthor());
-        assertThat(bookDto.getSummary()).isEqualTo(updateBookDto.getSummary());
+        assertThat(bookDto.title()).isEqualTo(updateBookDto.getTitle());
+        assertThat(bookDto.author()).isEqualTo(updateBookDto.getAuthor());
+        assertThat(bookDto.summary()).isEqualTo(updateBookDto.getSummary());
         assertThat(bookService.getBook(book.getUniqueId()).getTitle()).isEqualTo(updateBookDto.getTitle());
 
     }
@@ -159,9 +159,9 @@ class BookControllerTest {
                         .extract()
                         .as(BookDto.class);
 
-        assertThat(bookDto.getTitle()).isEqualTo(book.getTitle());
-        assertThat(bookDto.getAuthor()).isEqualTo(book.getAuthor());
-        assertThat(bookDto.getSummary()).isEqualTo(book.getSummary());
+        assertThat(bookDto.title()).isEqualTo(book.getTitle());
+        assertThat(bookDto.author()).isEqualTo(book.getAuthor());
+        assertThat(bookDto.summary()).isEqualTo(book.getSummary());
         assertThat(bookService.getBook(book.getUniqueId()).isDeleted()).isEqualTo(false);
     }
 
@@ -199,9 +199,9 @@ class BookControllerTest {
                         .extract()
                         .as(BookDto.class);
 
-        assertThat(bookDto.getTitle()).isEqualTo(book.getTitle());
-        assertThat(bookDto.getAuthor()).isEqualTo(book.getAuthor());
-        assertThat(bookDto.getSummary()).isEqualTo(book.getSummary());
+        assertThat(bookDto.title()).isEqualTo(book.getTitle());
+        assertThat(bookDto.author()).isEqualTo(book.getAuthor());
+        assertThat(bookDto.summary()).isEqualTo(book.getSummary());
         assertThat(bookService.getBook(book.getUniqueId()).isDeleted()).isEqualTo(true);
     }
 

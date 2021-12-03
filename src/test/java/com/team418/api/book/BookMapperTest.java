@@ -25,10 +25,10 @@ public class BookMapperTest {
     void givenABook_whenMappingToBookDto_thenReturnBookDto() {
         BookDto dto = bookToDto(book);
 
-        Assertions.assertThat(dto.getIsbn()).isEqualTo("123");
-        Assertions.assertThat(dto.getTitle()).isEqualTo("test");
-        Assertions.assertThat(dto.getAuthor()).isEqualTo(author);
-        Assertions.assertThat(dto.getSummary()).isEqualTo("short summary");
+        Assertions.assertThat(dto.isbn()).isEqualTo("123");
+        Assertions.assertThat(dto.title()).isEqualTo("test");
+        Assertions.assertThat(dto.author()).isEqualTo(author);
+        Assertions.assertThat(dto.summary()).isEqualTo("short summary");
     }
 
     @Test

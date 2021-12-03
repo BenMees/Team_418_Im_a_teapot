@@ -15,11 +15,7 @@ public class BookMapper {
      * @return the new book DTO based on the fields of the provided book
      */
     public static BookDto bookToDto(Book book) {
-        return new BookDto()
-                .withIsbn(book.getIsbn())
-                .withTitle(book.getTitle())
-                .withAuthor(book.getAuthor())
-                .withSummary(book.getSummary());
+        return new BookDto(book.getIsbn(), book.getTitle(), book.getAuthor(), book.getSummary());
     }
 
     /**
