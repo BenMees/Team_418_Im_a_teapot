@@ -29,6 +29,7 @@ import java.time.LocalDate;
 
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -78,7 +79,7 @@ public class LendingControllerTest {
                         .post("/lendings")
                         .then()
                         .assertThat()
-                        .statusCode(HttpServletResponse.SC_CREATED)
+                        .statusCode(CREATED.value())
                         .extract()
                         .as(LendingDto.class);
 
@@ -105,7 +106,7 @@ public class LendingControllerTest {
                 .post("/lendings")
                 .then()
                 .assertThat()
-                .statusCode(HttpServletResponse.SC_UNAUTHORIZED);
+                .statusCode(UNAUTHORIZED.value());
     }
 
     @Test
@@ -144,7 +145,7 @@ public class LendingControllerTest {
                 .post("/lendings")
                 .then()
                 .assertThat()
-                .statusCode(HttpServletResponse.SC_BAD_REQUEST);
+                .statusCode(BAD_REQUEST.value());
     }
 
 
@@ -169,7 +170,7 @@ public class LendingControllerTest {
                 .post("/lendings")
                 .then()
                 .assertThat()
-                .statusCode(HttpServletResponse.SC_EXPECTATION_FAILED);
+                .statusCode(EXPECTATION_FAILED.value());
     }
 
 
@@ -189,7 +190,7 @@ public class LendingControllerTest {
                 .post("/lendings")
                 .then()
                 .assertThat()
-                .statusCode(HttpServletResponse.SC_EXPECTATION_FAILED);
+                .statusCode(EXPECTATION_FAILED.value());
     }
 
     @Test
