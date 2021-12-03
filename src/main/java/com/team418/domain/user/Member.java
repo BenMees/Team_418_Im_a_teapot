@@ -2,6 +2,8 @@ package com.team418.domain.user;
 
 import com.team418.domain.Address;
 import com.team418.domain.Feature;
+import com.team418.services.inputvalidator.InputValidator;
+
 import java.util.List;
 import static com.team418.domain.Feature.REGISTER_NEW_LENDING;
 import static com.team418.domain.Feature.RETURN_lENDED_BOOK;
@@ -14,6 +16,7 @@ public class Member extends User {
     public Member(String firstName, String lastName, String email, String inss, Address address) {
         super(firstName, lastName, email);
         this.inss = inss;
+        InputValidator.INPUT_VALIDATOR.validateNoEmptyInput(address.city());
         this.address = address;
     }
 

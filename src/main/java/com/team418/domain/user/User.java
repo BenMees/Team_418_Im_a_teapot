@@ -2,6 +2,7 @@ package com.team418.domain.user;
 
 import com.team418.exception.EmailAddressIsInvalidException;
 import com.team418.domain.Feature;
+import com.team418.services.inputvalidator.InputValidator;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -16,8 +17,8 @@ public abstract class User {
     public User(String firstName, String lastName, String email) {
         setEmail(email);
         this.uniqueId = UUID.randomUUID().toString();
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = InputValidator.INPUT_VALIDATOR.validateNoEmptyInput(firstName);
+        this.lastName = InputValidator.INPUT_VALIDATOR.validateNoEmptyInput(lastName);
     }
 
     public abstract boolean isAbleTo(Feature feature);

@@ -101,35 +101,6 @@ class ControllerExceptionHandlerTest {
                 .content(contentLibrarian)).andExpect(status().reason(containsString("No user corresponds to : cheetah@africa.com")));
     }
 
-    //
-//    @Test
-//    void illegalArgumentHandler() {
-//    }
-//
-//    @Test
-//    void inssNotUniqueException() {
-//    }
-//
-//    @Test
-//    void moreThenOneIsbnMatchException() {
-//    }
-//
-    @Test
-    void noBookFoundException() throws Exception {
-        this.mockMvc.perform(get("/books")
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("isbnContain", "randomISBN")).andExpect(status().reason(containsString("No book whit the ISBN number: randomISBN  is found.")));
-    }
-
-    //
-//    @Test
-//    void noMemberFoundException() {
-//    }
-//
-//    @Test
-//    void bookIsNotAvailable() {
-//    }
-//
     @Test
     void isbnAlreadyPresent() throws Exception {
         String bookContent = """
@@ -155,17 +126,4 @@ class ControllerExceptionHandlerTest {
                 .andExpect(status().reason(containsString("The Isbn value you entered : 12345 already matches an other book.")));
     }
 
-//    @Test
-//    void lendingIsAlreadyReturnedException() throws Exception {
-//        Book book = new Book("666", "title2", new Author("Say", "So"), "Lots of Music");
-//        bookRepository.saveBook(book);
-//
-//        Member member = new Member("Karl", "Gauss", "karl.gauss@gmail.com", "987-223-112", null);
-//        memberRepository.addMember(member);
-//
-//        this.mockMvc.perform(delete("/lendings")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .header(HttpHeaders.AUTHORIZATION, "Basic a2FybC5nYXVzc0BnbWFpbC5jb206").content(book.getUniqueId()))
-//                .andExpect(status().reason(containsString("")));
-//    }
 }
