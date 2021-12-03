@@ -31,6 +31,7 @@ public class SecurityService {
 
     private User validateUserName(String authorization) {
         String decodeUsernamePassword = new String(Base64.getDecoder().decode(authorization.substring("Basic ".length())));
+
         String email = decodeUsernamePassword.substring(0, decodeUsernamePassword.indexOf(":"));
 
         //was userRepository

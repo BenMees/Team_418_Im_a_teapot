@@ -1,5 +1,7 @@
 package com.team418;
 
+import org.springframework.http.HttpStatus;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
