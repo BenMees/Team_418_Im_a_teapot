@@ -2,7 +2,6 @@ package com.team418.api.lending;
 
 
 import com.team418.Utility;
-import com.team418.api.lending.LendingMapper;
 import com.team418.api.lending.dto.AnswerReturnDto;
 import com.team418.api.lending.dto.CreateLendingDto;
 import com.team418.api.lending.dto.LendingDto;
@@ -126,7 +125,7 @@ public class LendingControllerTest {
                 .post("/lendings")
                 .then()
                 .assertThat()
-                .statusCode(401);
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
@@ -337,7 +336,6 @@ public class LendingControllerTest {
     void returningABookWith_aLendingIdThatDoesntMatchAnyExistingLendingId() {
         Author author = new Author("PS", "TK");
         Book book = new Book("525", "Lent Out Book", author, "Coding Magic");
-        String expectedResult =  "The book is returned too late.";
 
         book.lent();
         bookRepository.saveBook(book);
@@ -358,7 +356,7 @@ public class LendingControllerTest {
                 .delete("/lendings")
                 .then()
                 .assertThat()
-                .statusCode(403).toString());
+                .statusCode(HttpStatus.FORBIDDEN.value()).toString());
     }
 
     @Test
@@ -376,7 +374,7 @@ public class LendingControllerTest {
                 .delete("/lendings")
                 .then()
                 .assertThat()
-                .statusCode(403).toString());
+                .statusCode(HttpStatus.FORBIDDEN.value()).toString());
     }
 
     @Test
@@ -403,7 +401,7 @@ public class LendingControllerTest {
                 .delete("/lendings")
                 .then()
                 .assertThat()
-                .statusCode(403).toString());
+                .statusCode(HttpStatus.FORBIDDEN.value()).toString());
     }
 
 
@@ -411,7 +409,6 @@ public class LendingControllerTest {
     void returningABookWith_aLendingIdThatIsAlreadyReturned() {
         Author author = new Author("PS", "TK");
         Book book = new Book("527", "Lent Out Book", author, "Coding Magic");
-        String expectedResult =  "The book is returned too late.";
 
         book.lent();
         bookRepository.saveBook(book);
@@ -433,7 +430,7 @@ public class LendingControllerTest {
                 .delete("/lendings")
                 .then()
                 .assertThat()
-                .statusCode(200).toString());
+                .statusCode(HttpStatus.OK.value()).toString());
 
         System.out.println(RestAssured
                 .given()
@@ -446,7 +443,7 @@ public class LendingControllerTest {
                 .delete("/lendings")
                 .then()
                 .assertThat()
-                .statusCode(400).toString());
+                .statusCode(HttpStatus.BAD_REQUEST.value()).toString());
     }
 
     @Test
@@ -476,6 +473,6 @@ public class LendingControllerTest {
                 .delete("/lendings")
                 .then()
                 .assertThat()
-                .statusCode(403).toString());
+                .statusCode(HttpStatus.FORBIDDEN.value()).toString());
     }
 }

@@ -3,10 +3,8 @@ package com.team418.api;
 import com.team418.domain.Author;
 import com.team418.domain.Book;
 import com.team418.domain.user.Librarian;
-import com.team418.domain.user.Member;
 import com.team418.repository.BookRepository;
 import com.team418.repository.LibrarianRepository;
-import com.team418.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +34,8 @@ class ControllerExceptionHandlerTest {
     @Autowired
     private LibrarianRepository librarianRepository;
 
-    @Autowired
-    private MemberRepository memberRepository;
+//    @Autowired
+//    private MemberRepository memberRepository;
 
     @Test
     void emailAddressInvalidException() throws Exception {
@@ -62,15 +60,16 @@ class ControllerExceptionHandlerTest {
 
     @Test
     void unauthorizedHandler() throws Exception {
-        String bookContent = "{\n" +
-                "    \"isbn\" : \"12345\",\n" +
-                "    \"title\" : \"testTitle\",\n" +
-                "    \"author\" : \n" +
-                "        {\"firstName\" : \"testFirstNameAuthor\",\n" +
-                "        \"lastName\" : \"testLastNameAuthor\"}\n" +
-                ",\n" +
-                "    \"summary\" : \"testSummary\"\n" +
-                "}";
+        String bookContent = """
+                {
+                    "isbn" : "12345",
+                    "title" : "testTitle",
+                    "author" :\s
+                        {"firstName" : "testFirstNameAuthor",
+                        "lastName" : "testLastNameAuthor"}
+                ,
+                    "summary" : "testSummary"
+                }""";
         bookRepository = new BookRepository();
         bookRepository.saveBook(new Book("12345", "title", new Author("Son", "Goku"), "Lots of action"));
 
@@ -89,11 +88,12 @@ class ControllerExceptionHandlerTest {
     @Test
     void unknownUserHandler() throws Exception {
 
-        String contentLibrarian = "{\n" +
-                "    \"firstName\":\"Anne\",\n" +
-                "    \"lastName\":\"Verbergen\",\n" +
-                "    \"email\": \"cheetah@africa.com\"\n" +
-                "}";
+        String contentLibrarian = """
+                {
+                    "firstName":"Anne",
+                    "lastName":"Verbergen",
+                    "email": "cheetah@africa.com"
+                }""";
 
         this.mockMvc.perform(post("/librarians")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -132,15 +132,16 @@ class ControllerExceptionHandlerTest {
 //
     @Test
     void isbnAlreadyPresent() throws Exception {
-        String bookContent = "{\n" +
-                "    \"isbn\" : \"12345\",\n" +
-                "    \"title\" : \"testTitle\",\n" +
-                "    \"author\" : \n" +
-                "        {\"firstName\" : \"testFirstNameAuthor\",\n" +
-                "        \"lastName\" : \"testLastNameAuthor\"}\n" +
-                ",\n" +
-                "    \"summary\" : \"testSummary\"\n" +
-                "}";
+        String bookContent = """
+                {
+                    "isbn" : "12345",
+                    "title" : "testTitle",
+                    "author" :\s
+                        {"firstName" : "testFirstNameAuthor",
+                        "lastName" : "testLastNameAuthor"}
+                ,
+                    "summary" : "testSummary"
+                }""";
 
         bookRepository.saveBook(new Book("12345", "title", new Author("Son", "Goku"), "Lots of action"));
 
