@@ -58,13 +58,7 @@ class BookControllerTest {
 
     @Test
     void createBook_givenABookToCreate_thenTheNewlyCreatedBookIsSavedAndReturned() {
-        CreateBookDto createBookDto = new CreateBookDto()
-                .setIsbn("12345678")
-                .setTitle("How To Integration Test")
-                .setAuthor(new Author("tom", "tom"))
-                .setSummary("short summary");
-
-        System.out.println("\u001B[35m" + createBookDto);
+        CreateBookDto createBookDto = new CreateBookDto("12345678", "How To Integration Test", new Author("tom", "tom"), "short summary");
 
         BookDto bookDto =
                 RestAssured
@@ -84,10 +78,10 @@ class BookControllerTest {
 
         System.out.println(bookDto);
 
-        assertThat(bookDto.isbn()).isEqualTo(createBookDto.getIsbn());
-        assertThat(bookDto.title()).isEqualTo(createBookDto.getTitle());
-        assertThat(bookDto.author()).isEqualTo(createBookDto.getAuthor());
-        assertThat(bookDto.summary()).isEqualTo(createBookDto.getSummary());
+        assertThat(bookDto.isbn()).isEqualTo(createBookDto.isbn());
+        assertThat(bookDto.title()).isEqualTo(createBookDto.title());
+        assertThat(bookDto.author()).isEqualTo(createBookDto.author());
+        assertThat(bookDto.summary()).isEqualTo(createBookDto.summary());
     }
 
     @Test

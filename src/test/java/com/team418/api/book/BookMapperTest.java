@@ -59,12 +59,7 @@ public class BookMapperTest {
         String validSummary = "Cool story bro";
         String validTitle = "My diary";
 
-        CreateBookDto createBookDto = new CreateBookDto()
-                .setAuthor(validAuthor)
-                .setIsbn(validIsbn)
-                .setSummary(validSummary)
-                .setTitle(validTitle);
-
+        CreateBookDto createBookDto = new CreateBookDto(validIsbn, validTitle, validAuthor, validSummary);
 
         Book bookToValidate = BookMapper.createDtoToBook(createBookDto);
 
@@ -81,12 +76,7 @@ public class BookMapperTest {
         String validIsbn = "123456";
         String validTitle = "My diary";
 
-        CreateBookDto createBookDto = new CreateBookDto()
-                .setAuthor(validAuthor)
-                .setIsbn(validIsbn)
-                .setSummary(validEmptyInput)
-                .setTitle(validTitle);
-
+        CreateBookDto createBookDto = new CreateBookDto(validIsbn, validTitle, validAuthor, validEmptyInput);
 
         Book bookToValidate = BookMapper.createDtoToBook(createBookDto);
 
@@ -101,12 +91,7 @@ public class BookMapperTest {
         String invalidEmptyInput = "";
         Author validAuthor = new Author("", "input");
 
-        CreateBookDto createBookDto = new CreateBookDto()
-                .setAuthor(validAuthor)
-                .setIsbn(invalidEmptyInput)
-                .setSummary("")
-                .setTitle(invalidEmptyInput);
-
+        CreateBookDto createBookDto = new CreateBookDto(invalidEmptyInput, invalidEmptyInput, validAuthor, "");
 
         Assertions.assertThatIllegalArgumentException().isThrownBy(() -> BookMapper.createDtoToBook(createBookDto));
         // optional .hasMessageMatching("Some message")

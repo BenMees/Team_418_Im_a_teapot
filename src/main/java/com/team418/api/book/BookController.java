@@ -137,8 +137,8 @@ public class BookController {
     }
 
     private void checkIfBookAlreadyExists(CreateBookDto createBookDto) {
-        if (bookService.getBookByIsbn(createBookDto.getIsbn()) != null) {
-            throw new CreateBookWithAlreadyExistingIsbnException(createBookDto.getIsbn());
+        if (bookService.getBookByIsbn(createBookDto.isbn()) != null) {
+            throw new CreateBookWithAlreadyExistingIsbnException(createBookDto.isbn());
         }
     }
 }

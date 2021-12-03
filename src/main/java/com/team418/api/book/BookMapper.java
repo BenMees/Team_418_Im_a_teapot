@@ -27,12 +27,12 @@ public class BookMapper {
      * @return the book
      */
     public static Book createDtoToBook(CreateBookDto createBookDto) {
-        Author author = new Author(INPUT_VALIDATOR.replaceEmptyInput(createBookDto.getAuthor().getFirstName()), INPUT_VALIDATOR.validateNoEmptyInput(createBookDto.getAuthor().getLastName()));
+        Author author = new Author(INPUT_VALIDATOR.replaceEmptyInput(createBookDto.author().getFirstName()), INPUT_VALIDATOR.validateNoEmptyInput(createBookDto.author().getLastName()));
 
-        return new Book(INPUT_VALIDATOR.validateNoEmptyInput(createBookDto.getIsbn())
-                , INPUT_VALIDATOR.validateNoEmptyInput(createBookDto.getTitle())
+        return new Book(INPUT_VALIDATOR.validateNoEmptyInput(createBookDto.isbn())
+                , INPUT_VALIDATOR.validateNoEmptyInput(createBookDto.title())
                 , author
-                , INPUT_VALIDATOR.replaceEmptyInput(createBookDto.getSummary()));
+                , INPUT_VALIDATOR.replaceEmptyInput(createBookDto.summary()));
     }
 
 }
