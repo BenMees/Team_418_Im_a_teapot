@@ -19,7 +19,7 @@ public class Book {
 
     public Book(String isbn, String title, Author author, String summary) {
         this.uniqueId = UUID.randomUUID().toString();
-        this.isbn = isbn;
+        this.isbn = Objects.requireNonNull(isbn);
         this.title = setTitle(title);
         this.author = author;
         this.summary = setSummary(summary);
@@ -111,5 +111,9 @@ public class Book {
                 ", summary='" + summary + '\'' +
                 ", isLent=" + isLent +
                 '}';
+    }
+
+    public void restore() {
+        this.isDeleted = false;
     }
 }

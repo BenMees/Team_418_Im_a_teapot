@@ -106,11 +106,11 @@ public class BookController {
 
     @PutMapping(path = "restore/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public BookDto restoreBook(@PathVariable String id, @RequestBody UpdateBookDto updateBookDto, @RequestHeader String authorization) {
+    public BookDto restoreBook(@PathVariable String id, @RequestHeader String authorization) {
         TEST_LOGGER.info("restore a book");
         securityService.validate(authorization, RESTORE_BOOK);
         Book bookToRestore = bookService.getBook(id);
-        restoreBook(updateBookDto, bookToRestore);
+        bookToRestore.restore();
         return bookToDto(bookToRestore);
     }
 
@@ -132,11 +132,6 @@ public class BookController {
 
     public <T> T checkInputFields(T original, T input) {
         return input == null ? original : input;
-    }
-
-
-    private void restoreBook(UpdateBookDto restoreBookDto, Book bookToRestore) {
-        bookToRestore.setDeleted(Boolean.TRUE.equals(restoreBookDto.isDeleted()));
     }
 
     private void checkIfBookAlreadyExists(CreateBookDto createBookDto) {

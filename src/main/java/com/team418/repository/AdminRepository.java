@@ -1,6 +1,7 @@
 package com.team418.repository;
 
 import com.team418.domain.user.Admin;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,6 +11,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class AdminRepository {
     private final Map<String, Admin> admins;
+
+    @Value("${default.admin.firstname}")
+    private String defaultFirstName;
 
     public AdminRepository() {
         admins = new ConcurrentHashMap<>();
@@ -21,7 +25,7 @@ public class AdminRepository {
     }
 
     private void createDefaultAdmin() {
-        Admin admin = new Admin("admin", "default", "default@switchfully.com");
+        Admin admin = new Admin(defaultFirstName, "default", "default@switchfully.com");
         admins.put(admin.getUniqueId(), admin);
     }
 

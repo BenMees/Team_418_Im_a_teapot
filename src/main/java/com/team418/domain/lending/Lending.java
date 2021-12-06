@@ -61,9 +61,8 @@ public class Lending {
      * @param dueDate this is date the book should be returned
      * @return the lending with the new date
      */
-    public Lending setDueDate(LocalDate dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
-        return this;
     }
 
     @Override

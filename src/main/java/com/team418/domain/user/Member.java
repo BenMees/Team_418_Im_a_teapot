@@ -14,7 +14,7 @@ public class Member extends User {
     private final Address address;
 
     public Member(String firstName, String lastName, String email, String inss, Address address) {
-        super(firstName, lastName, email);
+        super(firstName, lastName, email, FEATURES);
         this.inss = inss;
         InputValidator.INPUT_VALIDATOR.validateNoEmptyInput(address.city());
         this.address = address;
@@ -26,10 +26,5 @@ public class Member extends User {
 
     public String getInss() {
         return inss;
-    }
-
-    @Override
-    public boolean isAbleTo(Feature feature) {
-        return FEATURES.contains(feature);
     }
 }
